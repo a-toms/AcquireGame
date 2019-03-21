@@ -74,19 +74,37 @@ class Player {
         this.tiles = [];
     };
 
-
      placeTile(position, board){
          // tileLocation: str
          board.tileSpaces[position.charAt(0)][position.charAt(1)] = 'generic';
     }
 }
 
+
+class Ledger{
+    constructor(){
+        this.stocks = {
+            // Note that the number of the stocks is different
+            'Worldwide': 15,
+            'Sackson': 15,
+            'Festival': 15,
+            'Imperial': 15,
+            'American': 15,
+            'Continental': 15,
+            'Tower': 15
+        }
+    }
+}
+
+
+
+
 class Display {
     constructor(board){
         this.board = board;
     }
 
-    showBoard(){
+    showAllBoard(){
         for (let row of Object.keys(this.board.tileSpaces)){
             console.log(row);
             console.log(this.board.tileSpaces[row])
@@ -97,7 +115,7 @@ class Display {
 
 b = new Board();
 d = new Display(b);
-d.showBoard();
+d.showAllBoard();
 
 module.exports =  {
     Board,
