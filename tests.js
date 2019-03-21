@@ -101,8 +101,5 @@ tape('Player class.', function (TC) {
         assert.end();
     });
 
-    // TC.test('Player may buy 1 - 3 stocks per turn', function (assert) {
-    //     // Todo: continue writing test.
-    // })
 });
 

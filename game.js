@@ -1,5 +1,6 @@
 'use strict';
 
+
 class Board {
     constructor() {
         this.tileSpaces = {
@@ -72,17 +73,28 @@ class Board {
         for (let row  of Object.keys(this.tileSpaces)){
             for (let tileSpace of Object.values(this.tileSpaces[row])){
                 if (tileSpace === corporation){
-                    count ++;
+                    count++;
                 }
             }
         }
         return count;
     }
 
+    getStockPriceOf(corporation){
+        // Todo: 1. Count corporation tiles on board. 2. Give price.
+    }
+
+    hasAdjacentCorporation(tileSpace){
+        // Return bool.
+        // Todo: Write
+    }
+
+    getLargestAdjacentCorporation(tileSpace){
+        // Return array of 1 or more strings.
+        // Todo: Write.
+    }
+
 }
-
-
-
 
 
 
@@ -105,7 +117,7 @@ class Player {
 class Ledger{
     constructor(){
         this.stockRemaining = {
-            // Note that the number of the stocks is different
+            // Note that the game permits different # of stocks per corporation.
             'Worldwide': 15,
             'Sackson': 15,
             'Festival': 15,
