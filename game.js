@@ -68,9 +68,12 @@ class Board {
 }
 
 class Player {
-    constructor(name){
+    constructor(name, money){  // Default money at game start is 6000
         this.name = name;
+        this.money = money;
+        this.tiles = [];
     };
+
 
      placeTile(position, board){
          // tileLocation: str
@@ -78,7 +81,23 @@ class Player {
     }
 }
 
+class Display {
+    constructor(board){
+        this.board = board;
+    }
 
+    showBoard(){
+        for (let row of Object.keys(this.board.tileSpaces)){
+            console.log(row);
+            console.log(this.board.tileSpaces[row])
+            }
+    }
+}
+
+
+b = new Board();
+d = new Display(b);
+d.showBoard();
 
 module.exports =  {
     Board,
