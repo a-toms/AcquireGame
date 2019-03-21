@@ -1,6 +1,7 @@
+'use strict';
 
 class Board {
-    constructor(){
+    constructor() {
         this.tileSpaces = {
             A: {
                 1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
@@ -62,10 +63,28 @@ class Board {
                 6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
                 11: 'empty', 12: 'empty'
             }
-        // tileSpaces may be 'empty', 'generic', or `{hotel name}`
+            // tileSpaces may be 'empty', 'generic', or `{hotel name}`
         }
     }
+
+    countNumberOf(corporation){
+        let count = 0;
+        for (let row  of Object.keys(this.tileSpaces)){
+            for (let tileSpace of Object.values(this.tileSpaces[row])){
+                if (tileSpace === corporation){
+                    count ++;
+                }
+            }
+        }
+        return count;
+    }
+
 }
+
+
+
+
+
 
 class Player {
     constructor(name, money){  // Default money at game start is 6000
@@ -74,16 +93,18 @@ class Player {
         this.tiles = [];
     };
 
-     placeTile(position, board){
-         // tileLocation: str
-         board.tileSpaces[position.charAt(0)][position.charAt(1)] = 'generic';
+    placeTile(position, board){
+        // tileLocation: str. E.g., 'A1' or 'A2'.
+        board.tileSpaces[position.charAt(0)][position.charAt(1)] = 'generic';
     }
+
+
 }
 
 
 class Ledger{
     constructor(){
-        this.stocks = {
+        this.stockRemaining = {
             // Note that the number of the stocks is different
             'Worldwide': 15,
             'Sackson': 15,
@@ -94,7 +115,11 @@ class Ledger{
             'Tower': 15
         }
     }
+
+
+
 }
+
 
 
 
@@ -112,10 +137,10 @@ class Display {
     }
 }
 
-
-b = new Board();
-d = new Display(b);
-d.showAllBoard();
+//
+// let b = new Board();
+// let d = new Display(b);
+// d.showAllBoard();
 
 module.exports =  {
     Board,
