@@ -80,8 +80,22 @@ class Board {
         return count;
     }
 
+    _insertTiles(corporation, number){
+        // This function populates the board for testing.
+        // corporation: str
+        for (let row  of Object.keys(this.tileSpaces)){
+            for (let i = 1; i < 13; i++){
+               if (number > 0){
+                   this.tileSpaces[row][i] = corporation;
+                   number -= 1;
+               }
+            }
+        }
+        console.log(this.tileSpaces);
+    }
+
     getStockPriceOf(corporation){
-        // Todo: 1. Count corporation tiles on board. 2. Give price.
+
     }
 
     hasAdjacentCorporation(tileSpace){

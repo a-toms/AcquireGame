@@ -11,10 +11,10 @@ tape('Board creation.', function (TC) {
     });
 });
 
-tape('Board actions.', function (TC){
-    let boardWithSacksonTiles = new game.Board();
+tape('Board actions.', function (TC) {
+    let boardWithTenSacksonTiles = new game.Board();
 
-    boardWithSacksonTiles.tileSpaces = {
+    boardWithTenSacksonTiles.tileSpaces = {
         // Contains 10 'Sackson' tiles.
         A: {
             1: 'Sackson', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
@@ -81,20 +81,45 @@ tape('Board actions.', function (TC){
 
     TC.test('Count number of corporation tiles on board.', function (assert) {
         assert.equal(
-            boardWithSacksonTiles.countNumberOf('Sackson'), 10,
+            boardWithTenSacksonTiles.countNumberOf('Sackson'), 10,
             '.countNumberOf() counts the corporation tiles on the board'
         );
         assert.end();
-    })
+    });
 
+
+    TC.test('Test that _insertTiles() inserts correct number of corporation tiles', function (assert) {
+        let testBoardInsertTiles = new game.Board();
+        assert.equal(testBoardInsertTiles.countNumberOf('Worldwide'), 0);
+        testBoardInsertTiles._insertTiles('Worldwide', 15);
+        assert.equal(testBoardInsertTiles.countNumberOf('Worldwide'), 15);
+        assert.end();
+    });
 });
 
+
+    // TC.test('Get corporation stock price based on the corporation tiles on board.', function (assert) {
+    //     assert.equal(
+    //         boardWithTenSacksonTiles.getStockPriceOf('Sackson'), 600,
+    //         '.getStockPrice() returns a stock price for Sackson based on the board tiles'
+    //     );
+    //     assert.end();
+    //
+    //     assert.equal(
+    //         testBoard2.getStockPriceOf('Sackson'), 600,
+    //         '.getStockPrice() returns a stock price based on the board tiles'
+    //     );
+    //     assert.end();
+    //
+    //
+    // });
+// };
 
 tape('Player class.', function (TC) {
     let player = new game.Player();
     let board = new game.Board();
 
-    TC.test('Player can place tile', function(assert) {
+    TC.test('Player can place tile', function (assert) {
         assert.equal(board.tileSpaces.A["1"], 'empty', 'Board space is \'empty\' before placing tile');
         player.placeTile('A1', board);
         assert.equal(board.tileSpaces.A["1"], 'generic', 'Board space is \'generic\' after placing tile');
