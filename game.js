@@ -1,6 +1,5 @@
 'use strict';
 
-
 class Board {
     constructor() {
         this.tileSpaces = {
@@ -91,7 +90,6 @@ class Board {
                }
             }
         }
-        console.log(this.tileSpaces);
     }
 
     getStockPriceOf(corporation){
@@ -127,20 +125,42 @@ class Player {
 
 }
 
-
-class Ledger{
+// Todo: Write prices to pass tests.
+class Prices {
     constructor(){
-        this.stockRemaining = {
-            // Note that the game permits different # of stocks per corporation.
-            'Worldwide': 15,
-            'Sackson': 15,
-            'Festival': 15,
-            'Imperial': 15,
-            'American': 15,
-            'Continental': 15,
-            'Tower': 15
-        }
+        this.worldwide = this.tier1;
+        this.sackson = this.tier1;
+        this.festival = this.tier2;
+        this.imperial = this.tier2;
+        this.american = this.tier2;
+        this.continental = this.tier3;
+        this.tower = this.tier3
     }
+
+    tier1 = {
+        'start': 200,
+        '6to10': 600,
+        '11to20': 700,
+        '21to30': 800,
+        '31to40': 900,
+        '41andOver': 1000
+    };
+    tier2 = {
+            'start': 300,
+            '6to10': 700,
+            '11to20': 800,
+            '21to30': 900,
+            '31to40': 1000,
+            '41andOver': 1100
+    };
+    tier3 = {
+            'start': 400,
+            '6to10': 800,
+            '11to20': 900,
+            '21to30': 1000,
+            '31to40': 1100,
+            '41andOver': 1200
+    };
 
 
 
