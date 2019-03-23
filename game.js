@@ -126,37 +126,46 @@ class Player {
 class Prices {
     constructor(board){
         this.board = board;
-        let tier1 = { // todo: rename 'tier ...' to 'lowestPriced' and mutatis mutandis regarding the other tiers.
-            'start': 200,
+        let lowestPriceTier = { // todo: rename 'tier ...' to 'lowestPriced' and mutatis mutandis regarding the other tiers.
+            '2': 200,
+            '3': 300,
+            '4': 400,
+            '5': 500,
             '6To10': 600,
             '11To20': 700,
             '21To30': 800,
             '31To40': 900,
             '41AndOver': 1000
         };
-        let tier2 = {
-            'start': 300,
+        let middlePricesTier = {
+            '2': 300,
+            '3': 400,
+            '4': 500,
+            '5': 600,
             '6To10': 700,
             '11To20': 800,
             '21To30': 900,
             '31To40': 1000,
             '41AndOver': 1100
         };
-        let tier3 = {
-            'start': 400,
+        let highestPricesTier = {
+            '2': 400,
+            '3': 500,
+            '4': 600,
+            '5': 700,
             '6To10': 800,
             '11To20': 900,
             '21To30': 1000,
             '31To40': 1100,
             '41AndOver': 1200
         };
-        this.worldwide = tier1;
-        this.sackson = tier1;
-        this.festival = tier2;
-        this.imperial = tier2;
-        this.american = tier2;
-        this.continental = tier3;
-        this.tower = tier3
+        this.worldwide = lowestPriceTier;
+        this.sackson = lowestPriceTier;
+        this.festival = middlePricesTier;
+        this.imperial = middlePricesTier;
+        this.american = middlePricesTier;
+        this.continental = highestPricesTier;
+        this.tower = highestPricesTier
     }
 
 
@@ -166,9 +175,8 @@ class Prices {
 
     getStockPriceOf(corporation) {
         let numberOfTiles = this.board.countNumberOf(corporation);
-        if (numberOfTiles === 2 || 3 || 4 || 5){
-            // Todo: Change to return the correct price.
-            return this[corporation]['start'] * numberOfTiles;
+        if (numberOfTiles <= 5) {
+            return this[corporation][`${numberOfTiles}`];
         }
         else if (numberOfTiles <= 10){
             return this[corporation]['6To10'];
