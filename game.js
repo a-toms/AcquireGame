@@ -165,10 +165,9 @@ class Prices {
     }
 
     getStockPriceOf(corporation) {
-        console.log(this.worldwide['start']);
         let numberOfTiles = this.board.countNumberOf(corporation);
         if (numberOfTiles === 2 || 3 || 4 || 5){
-            // Todo: Change the below to access the js object.
+            // Todo: Change to return the correct price.
             return this[corporation]['start'] * numberOfTiles;
         }
         else if (numberOfTiles <= 10){

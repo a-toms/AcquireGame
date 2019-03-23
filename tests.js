@@ -18,11 +18,11 @@ tape('\nBoard creation.', function (TC) {
 
 tape('\nBoard actions.', function (TC) {
     let boardWithTenSacksonTiles = new game.Board();
-    boardWithTenSacksonTiles._insertTiles('Sackson', 10);
+    boardWithTenSacksonTiles._insertTiles('sackson', 10);
 
     TC.test('Test count number of corporation tiles on board.', function (assert) {
         assert.equal(
-            boardWithTenSacksonTiles.countNumberOf('Sackson'), 10,
+            boardWithTenSacksonTiles.countNumberOf('sackson'), 10,
             '.countNumberOf() counts the corporation tiles on the board'
         );
         assert.end();
@@ -32,15 +32,15 @@ tape('\nBoard actions.', function (TC) {
     TC.test('Test that _insertTiles() inserts correct number of corporation tiles', function (assert) {
         let testBoard1 = new game.Board();
         assert.equal(
-            testBoard1.countNumberOf('Worldwide'),
+            testBoard1.countNumberOf('worldwide'),
             0,
-            'testBoard1 initially contains no \'Worldwide\''
+            'testBoard1 initially contains no \'worldwide\''
         );
-        testBoard1._insertTiles('Worldwide', 15);
+        testBoard1._insertTiles('worldwide', 15);
         assert.equal(
-            testBoard1.countNumberOf('Worldwide'),
+            testBoard1.countNumberOf('worldwide'),
             15,
-            'testBoard1 contains 15 \'Worldwide\' after _insertTiles() was called'
+            'testBoard1 contains 15 \'worldwide\' after _insertTiles() was called'
         );
         assert.end();
     });
@@ -66,12 +66,12 @@ tape('\nStock prices', function(TC){
     let prices = new game.Prices(testBoard2);
 
     TC.test('Get corporation stock price based on the corporation tiles on board.', function (assert) {
-        testBoard2._insertTiles('Sackson', 2);
+        testBoard2._insertTiles('sackson', 2);
         assert.equal(
-            prices.getStockPriceOf('Sackson'), 200,
-            'Sackson stock price == 200 when there are 2 Sackson board tiles'
+            prices.getStockPriceOf('sackson'), 200,
+            'sackson stock price == 200 when there are 2 sackson board tiles'
         );
-        assert.end();d();
+        assert.end();
 
 
     });
