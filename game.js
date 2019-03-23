@@ -92,9 +92,6 @@ class Board {
         }
     }
 
-    getStockPriceOf(corporation){
-
-    }
 
     hasAdjacentCorporation(tileSpace){
         // Return bool.
@@ -127,42 +124,68 @@ class Player {
 
 // Todo: Write prices to pass tests.
 class Prices {
-    constructor(){
-        this.worldwide = this.tier1;
-        this.sackson = this.tier1;
-        this.festival = this.tier2;
-        this.imperial = this.tier2;
-        this.american = this.tier2;
-        this.continental = this.tier3;
-        this.tower = this.tier3
+    constructor(board){
+        this.board = board;
+        let tier1 = { // todo: rename 'tier ...' to 'lowestPriced' and mutatis mutandis regarding the other tiers.
+            'start': 200,
+            '6To10': 600,
+            '11To20': 700,
+            '21To30': 800,
+            '31To40': 900,
+            '41AndOver': 1000
+        };
+        let tier2 = {
+            'start': 300,
+            '6To10': 700,
+            '11To20': 800,
+            '21To30': 900,
+            '31To40': 1000,
+            '41AndOver': 1100
+        };
+        let tier3 = {
+            'start': 400,
+            '6To10': 800,
+            '11To20': 900,
+            '21To30': 1000,
+            '31To40': 1100,
+            '41AndOver': 1200
+        };
+        this.worldwide = tier1;
+        this.sackson = tier1;
+        this.festival = tier2;
+        this.imperial = tier2;
+        this.american = tier2;
+        this.continental = tier3;
+        this.tower = tier3
     }
 
-    tier1 = {
-        'start': 200,
-        '6to10': 600,
-        '11to20': 700,
-        '21to30': 800,
-        '31to40': 900,
-        '41andOver': 1000
-    };
-    tier2 = {
-            'start': 300,
-            '6to10': 700,
-            '11to20': 800,
-            '21to30': 900,
-            '31to40': 1000,
-            '41andOver': 1100
-    };
-    tier3 = {
-            'start': 400,
-            '6to10': 800,
-            '11to20': 900,
-            '21to30': 1000,
-            '31to40': 1100,
-            '41andOver': 1200
-    };
 
+    getShareholderBonus(corporation){
+        // Todo: write function
+    }
 
+    getStockPriceOf(corporation) {
+        console.log(this.worldwide['start']);
+        let numberOfTiles = this.board.countNumberOf(corporation);
+        if (numberOfTiles === 2 || 3 || 4 || 5){
+            // Todo: Change the below to access the js object.
+            return this[corporation]['start'] * numberOfTiles;
+        }
+        else if (numberOfTiles <= 10){
+            return this[corporation]['6To10'];
+        }
+        else if (numberOfTiles <= 20){
+            return this[corporation]['11To20'];
+        }
+        else if (numberOfTiles <= 30){
+            return this[corporation]['21To30'];
+        }
+        else if (numberOfTiles <= 40){
+            return this[corporation]['31To40'];
+        }
+        else if (numberOfTiles >= 41)
+            return this[corporation]['41AndOver'];
+        }
 
 }
 
@@ -190,5 +213,7 @@ class Display {
 
 module.exports =  {
     Board,
-    Player
+    Prices,
+    Player,
+
 };

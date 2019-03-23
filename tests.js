@@ -44,23 +44,8 @@ tape('\nBoard actions.', function (TC) {
         );
         assert.end();
     });
-
-    TC.test('Get corporation stock price based on the corporation tiles on board.', function (assert) {
-        assert.equal(
-            boardWithTenSacksonTiles.getStockPriceOf('Sackson'), 600,
-            '.getStockPrice() returns a stock price for Sackson based on the board tiles'
-        );
-        assert.end();
-
-        assert.equal(
-            testBoard2.getStockPriceOf('Sackson'), 600,
-            '.getStockPrice() returns a stock price based on the board tiles'
-        );
-        assert.end();
-
-
-    });
 });
+
 
 tape('\nPlayer class.', function (TC) {
     let player = new game.Player();
@@ -75,3 +60,19 @@ tape('\nPlayer class.', function (TC) {
 
 });
 
+
+tape('\nStock prices', function(TC){
+    let testBoard2 = new game.Board();
+    let prices = new game.Prices(testBoard2);
+
+    TC.test('Get corporation stock price based on the corporation tiles on board.', function (assert) {
+        testBoard2._insertTiles('Sackson', 2);
+        assert.equal(
+            prices.getStockPriceOf('Sackson'), 200,
+            'Sackson stock price == 200 when there are 2 Sackson board tiles'
+        );
+        assert.end();d();
+
+
+    });
+});
