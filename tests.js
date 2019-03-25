@@ -16,6 +16,7 @@ tape('\nBoard creation.', function (TC) {
     });
 });
 
+
 tape('\nBoard actions.', function (TC) {
     let boardWithTenSacksonTiles = new game.Board();
     boardWithTenSacksonTiles._insertTiles('sackson', 10);
@@ -27,7 +28,6 @@ tape('\nBoard actions.', function (TC) {
         );
         assert.end();
     });
-
 
     TC.test('Test that _insertTiles() inserts correct number of corporation tiles', function (assert) {
         let testBoard1 = new game.Board();
@@ -41,6 +41,66 @@ tape('\nBoard actions.', function (TC) {
             testBoard1.countNumberOf('worldwide'),
             15,
             'testBoard1 contains 15 \'worldwide\' after _insertTiles() was called'
+        );
+        assert.end();
+    });
+
+    TC.test('Test getAdjacentCorporation() horizontal', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+
+        testboard1.tilespaces['A']['1'] = 'tower';
+        testboard1.tilespaces['A']['2'] = 'tower';
+
+        assert.equal(
+            testboard1.getAdjacentCorporations('A3'),
+            ['tower'],
+            'testboard has horizontal adjacent corporation'
+        );
+        assert.end();
+    });
+
+    TC.test('Test getAdjacentCorporation() vertical', function (assert) {
+        let testBoard1 = new game.board();
+        let player1 = new game.Player();
+
+        testBoard1.tilespaces['A']['1'] = 'tower';
+        testBoard1.tilespaces['B']['1'] = 'tower';
+
+        assert.equal(
+            testBoard1.getAdjacentCorporations('C1'),
+            ['tower'],
+            'testboard has vertical adjacent corporation'
+        );
+        assert.end();
+    });
+
+    TC.test('Test getAdjacentCorporation() positive diagonal', function (assert) {
+        let testBoard1 = new game.Board();
+        let player1 = new game.Player();
+
+        testBoard1.tilespaces['A']['3'] = 'tower';
+        testBoard1.tilespaces['B']['2'] = 'tower';
+
+        assert.equal(
+            testBoard1.getAdjacentCorporations('C1'),
+            ['tower'],
+            'testboard has positive diagonal adjacent corporation'
+        );
+        assert.end();
+    });
+
+    TC.test('Test getAdjacentCorporation() negative diagonal', function (assert) {
+        let testBoard1 = new game.Board();
+        let player1 = new game.Player();
+
+        testBoard1.tilespaces['A']['1'] = 'tower';
+        testBoard1.tilespaces['B']['2'] = 'tower';
+
+        assert.equal(
+            testBoard1.getAdjacentCorporations('C3'),
+            ['tower'],
+            'testboard has negative diagonal adjacent tile'
         );
         assert.end();
     });

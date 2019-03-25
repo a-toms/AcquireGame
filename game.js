@@ -92,22 +92,24 @@ class Board {
         }
     }
 
-
     hasAdjacentCorporation(tileSpace){
         // Return bool.
         // Todo: Write
     }
 
-    getLargestAdjacentCorporation(tileSpace){
-        // Return array of 1 or more strings.
+    getAdjacentCorporations(tileSpace){
+        // Check that any adjacent tile is not 'empty' or 'generic'.
         // Todo: Write.
     }
 
+    getLargestAdjacentCorporation(tileSpace){
+        // Todo: write.
+    }
 }
 
 
-
 class Player {
+    // Todo: Consider adding board as a constructor parameter.
     constructor(name, money){  // Default money at game start is 6000
         this.name = name;
         this.money = money;
@@ -170,7 +172,7 @@ class Prices {
 
 
     getShareholderBonus(corporation){
-        // Todo: write function
+        // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
 
     getStockPriceOf(corporation) {
@@ -213,10 +215,6 @@ class Display {
     }
 }
 
-//
-// let b = new Board();
-// let d = new Display(b);
-// d.showAllBoard();
 
 module.exports =  {
     Board,
