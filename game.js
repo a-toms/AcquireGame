@@ -1,5 +1,7 @@
 'use strict';
 
+let _ = require('lodash');
+
 class Board {
     constructor() {
         /*
@@ -52,7 +54,7 @@ class Board {
         // This function populates the board for testing.
         // corporation: str, n: number
         for (let i = 0; i < this.tileSpaces.length; i++){
-           if (n == 0){
+           if (n === 0){
                break
            }
            else{
@@ -84,10 +86,10 @@ class Board {
     _getCoordinatesOfAdjacentTiles(boardPosition){
         // @param: int @return: [int]
         let coordinates = [];
-        if (boardPosition % 12 != 0){
+        if (boardPosition % 12 !== 0){
            coordinates.push(boardPosition - 1)
         }
-        if (boardPosition % 11 != 0 || boardPosition === 0){
+        if (boardPosition % 11 !== 0 || boardPosition === 0){
             coordinates.push(boardPosition + 1)
         }
         if (boardPosition > 11){
@@ -99,8 +101,27 @@ class Board {
         return coordinates;
     }
 
-    getLargestAdjacentCorporation(tileSpace){
-        // Todo: getAdjacent corporations. Find the largest.
+    getLargestAdjacentCorporations(tileSpace){
+        let adjacentCorporations = Array.from(
+            new Set(this.getAdjacentCorporations(tileSpace))
+        );
+
+        let largestSize = 0;
+        for (let i = 0; i < adjacentCorporations.length; i++){
+            let corporationSize = this.countNumberOf(adjacentCorporations[i]);
+            if (corporationSize > largestSize){
+               largestSize = corporationSize;
+            }
+        }
+
+        let largestAdjacentCorporations = [];
+        for (let i = 0; i < adjacentCorporations.length; i++){
+            let corporationSize = this.countNumberOf(adjacentCorporations[i]);
+            if (corporationSize === largestSize){
+               largestAdjacentCorporations.push(adjacentCorporations[i]);
+            }
+        }
+        return largestAdjacentCorporations;
     }
 }
 

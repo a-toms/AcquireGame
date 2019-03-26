@@ -57,7 +57,6 @@ tape('\nPlayer class.', function (TC) {
         assert.equal(board.tileSpaces[0][0], 'G', 'Board space is \'G\' after placing tile');
         assert.end();
     });
-
 });
 
 
@@ -219,7 +218,6 @@ tape('\nStock prices', function(TC){
         assert.end();
     });
 
-
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
@@ -243,7 +241,6 @@ tape('\nStock prices', function(TC){
         );
         assert.end();
     });
-
 });
 
 
@@ -271,8 +268,6 @@ tape('\nTest finding corporation on board', function (TC) {
         assert.end();
     });
 
-
-// Todo: Satisfy the below tests.
     TC.test('Test getAdjacentCorporation() horizontal', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
@@ -296,6 +291,38 @@ tape('\nTest finding corporation on board', function (TC) {
             testBoard1.getAdjacentCorporations('C1'),
             ['T'],
             'testboard has vertical adjacent corporation'
+        );
+        assert.end();
+    });
+
+    TC.test('Test getAdjacentCorporation() vertical', function (assert) {
+        let testBoard1 = new game.Board();
+        testBoard1.tileSpaces[12] = 'T';
+
+        assert.deepEqual(
+            testBoard1.getAdjacentCorporations('C1'),
+            ['T'],
+            'testboard has vertical adjacent corporation'
+        );
+        assert.end();
+    });
+
+     TC.test('Test getLargestAdjacentCorporations()', function (assert) {
+        let testBoard1 = new game.Board();
+        testBoard1.tileSpaces[0] = 'S';
+        testBoard1.tileSpaces[1] = 'S';
+        testBoard1.tileSpaces[2] = 'S';
+        testBoard1.tileSpaces[3] = 'S';
+        testBoard1.tileSpaces[4] = 'S';
+        // tileSpaces[5] (i.e., 'A6') is 'E'.
+        testBoard1.tileSpaces[6] = 'C';
+        testBoard1.tileSpaces[7] = 'C';
+        testBoard1.tileSpaces[8] = 'C';
+
+        assert.deepEqual(
+        testBoard1.getLargestAdjacentCorporations('A6'), // i.e., tileSpaces[5]
+            ['S'],
+            '\'S\' is the largest adjacent corporation'
         );
         assert.end();
     });
