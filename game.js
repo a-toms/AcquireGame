@@ -64,14 +64,16 @@ class Board {
         }
     }
 
-    hasAdjacentCorporation(tileSpace){
-
+    getCoordinatesOf(tilePosition){
+        /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
+        let row = this.letterToRow[tilePosition.charAt(0)];
+        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let coordinates = row * 12 + column;
+        return coordinates;
     }
 
     getAdjacentCorporations(tilePosition){
-        let row = this.letterToRow[tilePosition.charAt(0)];
-        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
-        let position = row * 12 + column;
+        let position = this.getCoordinatesOf(tilePosition);
         // todo: Refactor the above to create a board position to coordinate func.
         let adjacentCorporations = [];
         let coordinates = this._getCoordinatesOfAdjacentTiles(position);
