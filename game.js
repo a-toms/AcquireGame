@@ -3,7 +3,7 @@
 class Board {
     constructor() {
         /*
-        tileSpaces may be 'E' (Empty), 'G' (Generic), or `{hotel letter}`.
+        tileSpaces may be 'E' (Empty), 'G' (Generic), or `{corporation letter}`.
          */
         this.tileSpaces = [
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
@@ -18,9 +18,25 @@ class Board {
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'
-        ]
+        ];
+        this.letterToRow = Object.freeze({
+            'A': 0,
+            'B': 1,
+            'C': 2,
+            'D': 3,
+            'E': 4,
+            'F': 5,
+            'G': 6,
+            'H': 7,
+            'I': 8,
+            'J': 9,
+            'K': 10,
+            'L': 11
+        });
+        this.corporationSymbols = Object.freeze([
+            'S', 'W', 'F', 'I', 'A', 'C', 'T'
+        ]);
     };
-
 
     countNumberOf(corporation){
         let count = 0;
@@ -32,16 +48,16 @@ class Board {
         return count;
     }
 
-    _insertTiles(corporation, number){
+    _insertTiles(corporation, n){
         // This function populates the board for testing.
-        // corporation: str
+        // corporation: str, n: number
         for (let i = 0; i < this.tileSpaces.length; i++){
-           if (number == 0){
+           if (n == 0){
                break
            }
            else{
                this.tileSpaces[i] = corporation;
-               number -= 1;
+               n -= 1;
            }
         }
     }
@@ -51,30 +67,36 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition){
-        let row = letterToRow[position.charAt(0)];
-        let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
-        let gridPosition = row * 12 + column;
-        // Check that any adjacent tile is not 'empty' or 'generic'.
-        // Todo: Write.
-
+        let row = this.letterToRow[tilePosition.charAt(0)];
+        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let position = row * 12 + column;
+        // todo: Refactor the above to create a board position to coordinate func.
+        let adjacentCorporations = [];
+        let coordinates = this._getCoordinatesOfAdjacentTiles(position);
+        for (let i = 0; i < coordinates.length; i++){
+            if (this.corporationSymbols.includes(this.tileSpaces[coordinates[i]])){
+               adjacentCorporations.push(this.tileSpaces[coordinates[i]]);
+            }
+        }
+        return adjacentCorporations;
     }
 
-    _getAdjacentBoardPositions(boardPosition){
+    _getCoordinatesOfAdjacentTiles(boardPosition){
         // @param: int @return: [int]
-        let adjacentPositions = [];
+        let coordinates = [];
         if (boardPosition % 12 != 0){
-           adjacentPositions.push(boardPosition - 1)
+           coordinates.push(boardPosition - 1)
         }
         if (boardPosition % 11 != 0 || boardPosition === 0){
-            adjacentPositions.push(boardPosition + 1)
+            coordinates.push(boardPosition + 1)
         }
         if (boardPosition > 11){
-            adjacentPositions.push(boardPosition - 12)
+            coordinates.push(boardPosition - 12)
         }
         if (boardPosition < 133){
-            adjacentPositions.push(boardPosition + 12)
+            coordinates.push(boardPosition + 12)
         }
-        return adjacentPositions;
+        return coordinates;
     }
 
     getLargestAdjacentCorporation(tileSpace){
