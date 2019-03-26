@@ -2,97 +2,48 @@
 
 class Board {
     constructor() {
-        this.tileSpaces = {
-            A: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            B: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            C: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            D: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            E: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            F: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            G: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            H: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            I: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            J: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            K: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            },
-            L: {
-                1: 'empty', 2: 'empty', 3: 'empty', 4: 'empty', 5: 'empty',
-                6: 'empty', 7: 'empty', 8: 'empty', 9: 'empty', 10: 'empty',
-                11: 'empty', 12: 'empty'
-            }
-            // tileSpaces may be 'empty', 'generic', or `{hotel name}`
+        /*
+        tileSpaces may be 'E' (Empty), 'G' (Generic), or `{hotel letter}`.
+         */
+        this.tileSpaces = [
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+            'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'
+        ]
+
         };
-        this.letterToNumber = Object.freeze({
-            'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6,
-            'G':7, 'H': 8, 'I': 9, 'J': 10, 'K': 11, 'L': 12
-        });
-    }
+
 
     countNumberOf(corporation){
         let count = 0;
-        for (let row  of Object.keys(this.tileSpaces)){
-            for (let tileSpace of Object.values(this.tileSpaces[row])){
-                if (tileSpace === corporation){
+        for (let i = 0; i < this.tileSpaces.length; i++){
+                if (this.tileSpaces[i] === corporation){
                     count++;
                 }
             }
-        }
         return count;
     }
 
     _insertTiles(corporation, number){
         // This function populates the board for testing.
         // corporation: str
-        for (let row  of Object.keys(this.tileSpaces)){
-            for (let i = 1; i < 13; i++){
-               if (number > 0){
-                   this.tileSpaces[row][i] = corporation;
-                   number -= 1;
-               }
-            }
+        for (let i = 0; i < this.tileSpaces.length; i++){
+           if (number == 0){
+               break
+           }
+           else{
+               this.tileSpaces[i] = corporation;
+               number -= 1;
+           }
         }
     }
 
@@ -100,10 +51,11 @@ class Board {
 
     }
 
-    getAdjacentCorporations(tileSpace){
+    getAdjacentCorporations(tilePosition){
+        // tilePosition: str e.g., 'D4'
         // Check that any adjacent tile is not 'empty' or 'generic'.
-
         // Todo: Write.
+
     }
 
     getLargestAdjacentCorporation(tileSpace){
@@ -121,18 +73,33 @@ class Player {
     };
 
     placeTile(position, board){
-        // tileLocation: str. E.g., 'A1' or 'A2'.
-        board.tileSpaces[position.charAt(0)][position.charAt(1)] = 'generic';
+        // tilePosition: str. E.g., 'A1' or 'A2'.
+        let alphabetToRow = {
+            'A': 0,
+            'B': 1,
+            'C': 2,
+            'D': 3,
+            'E': 4,
+            'F': 5,
+            'G': 6,
+            'H': 7,
+            'I': 8,
+            'J': 9,
+            'K': 10,
+            'L': 11
+        };
+        let row = alphabetToRow[position.charAt(0)];
+        let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let gridPosition = row * 12 + column;
+        board.tileSpaces[gridPosition] = 'G';
     }
-
-
 }
 
-// Todo: Write prices to pass tests.
+
 class Prices {
     constructor(board){
         this.board = board;
-        let lowestPriceTier = { // todo: rename 'tier ...' to 'lowestPriced' and mutatis mutandis regarding the other tiers.
+        let lowestPricesTier = Object.freeze({
             '2': 200,
             '3': 300,
             '4': 400,
@@ -142,8 +109,8 @@ class Prices {
             '21To30': 800,
             '31To40': 900,
             '41AndOver': 1000
-        };
-        let middlePricesTier = {
+        });
+        let middlePricesTier = Object.freeze({
             '2': 300,
             '3': 400,
             '4': 500,
@@ -153,8 +120,8 @@ class Prices {
             '21To30': 900,
             '31To40': 1000,
             '41AndOver': 1100
-        };
-        let highestPricesTier = {
+        });
+        let highestPricesTier = Object.freeze({
             '2': 400,
             '3': 500,
             '4': 600,
@@ -164,16 +131,15 @@ class Prices {
             '21To30': 1000,
             '31To40': 1100,
             '41AndOver': 1200
-        };
-        this.worldwide = lowestPriceTier;
-        this.sackson = lowestPriceTier;
+        });
+        this.worldwide = lowestPricesTier;
+        this.sackson = lowestPricesTier;
         this.festival = middlePricesTier;
         this.imperial = middlePricesTier;
         this.american = middlePricesTier;
         this.continental = highestPricesTier;
         this.tower = highestPricesTier
     }
-
 
     getShareholderBonus(corporation){
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
@@ -199,23 +165,20 @@ class Prices {
         else if (numberOfTiles >= 41)
             return this[corporation]['41AndOver'];
         }
-
 }
 
 
-
-
-
 class Display {
-    constructor(board){
+    constructor(board) {
         this.board = board;
     }
 
-    showAllBoard(){
-        for (let row of Object.keys(this.board.tileSpaces)){
-            console.log(row);
-            console.log(this.board.tileSpaces[row])
+    showAllBoard() {
+        for (let row = 0; i < 12; i++) {
+            for (let column = 0; j < 12; j++) {
+                console.log(this.board.tileSpaces[row][column])
             }
+        }
     }
 }
 

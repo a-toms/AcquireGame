@@ -8,8 +8,8 @@ tape('\nBoard creation.', function (TC) {
 
     TC.test('Test that one can access the board.', function (assert) {
         assert.equal(
-            emptyBoard.tileSpaces.A["1"],
-            'empty',
+            emptyBoard.tileSpaces[0][0],
+            'E',
             'Tile space \'A1\' in new board === \'empty\''
         );
         assert.end();
@@ -40,7 +40,7 @@ tape('\nBoard actions.', function (TC) {
         assert.equal(
             testBoard1.countNumberOf('worldwide'),
             15,
-            'testBoard1 contains 15 \'worldwide\' after _insertTiles() was called'
+            'testBoard1 contains 15 \'worldwide\' after _insertTiles() called.'
         );
         assert.end();
     });
@@ -112,9 +112,9 @@ tape('\nPlayer class.', function (TC) {
     let board = new game.Board();
 
     TC.test('Test that Player can place tile', function (assert) {
-        assert.equal(board.tileSpaces.A["1"], 'empty', 'Board space is \'empty\' before placing tile');
+        assert.equal(board.tileSpaces[0][0], 'E', 'Board space is \'E\' before placing tile');
         player.placeTile('A1', board);
-        assert.equal(board.tileSpaces.A["1"], 'generic', 'Board space is \'generic\' after placing tile');
+        assert.equal(board.tileSpaces[0][0], 'G', 'Board space is \'G\' after placing tile');
         assert.end();
     });
 
