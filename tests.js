@@ -246,23 +246,23 @@ tape('\nStock prices', function(TC){
 
 tape('\nTest finding corporation on board', function (TC) {
 
-    TC.test('Test _getCoordinatesOfAdjacentTiles()', function (assert) {
+    TC.test('Test _getCoordinatesOfTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
 
         assert.deepEqual(
-            testboard1._getCoordinatesOfAdjacentTiles(0),
+            testboard1._getCoordinatesOfTilesAdjacentTo(0),
             [1, 12],
         );
         assert.end();
    });
 
-    TC.test('Test _getCoordinatesOfAdjacentTiles()', function (assert) {
+    TC.test('Test _getCoordinatesOfTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
 
         assert.deepEqual(
-            testboard1._getCoordinatesOfAdjacentTiles(143),
+            testboard1._getCoordinatesOfTilesAdjacentTo(143),
             [142, 131],
         );
         assert.end();

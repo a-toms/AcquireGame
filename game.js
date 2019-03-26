@@ -73,19 +73,20 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition){
-        let position = this.getCoordinatesOf(tilePosition);
-        // todo: Refactor the above to create a board position to coordinate func.
+        let centralCoordinates = this.getCoordinatesOf(tilePosition);
         let adjacentCorporations = [];
-        let coordinates = this._getCoordinatesOfAdjacentTiles(position);
-        for (let i = 0; i < coordinates.length; i++){
-            if (this.corporationSymbols.includes(this.tileSpaces[coordinates[i]])){
-               adjacentCorporations.push(this.tileSpaces[coordinates[i]]);
+        let adjacentCoordinates = this._getCoordinatesOfTilesAdjacentTo(
+            centralCoordinates
+        );
+        for (let i = 0; i < adjacentCoordinates.length; i++){
+            if (this.corporationSymbols.includes(this.tileSpaces[adjacentCoordinates[i]])){
+               adjacentCorporations.push(this.tileSpaces[adjacentCoordinates[i]]);
             }
         }
         return adjacentCorporations;
     }
 
-    _getCoordinatesOfAdjacentTiles(boardPosition){
+    _getCoordinatesOfTilesAdjacentTo(boardPosition){
         // @param: int @return: [int]
         let coordinates = [];
         if (boardPosition % 12 !== 0){
