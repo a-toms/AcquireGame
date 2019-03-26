@@ -19,8 +19,7 @@ class Board {
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'
         ]
-
-        };
+    };
 
 
     countNumberOf(corporation){
@@ -52,14 +51,34 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition){
-        // tilePosition: str e.g., 'D4'
+        let row = letterToRow[position.charAt(0)];
+        let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let gridPosition = row * 12 + column;
         // Check that any adjacent tile is not 'empty' or 'generic'.
         // Todo: Write.
 
     }
 
+    _getAdjacentBoardPositions(boardPosition){
+        // @param: int @return: [int]
+        let adjacentPositions = [];
+        if (boardPosition % 12 != 0){
+           adjacentPositions.push(boardPosition - 1)
+        }
+        if (boardPosition % 11 != 0 || boardPosition === 0){
+            adjacentPositions.push(boardPosition + 1)
+        }
+        if (boardPosition > 11){
+            adjacentPositions.push(boardPosition - 12)
+        }
+        if (boardPosition < 133){
+            adjacentPositions.push(boardPosition + 12)
+        }
+        return adjacentPositions;
+    }
+
     getLargestAdjacentCorporation(tileSpace){
-        // Todo: write.
+        // Todo: getAdjacent corporations. Find the largest.
     }
 }
 
@@ -73,8 +92,7 @@ class Player {
     };
 
     placeTile(position, board){
-        // tilePosition: str. E.g., 'A1' or 'A2'.
-        let alphabetToRow = {
+        let letterToRow = {
             'A': 0,
             'B': 1,
             'C': 2,
@@ -88,10 +106,10 @@ class Player {
             'K': 10,
             'L': 11
         };
-        let row = alphabetToRow[position.charAt(0)];
+        let row = letterToRow[position.charAt(0)];
         let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
         let gridPosition = row * 12 + column;
-        board.tileSpaces[gridPosition] = 'G';
+        board.tileSpaces[gridPosition] = 'G';  // 'G' stands for 'Generic'.
     }
 }
 
