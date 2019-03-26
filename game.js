@@ -64,7 +64,10 @@ class Board {
                 11: 'empty', 12: 'empty'
             }
             // tileSpaces may be 'empty', 'generic', or `{hotel name}`
-        }
+        };
+        this.letterToNumber = [
+            null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+        ];
     }
 
     countNumberOf(corporation){
@@ -93,12 +96,12 @@ class Board {
     }
 
     hasAdjacentCorporation(tileSpace){
-        // Return bool.
-        // Todo: Write
+
     }
 
     getAdjacentCorporations(tileSpace){
         // Check that any adjacent tile is not 'empty' or 'generic'.
+
         // Todo: Write.
     }
 
