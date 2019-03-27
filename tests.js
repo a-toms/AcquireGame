@@ -53,7 +53,7 @@ tape('\nPlayer class.', function (TC) {
 
     TC.test('Test that Player can place tile', function (assert) {
         assert.equal(board.tileSpaces[0][0], 'E', 'Board space is \'E\' before placing tile');
-        player.placeTile('A1', board);
+        board = player.placeTile('A1', board);
         assert.equal(board.tileSpaces[0][0], 'G', 'Board space is \'G\' after placing tile');
         assert.end();
     });
@@ -246,23 +246,23 @@ tape('\nStock prices', function(TC){
 
 tape('\nTest finding corporation on board', function (TC) {
 
-    TC.test('Test _getCoordinatesOfTilesAdjacentTo()', function (assert) {
+    TC.test('Test getCoordinatesOfTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
 
         assert.deepEqual(
-            testboard1._getCoordinatesOfTilesAdjacentTo(0),
+            testboard1.getCoordinatesOfTilesAdjacentTo(0),
             [1, 12],
         );
         assert.end();
    });
 
-    TC.test('Test _getCoordinatesOfTilesAdjacentTo()', function (assert) {
+    TC.test('Test getCoordinatesOfTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
 
         assert.deepEqual(
-            testboard1._getCoordinatesOfTilesAdjacentTo(143),
+            testboard1.getCoordinatesOfTilesAdjacentTo(143),
             [142, 131],
         );
         assert.end();
@@ -328,4 +328,87 @@ tape('\nTest finding corporation on board', function (TC) {
     });
 
 
+});
+
+tape('\nTest founding new corporation', function (TC) {
+
+    TC.test('Test getCoordinatesOfGenericTilesAdjacentTo()', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'G';
+        // tileSpaces[20] (i.e., tilePosition 'B9') will be the search point.
+        testboard1.tileSpaces[19] = 'G';
+        testboard1.tileSpaces[21] = 'T'; // I.e., not a generic tile.
+
+        assert.deepEqual(
+            testboard1.getCoordinatesOfGenericTilesAdjacentTo('B9'),
+            [8, 19],
+        );
+        assert.end();
+    });
+
+    TC.test('Test findExistingCorporations())', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[9] = 'T';
+        testboard1.tileSpaces[19] = 'S';
+        testboard1.tileSpaces[31] = 'S';
+        testboard1.tileSpaces[32] = 'S';
+
+        assert.deepEqual(
+            testboard1.findExistingCorporations(),
+            ['S', 'T'],
+        );
+        assert.end();
+    });
+
+    TC.test('Test isCorporationAvailableToFound() positive', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[9] = 'T';
+        testboard1.tileSpaces[19] = 'S';
+        testboard1.tileSpaces[31] = 'S';
+        testboard1.tileSpaces[32] = 'S';
+
+        assert.equals(
+            testboard1.isCorporationAvailableToFound('C'),
+            true,
+            'C is available to found'
+        );
+        assert.end();
+    });
+
+TC.test('Test isCorporationAvailableToFound() negative', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[9] = 'T';
+        testboard1.tileSpaces[19] = 'S';
+        testboard1.tileSpaces[31] = 'S';
+        testboard1.tileSpaces[32] = 'S';
+        // Player founds corporation 'C'
+        testboard1.tileSpaces[1] = 'C';
+        testboard1.tileSpaces[2] = 'C';
+
+        assert.equals(
+            testboard1.isCorporationAvailableToFound('C'),
+            false,
+            'C is no longer available to found'
+        );
+        assert.end();
+    });
+
+    TC.test('Test foundCorporation()', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'G';
+        // A tile will be placed at tileSpaces[20] to found 'S' corporation.
+        testboard1.tileSpaces[19] = 'G';
+
+
+        // Todo: complete.
+
+    });
 });

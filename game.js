@@ -64,18 +64,18 @@ class Board {
         }
     }
 
-    getCoordinatesOf(tilePosition){
+    getCoordinateOf(tilePosition){
         /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
         let row = this.letterToRow[tilePosition.charAt(0)];
         let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
-        let coordinates = row * 12 + column;
-        return coordinates;
+        let coordinate = row * 12 + column;
+        return coordinate;
     }
 
     getAdjacentCorporations(tilePosition){
-        let centralCoordinates = this.getCoordinatesOf(tilePosition);
+        let centralCoordinates = this.getCoordinateOf(tilePosition);
         let adjacentCorporations = [];
-        let adjacentCoordinates = this._getCoordinatesOfTilesAdjacentTo(
+        let adjacentCoordinates = this.getCoordinatesOfTilesAdjacentTo(
             centralCoordinates
         );
         for (let i = 0; i < adjacentCoordinates.length; i++){
@@ -86,7 +86,40 @@ class Board {
         return adjacentCorporations;
     }
 
-    _getCoordinatesOfTilesAdjacentTo(boardPosition){
+    getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
+        let centralCoordinate = this.getCoordinateOf(tilePosition);
+        let adjacentCoordinates = this.getCoordinatesOfTilesAdjacentTo(centralCoordinate);
+        let adjacentGenericCoordinates = [];
+        for (let i = 0; i < adjacentCoordinates.length; i++){
+            if (this.tileSpaces[adjacentCoordinates[i]] === 'G'){
+               adjacentGenericCoordinates.push(adjacentCoordinates[i]);
+            }
+        }
+        return _.sortBy(adjacentGenericCoordinates);
+    }
+
+
+    isCorporationAvailableToFound(corporationSymbol){
+        let availableCorporations  = _.difference(
+            this.corporationSymbols, this.findExistingCorporations()
+        );
+        return availableCorporations.includes(corporationSymbol);
+
+    }
+
+    findExistingCorporations(){
+        let existingCorporations = [];
+        for (let i = 0; i < this.tileSpaces.length; i++){
+            let tileSymbol = this.tileSpaces[i];
+            if (this.corporationSymbols.includes(tileSymbol)
+                && !existingCorporations.includes(tileSymbol)){
+               existingCorporations.push(tileSymbol);
+            }
+        }
+        return _.sortBy(existingCorporations);
+    }
+
+    getCoordinatesOfTilesAdjacentTo(boardPosition){
         // @param: int @return: [int]
         let coordinates = [];
         if (boardPosition % 12 !== 0){
@@ -126,6 +159,8 @@ class Board {
         }
         return largestAdjacentCorporations;
     }
+
+
 }
 
 
@@ -156,7 +191,14 @@ class Player {
         let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
         let gridPosition = row * 12 + column;
         board.tileSpaces[gridPosition] = 'G';  // 'G' stands for 'Generic'.
+        return board;
     }
+
+    isNewCorporationFounded(board){
+
+    }
+    
+
 }
 
 
