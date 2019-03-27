@@ -50,32 +50,26 @@ class Board {
         return count;
     }
 
-    _insertTiles(corporation, n){
+    _insertTiles(corporation, tilesToAdd){
         // This function populates the board for testing.
         // corporation: str, n: number
         for (let i = 0; i < this.tileSpaces.length; i++){
-           if (n === 0){
+           if (tilesToAdd === 0){
                break
            }
            else{
                this.tileSpaces[i] = corporation;
-               n -= 1;
+               tilesToAdd -= 1;
            }
         }
     }
 
-    getCoordinateOf(tilePosition){
-        /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
-        let row = this.letterToRow[tilePosition.charAt(0)];
-        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
-        let coordinate = row * 12 + column;
-        return coordinate;
-    }
+
 
     getAdjacentCorporations(tilePosition){
-        let centralCoordinates = this.getCoordinateOf(tilePosition);
+        let centralCoordinates = Helper.getCoordinateOf(tilePosition);
         let adjacentCorporations = [];
-        let adjacentCoordinates = this.getCoordinatesOfTilesAdjacentTo(
+        let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(
             centralCoordinates
         );
         for (let i = 0; i < adjacentCoordinates.length; i++){
@@ -87,8 +81,8 @@ class Board {
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
-        let centralCoordinate = this.getCoordinateOf(tilePosition);
-        let adjacentCoordinates = this.getCoordinatesOfTilesAdjacentTo(centralCoordinate);
+        let centralCoordinate = Helper.getCoordinateOf(tilePosition);
+        let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(centralCoordinate);
         let adjacentGenericCoordinates = [];
         for (let i = 0; i < adjacentCoordinates.length; i++){
             if (this.tileSpaces[adjacentCoordinates[i]] === 'G'){
@@ -119,23 +113,7 @@ class Board {
         return _.sortBy(existingCorporations);
     }
 
-    getCoordinatesOfTilesAdjacentTo(boardPosition){
-        // @param: int @return: [int]
-        let coordinates = [];
-        if (boardPosition % 12 !== 0){
-           coordinates.push(boardPosition - 1)
-        }
-        if (boardPosition % 11 !== 0 || boardPosition === 0){
-            coordinates.push(boardPosition + 1)
-        }
-        if (boardPosition > 11){
-            coordinates.push(boardPosition - 12)
-        }
-        if (boardPosition < 133){
-            coordinates.push(boardPosition + 12)
-        }
-        return coordinates;
-    }
+
 
     getLargestAdjacentCorporations(tileSpace){
         let adjacentCorporations = Array.from(
@@ -173,6 +151,20 @@ class Player {
     };
 
     placeTile(position, board){
+        let gridPosition = Helper.getCoordinateOf(position);
+        board.tileSpaces[gridPosition] = 'G';  // 'G' stands for 'Generic'.
+        return board;
+    }
+
+    isNewCorporationFounded(board){
+
+    }
+}
+
+class Helper {
+
+    static getCoordinateOf(tilePosition){
+        /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
         let letterToRow = {
             'A': 0,
             'B': 1,
@@ -187,17 +179,29 @@ class Player {
             'K': 10,
             'L': 11
         };
-        let row = letterToRow[position.charAt(0)];
-        let column = position.charAt(1) - 1;  // -1 accounts for 0th-based grid.
-        let gridPosition = row * 12 + column;
-        board.tileSpaces[gridPosition] = 'G';  // 'G' stands for 'Generic'.
-        return board;
+        let row = letterToRow[tilePosition.charAt(0)];
+        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let coordinate = row * 12 + column;
+        return coordinate;
     }
 
-    isNewCorporationFounded(board){
-
+    static getCoordinatesOfTilesAdjacentTo(boardPosition){
+        // @param: int @return: [int]
+        let coordinates = [];
+        if (boardPosition % 12 !== 0){
+           coordinates.push(boardPosition - 1)
+        }
+        if (boardPosition % 11 !== 0 || boardPosition === 0){
+            coordinates.push(boardPosition + 1)
+        }
+        if (boardPosition > 11){
+            coordinates.push(boardPosition - 12)
+        }
+        if (boardPosition < 133){
+            coordinates.push(boardPosition + 12)
+        }
+        return coordinates;
     }
-    
 
 }
 
@@ -293,5 +297,6 @@ module.exports =  {
     Board,
     Prices,
     Player,
+    Helper
 
 };
