@@ -21,20 +21,6 @@ class Board {
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
             'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E'
         ];
-        this.letterToRow = Object.freeze({
-            'A': 0,
-            'B': 1,
-            'C': 2,
-            'D': 3,
-            'E': 4,
-            'F': 5,
-            'G': 6,
-            'H': 7,
-            'I': 8,
-            'J': 9,
-            'K': 10,
-            'L': 11
-        });
         this.corporationSymbols = Object.freeze([
             'S', 'W', 'F', 'I', 'A', 'C', 'T'
         ]);
@@ -63,8 +49,6 @@ class Board {
            }
         }
     }
-
-
 
     getAdjacentCorporations(tilePosition){
         let centralCoordinates = Helper.getCoordinateOf(tilePosition);
@@ -113,8 +97,6 @@ class Board {
         return _.sortBy(existingCorporations);
     }
 
-
-
     getLargestAdjacentCorporations(tileSpace){
         let adjacentCorporations = Array.from(
             new Set(this.getAdjacentCorporations(tileSpace))
@@ -137,22 +119,34 @@ class Board {
         }
         return largestAdjacentCorporations;
     }
-
-
 }
 
 
 class Player {
-    // Todo: Consider adding board as a constructor parameter.
-    constructor(name, money){  // Default money at game start is 6000
+    constructor(board, name, money){  // Default money at game start is 6000
+        this.board = board;
         this.name = name;
         this.money = money;
         this.tiles = [];
     };
 
     placeTile(position, board){
-        let gridPosition = Helper.getCoordinateOf(position);
-        board.tileSpaces[gridPosition] = 'G';  // 'G' stands for 'Generic'.
+        // todo: complete function.
+        let coordinate = Helper.getCoordinateOf(position);
+
+        //if >= 2 different adjacent corporations, initiate acquisition
+
+        // if 1 adjcant corporation, inserted tile enlarges corporation. The
+        // corporation also incorporates any adjacent generics.
+
+        // if at least 1 adjacent generic, found corporation if any remain.
+        // The new corporation incorporates any adjacent generics.
+
+        // else insert 'G' at coordinate
+
+
+        // Insert generic.
+        board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
         return board;
     }
 
