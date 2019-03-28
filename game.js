@@ -51,17 +51,17 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition){
-        let centralCoordinates = Helper.getCoordinateOf(tilePosition);
+        let centralCoordinate = Helper.getCoordinateOf(tilePosition);
         let adjacentCorporations = [];
         let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(
-            centralCoordinates
+            centralCoordinate
         );
         for (let i = 0; i < adjacentCoordinates.length; i++){
             if (this.corporationSymbols.includes(this.tileSpaces[adjacentCoordinates[i]])){
                adjacentCorporations.push(this.tileSpaces[adjacentCoordinates[i]]);
             }
         }
-        return adjacentCorporations;
+        return Array.from(new Set(adjacentCorporations));
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
@@ -131,9 +131,24 @@ class Player {
     };
 
     placeTile(position, board){
-        // todo: complete function.
+        // Complete this function.
         let coordinate = Helper.getCoordinateOf(position);
 
+        if (board.getAdjacentCorporations(position).length > 1){
+           // Initiate acquisition
+        }
+
+        // todo: Write test for the below. Refactor this after tests pass.
+        else if (board.getAdjacentCorporations(position).length === 1){
+            let genericCoordinates = getCoordinatesOfGenericTilesAdjacentTo(
+                position
+            );
+            let corporation = board.getAdjacentCorporations(position)[0];
+            board.tileSpaces[coordinate] = corporation;
+            for (let i = 0; i < genericCoordinates.length; i++){
+                board.tileSpaces[genericCoordinates[i]] = corporation;
+            }
+        }
         //if >= 2 different adjacent corporations, initiate acquisition
 
         // if 1 adjcant corporation, inserted tile enlarges corporation. The

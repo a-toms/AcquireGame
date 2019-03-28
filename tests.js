@@ -267,10 +267,10 @@ tape('\nTest finding corporation on board', function (TC) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[0] = 'T';
-        testboard1.tileSpaces[1] = 'T';
+        testboard1.tileSpaces[2] = 'T';
 
         assert.deepEqual(
-            testboard1.getAdjacentCorporations('A3'),
+            testboard1.getAdjacentCorporations('A2'),
             ['T'],
             'testboard has horizontal adjacent corporation'
         );
