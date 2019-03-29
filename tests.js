@@ -49,12 +49,27 @@ tape('\nBoard actions.', function (TC) {
 
 tape('\nPlayer class.', function (TC) {
     let player = new game.Player();
-    let board = new game.Board();
+    let testboard = new game.Board();
 
     TC.test('Test that Player can place tile', function (assert) {
-        assert.equal(board.tileSpaces[0][0], 'E', 'Board space is \'E\' before placing tile');
-        board = player.placeTile('A1', board);
-        assert.equal(board.tileSpaces[0][0], 'G', 'Board space is \'G\' after placing tile');
+        testboard.tileSpaces[5] = 'E';
+        testboard.tileSpaces[6] = 'G';  // Generic
+        testboard.tileSpaces[7] = 'E';
+        testboard.tileSpaces[8] = 'W';  // Worldwide corporation
+        testboard.tileSpaces[9] = 'W';  // Worldwide corporation
+
+        player.placeTile('A8', testboard);  // 'A8' is tileSpaces[7].
+        assert.equal(
+            testboard.tileSpaces[7],
+            'W',
+            'Placing the tile incorporated E into the W corporation'
+        );
+        assert.equal(
+            testboard.tileSpaces[6],
+            'W',
+            'Placing the tile also incorporated the G tile, ' +
+            'which was adjacent to E, into the W corporation'
+        );
         assert.end();
     });
 });

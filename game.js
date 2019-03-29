@@ -64,6 +64,10 @@ class Board {
         return Array.from(new Set(adjacentCorporations));
     }
 
+    hasOnlyOneCorporationAdjacentTo(tilePosition){
+        return this.getAdjacentCorporations(tilePosition).length == 1;
+    }
+
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
         let centralCoordinate = Helper.getCoordinateOf(tilePosition);
         let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(centralCoordinate);
@@ -138,9 +142,9 @@ class Player {
            // Initiate acquisition
         }
 
-        // todo: Write test for the below. Refactor this after tests pass.
-        else if (board.getAdjacentCorporations(position).length === 1){
-            let genericCoordinates = getCoordinatesOfGenericTilesAdjacentTo(
+        // todo: Refactor this.
+        else if (board.hasOnlyOneCorporationAdjacentTo(position)){
+            let genericCoordinates = board.getCoordinatesOfGenericTilesAdjacentTo(
                 position
             );
             let corporation = board.getAdjacentCorporations(position)[0];
@@ -148,7 +152,10 @@ class Player {
             for (let i = 0; i < genericCoordinates.length; i++){
                 board.tileSpaces[genericCoordinates[i]] = corporation;
             }
+            return board;
         }
+
+        // Todo: Complete the below function.
         //if >= 2 different adjacent corporations, initiate acquisition
 
         // if 1 adjcant corporation, inserted tile enlarges corporation. The
@@ -163,10 +170,6 @@ class Player {
         // Insert generic.
         board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
         return board;
-    }
-
-    isNewCorporationFounded(board){
-
     }
 }
 
@@ -211,7 +214,6 @@ class Helper {
         }
         return coordinates;
     }
-
 }
 
 
