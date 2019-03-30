@@ -138,28 +138,26 @@ class Player {
         this.tiles = [];
     };
 
-    placeTile(position, board){
+    placeTile(position, board) {
         // Complete this function.
         let coordinate = Helper.getCoordinateOf(position);
 
-        if (board.getAdjacentCorporations(position).length > 1){
-           // Initiate acquisition
+        if (board.getAdjacentCorporations(position).length > 1) {
+            // Initiate acquisition
         }
 
         // todo: Refactor this.
-        else if (board.hasOnlyOneCorporationAdjacentTo(position)){
+        else if (board.hasOnlyOneCorporationAdjacentTo(position)) {
             let genericCoordinates = board.getCoordinatesOfGenericTilesAdjacentTo(
                 position
             );
             let corporation = board.getAdjacentCorporations(position)[0];
             board.tileSpaces[coordinate] = corporation;
-            for (let i = 0; i < genericCoordinates.length; i++){
+            for (let i = 0; i < genericCoordinates.length; i++) {
                 board.tileSpaces[genericCoordinates[i]] = corporation;
             }
             return board;
-        }
-
-        else if (board.getCoordinatesOfGenericTilesAdjacentTo(position)){
+        } else if (board.getCoordinatesOfGenericTilesAdjacentTo(position)) {
             let existing = board.findExistingCorporations();
             let available = board.getAvailableCorporations();
             // Helper.prompt(
@@ -172,9 +170,13 @@ class Player {
             return board;
         }
 
+    }
+
+    foundCorporation(tilePosition){
+
+    }
 
 
-        // Todo: Complete the below function.
         //if >= 2 different adjacent corporations, initiate acquisition
 
         // if 1 adjcant corporation, inserted tile enlarges corporation. The
@@ -187,13 +189,11 @@ class Player {
 
 
         // Insert generic.
-        board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
-        return board;
-    }
+        // board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
+        // return board;
 
-    foundCorporation(tilePosition){
 
-    }
+
 }
 
 class Helper {
