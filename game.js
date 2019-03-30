@@ -82,11 +82,15 @@ class Board {
 
 
     isCorporationAvailableToFound(corporationSymbol){
-        let availableCorporations  = _.difference(
-            this.corporationSymbols, this.findExistingCorporations()
-        );
+        let availableCorporations = this.getAvailableCorporations();
         return availableCorporations.includes(corporationSymbol);
 
+    }
+
+    getAvailableCorporations(){
+        return _.difference(
+            this.corporationSymbols, this.findExistingCorporations()
+        );
     }
 
     findExistingCorporations(){
@@ -155,6 +159,21 @@ class Player {
             return board;
         }
 
+        else if (board.getCoordinatesOfGenericTilesAdjacentTo(position)){
+            let existing = board.findExistingCorporations();
+            let available = board.getAvailableCorporations();
+            // Helper.prompt(
+            //     'Which corporation do you wish to found?',
+            //     function (input){
+            //         if (board
+            // );
+            // ) // Todo: complete
+            board.foundCorporation(position, corporationSymbol);
+            return board;
+        }
+
+
+
         // Todo: Complete the below function.
         //if >= 2 different adjacent corporations, initiate acquisition
 
@@ -170,6 +189,10 @@ class Player {
         // Insert generic.
         board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
         return board;
+    }
+
+    foundCorporation(tilePosition){
+
     }
 }
 
@@ -214,6 +237,21 @@ class Helper {
         }
         return coordinates;
     }
+
+
+    static prompt(question, callback) {
+        const stdin = process.stdin,
+            stdout = process.stdout;
+
+        stdin.resume();
+        stdout.write(question);
+
+        stdin.once('data', function (data) {
+            callback(data.toString().trim());
+        });
+    }
+
+
 }
 
 
