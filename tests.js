@@ -32,15 +32,15 @@ tape('\nBoard actions.', function (TC) {
     TC.test('Test that _insertTiles() inserts correct number of corporation tiles', function (assert) {
         let testBoard1 = new game.Board();
         assert.equal(
-            testBoard1.countNumberOf('worldwide'),
+            testBoard1.countNumberOf('W'),
             0,
-            'testBoard1 initially contains no \'worldwide\''
+            'testBoard1 initially contains no \'W\''
         );
-        testBoard1._insertTiles('worldwide', 15);
+        testBoard1._insertTiles('W', 15);
         assert.equal(
-            testBoard1.countNumberOf('worldwide'),
+            testBoard1.countNumberOf('W'),
             15,
-            'testBoard1 contains 15 \'worldwide\' after _insertTiles() called.'
+            'testBoard1 contains 15 \'W\' after _insertTiles() called.'
         );
         assert.end();
     });

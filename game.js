@@ -193,6 +193,9 @@ class Player {
         // return board;
 
 
+    buy(number, corporationSymbol){
+
+    }
 
 }
 
@@ -297,7 +300,22 @@ class Prices {
         this.imperial = middlePricesTier;
         this.american = middlePricesTier;
         this.continental = highestPricesTier;
-        this.tower = highestPricesTier
+        this.tower = highestPricesTier;
+
+        // Todo: refactor Prices to a Ledger class. This involves:
+        //  1. Changing above corporation property names to single symbols
+        //  2. adding stocksAvailable as a property of the corp.
+        //  3. Altering tests to call corporation.price[amount]
+
+        this.stocksAvailable = {
+            'S' : 15,
+            'W' : 15,
+            'F' : 15,
+            'I' : 15,
+            'A' : 15,
+            'C' : 15,
+            'T' : 15,
+        }
     }
 
     getShareholderBonus(corporation){
