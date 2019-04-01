@@ -259,9 +259,9 @@ class Helper {
 
 
 class Prices {
-    constructor(board){
+    constructor(board) {
         this.board = board;
-        let lowestPricesTier = Object.freeze({
+        let lowest = Object.freeze({
             '2': 200,
             '3': 300,
             '4': 400,
@@ -272,7 +272,7 @@ class Prices {
             '31To40': 900,
             '41AndOver': 1000
         });
-        let middlePricesTier = Object.freeze({
+        let middle = Object.freeze({
             '2': 300,
             '3': 400,
             '4': 500,
@@ -283,7 +283,7 @@ class Prices {
             '31To40': 1000,
             '41AndOver': 1100
         });
-        let highestPricesTier = Object.freeze({
+        let highest = Object.freeze({
             '2': 400,
             '3': 500,
             '4': 600,
@@ -294,29 +294,23 @@ class Prices {
             '31To40': 1100,
             '41AndOver': 1200
         });
-        this.worldwide = lowestPricesTier;
-        this.sackson = lowestPricesTier;
-        this.festival = middlePricesTier;
-        this.imperial = middlePricesTier;
-        this.american = middlePricesTier;
-        this.continental = highestPricesTier;
-        this.tower = highestPricesTier;
+        this.W = lowest;
+        this.S = lowest;
+        this.F = middle;
+        this.I = middle;
+        this.A = middle;
+        this.C = highest;
+        this.T = highest;
+    }
 
-        // Todo: refactor Prices to a Ledger class. This involves:
+
+        //  Later: refactor Prices to a Ledger class. This involves:
         //  1. Changing above corporation property names to single symbols
         //  2. adding stocksAvailable as a property of the corp.
         //  3. Altering tests to call corporation.price[amount]
 
-        this.stocksAvailable = {
-            'S' : 15,
-            'W' : 15,
-            'F' : 15,
-            'I' : 15,
-            'A' : 15,
-            'C' : 15,
-            'T' : 15,
-        }
-    }
+
+
 
     getShareholderBonus(corporation){
         // Todo: write function. Shareholder bonus is directly linked to the stock price.

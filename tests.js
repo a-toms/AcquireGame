@@ -19,11 +19,11 @@ tape('\nBoard creation.', function (TC) {
 
 tape('\nBoard actions.', function (TC) {
     let boardWithTenSacksonTiles = new game.Board();
-    boardWithTenSacksonTiles._insertTiles('sackson', 10);
+    boardWithTenSacksonTiles._insertTiles('S', 10);
 
     TC.test('Test count number of corporation tiles on board.', function (assert) {
         assert.equal(
-            boardWithTenSacksonTiles.countNumberOf('sackson'), 10,
+            boardWithTenSacksonTiles.countNumberOf('S'), 10,
             '.countNumberOf() counts the corporation tiles on the board'
         );
         assert.end();
@@ -80,11 +80,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function (assert) {
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 2);
+        testBoard._insertTiles('S', 2);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 200,
-            'sackson stock price == 200 when there are 2 sackson board tiles'
+            prices.getStockPriceOf('S'), 200,
+            'S stock price == 200 when there are 2 S board tiles'
         );
         assert.end();
     });
@@ -92,11 +92,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 3);
+        testBoard._insertTiles('S', 3);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 300,
-            'sackson stock price == 300 when there are 3 sackson board tiles'
+            prices.getStockPriceOf('S'), 300,
+            'S stock price == 300 when there are 3 S board tiles'
         );
         assert.end();
     });
@@ -104,11 +104,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 4);
+        testBoard._insertTiles('S', 4);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 400,
-            'sackson stock price == 400 when there are 4 sackson board tiles'
+            prices.getStockPriceOf('S'), 400,
+            'S stock price == 400 when there are 4 S board tiles'
         );
         assert.end();
     });
@@ -116,11 +116,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 5);
+        testBoard._insertTiles('S', 5);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 500,
-            'sackson stock price == 500 when there are 5 sackson board tiles'
+            prices.getStockPriceOf('S'), 500,
+            'S stock price == 500 when there are 5 S board tiles'
         );
         assert.end();
     });
@@ -128,11 +128,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 6);
+        testBoard._insertTiles('S', 6);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 600,
-            'sackson stock price == 600 when there are 6 sackson board tiles'
+            prices.getStockPriceOf('S'), 600,
+            'S stock price == 600 when there are 6 S board tiles'
         );
         assert.end();
     });
@@ -140,11 +140,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 11);
+        testBoard._insertTiles('S', 11);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 700,
-            'sackson stock price == 700 when there are 11 sackson board tiles'
+            prices.getStockPriceOf('S'), 700,
+            'S stock price == 700 when there are 11 S board tiles'
         );
         assert.end();
     });
@@ -152,11 +152,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 21);
+        testBoard._insertTiles('S', 21);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 800,
-            'sackson stock price == 800 when there are 21 sackson board tiles'
+            prices.getStockPriceOf('S'), 800,
+            'S stock price == 800 when there are 21 S board tiles'
         );
         assert.end();
     });
@@ -164,11 +164,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 31);
+        testBoard._insertTiles('S', 31);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 900,
-            'sackson stock price == 900 when there are 31 sackson board tiles'
+            prices.getStockPriceOf('S'), 900,
+            'S stock price == 900 when there are 31 S board tiles'
         );
         assert.end();
     });
@@ -176,11 +176,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('sackson', 41);
+        testBoard._insertTiles('S', 41);
 
         assert.equal(
-            prices.getStockPriceOf('sackson'), 1000,
-            'sackson stock price == 1000 when there are 41 sackson board tiles'
+            prices.getStockPriceOf('S'), 1000,
+            'S stock price == 1000 when there are 41 S board tiles'
         );
         assert.end();
     });
@@ -188,11 +188,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get lowestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('worldwide', 41);
+        testBoard._insertTiles('W', 41);
 
         assert.equal(
-            prices.getStockPriceOf('worldwide'), 1000,
-            'worldwide stock price == 1000 when there are 41 worldwide board tiles'
+            prices.getStockPriceOf('W'), 1000,
+            'W stock price == 1000 when there are 41 W board tiles'
         );
         assert.end();
     });
@@ -200,11 +200,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('festival', 2);
+        testBoard._insertTiles('F', 2);
 
         assert.equal(
-            prices.getStockPriceOf('festival'), 300,
-            'festival stock price == 300 when there are 2 festival board tiles'
+            prices.getStockPriceOf('F'), 300,
+            'F stock price == 300 when there are 2 F board tiles'
         );
         assert.end();
     });
@@ -212,11 +212,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('imperial', 11);
+        testBoard._insertTiles('I', 11);
 
         assert.equal(
-            prices.getStockPriceOf('imperial'), 800,
-            'imperial stock price == 800 when there are 11 imperial board tiles'
+            prices.getStockPriceOf('I'), 800,
+            'I stock price == 800 when there are 11 I board tiles'
         );
         assert.end();
     });
@@ -224,11 +224,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('american', 42);
+        testBoard._insertTiles('A', 42);
 
         assert.equal(
-            prices.getStockPriceOf('american'), 1100,
-            'imperial stock price == 1100 when there are 42 imperial board tiles'
+            prices.getStockPriceOf('A'), 1100,
+            'I stock price == 1100 when there are 42 I board tiles'
         );
         assert.end();
     });
@@ -236,11 +236,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('continental', 2);
+        testBoard._insertTiles('C', 2);
 
         assert.equal(
-            prices.getStockPriceOf('continental'), 400,
-            'continental stock price == 400 when there are 2 continental board tiles'
+            prices.getStockPriceOf('C'), 400,
+            'C stock price == 400 when there are 2 C board tiles'
         );
         assert.end();
     });
@@ -248,11 +248,11 @@ tape('\nStock prices', function(TC){
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
         let prices = new game.Prices(testBoard);
-        testBoard._insertTiles('tower', 42);
+        testBoard._insertTiles('T', 42);
 
         assert.equal(
-            prices.getStockPriceOf('tower'), 1200,
-            'tower stock price == 1200 when there are 42 tower board tiles'
+            prices.getStockPriceOf('T'), 1200,
+            'T stock price == 1200 when there are 42 T board tiles'
         );
         assert.end();
     });
