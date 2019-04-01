@@ -363,7 +363,22 @@ tape('\nTest finding corporation on board', function (TC) {
 
 });
 
-tape('\nTest founding new corporation', function (TC) {
+tape('\nTest functions relating to founding a new corporation', function (TC) {
+
+    TC.test('Test foundCorporation()', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'G';
+        // tileSpaces[20] (i.e., tilePosition 'B9') will be the search point.
+        testboard1.tileSpaces[19] = 'G';
+        testboard1.tileSpaces[21] = 'T'; // I.e., not a generic tile.
+
+        assert.deepEqual(
+            testboard1.getCoordinatesOfGenericTilesAdjacentTo('B9'),
+            [8, 19],
+        );
+        assert.end();
+    });
 
     TC.test('Test getCoordinatesOfGenericTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
@@ -400,7 +415,7 @@ tape('\nTest founding new corporation', function (TC) {
         assert.end();
     });
 
-    TC.test('Test findExistingCorporations())', function (assert) {
+    TC.test('Test findActiveCorporations())', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'T';
@@ -410,13 +425,13 @@ tape('\nTest founding new corporation', function (TC) {
         testboard1.tileSpaces[32] = 'S';
 
         assert.deepEqual(
-            testboard1.findExistingCorporations(),
+            testboard1.findActiveCorporations(),
             ['S', 'T'],
         );
         assert.end();
     });
 
-    TC.test('Test hasUnfoundedCorporations() - true', function (assert) {
+    TC.test('Test hasNonActiveCorporations() - true', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[7] = 'T';
@@ -433,13 +448,13 @@ tape('\nTest founding new corporation', function (TC) {
         testboard1.tileSpaces[51] = 'A';
 
         assert.deepEqual(
-            testboard1.hasUnfoundedCorporations(),
+            testboard1.hasNonActiveCorporations(),
             true,
         );
         assert.end();
     });
 
-   TC.test('Test hasUnfoundedCorporations() - false', function (assert) {
+   TC.test('Test hasNonActiveCorporations() - false', function (assert) {
        let testboard1 = new game.Board();
        let player1 = new game.Player();
        testboard1.tileSpaces[7] = 'T';
@@ -458,13 +473,13 @@ tape('\nTest founding new corporation', function (TC) {
        testboard1.tileSpaces[72] = 'W';
 
        assert.deepEqual(
-           testboard1.hasUnfoundedCorporations(),
+           testboard1.hasNonActiveCorporations(),
            false,
        );
        assert.end();
    });
 
-    TC.test('Test isTheCorporationAvailableToFound() positive', function (assert) {
+    TC.test('Test canFoundCorporation() positive', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'T';
@@ -474,14 +489,14 @@ tape('\nTest founding new corporation', function (TC) {
         testboard1.tileSpaces[32] = 'S';
 
         assert.equals(
-            testboard1.isTheCorporationAvailableToFound('C'),
+            testboard1.canFoundCorporation('C'),
             true,
             'C is available to found'
         );
         assert.end();
     });
 
-TC.test('Test isTheCorporationAvailableToFound() negative', function (assert) {
+TC.test('Test canFoundCorporation() negative', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'T';
@@ -489,12 +504,11 @@ TC.test('Test isTheCorporationAvailableToFound() negative', function (assert) {
         testboard1.tileSpaces[19] = 'S';
         testboard1.tileSpaces[31] = 'S';
         testboard1.tileSpaces[32] = 'S';
-        // Player founds corporation 'C'
         testboard1.tileSpaces[1] = 'C';
         testboard1.tileSpaces[2] = 'C';
 
         assert.equals(
-            testboard1.isTheCorporationAvailableToFound('C'),
+            testboard1.canFoundCorporation('C'),
             false,
             'C is no longer available to found'
         );

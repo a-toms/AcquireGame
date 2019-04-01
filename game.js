@@ -26,31 +26,37 @@ class Board {
         ]);
     };
 
-    countNumberOf(corporation){
+    countNumberOf(corporation) {
         let count = 0;
-        for (let i = 0; i < this.tileSpaces.length; i++){
-                if (this.tileSpaces[i] === corporation){
-                    count++;
-                }
+        for (let i = 0; i < this.tileSpaces.length; i++) {
+            if (this.tileSpaces[i] === corporation) {
+                count++;
             }
+        }
         return count;
     }
 
-    _insertTiles(corporation, tilesToAdd){
+    _insertTiles(corporation, tilesToAdd) {
         // This function populates the board for testing.
         // corporation: str, n: number
-        for (let i = 0; i < this.tileSpaces.length; i++){
-           if (tilesToAdd === 0){
-               break
-           }
-           else{
-               this.tileSpaces[i] = corporation;
-               tilesToAdd -= 1;
-           }
+        for (let i = 0; i < this.tileSpaces.length; i++) {
+            if (tilesToAdd === 0) {
+                break
+            } else {
+                this.tileSpaces[i] = corporation;
+                tilesToAdd -= 1;
+            }
         }
     }
 
-    getAdjacentCorporations(tilePosition){
+    replaceTiles(replacement, coordinates){
+        /* replacement: str coordinates: array[int] */
+        for (let i = 0; i < coordinates.length; i++) {
+            this.tileSpaces[coordinates[i]] = replacement;
+        }
+    }
+
+    getAdjacentCorporations(tilePosition) {
         let centralCoordinate = Helper.getCoordinateOf(
             tilePosition
         );
@@ -58,21 +64,21 @@ class Board {
             centralCoordinate
         );
         let adjacentCorporations = [];
-        for (let i = 0; i < surroundingCoordinates.length; i++){
+        for (let i = 0; i < surroundingCoordinates.length; i++) {
             if (this.corporationSymbols.includes(
                 this.tileSpaces[surroundingCoordinates[i]])
-            ){
-               adjacentCorporations.push(this.tileSpaces[surroundingCoordinates[i]]);
+            ) {
+                adjacentCorporations.push(this.tileSpaces[surroundingCoordinates[i]]);
             }
         }
         return Array.from(new Set(adjacentCorporations));
     }
 
-    hasOnlyOneCorporationAdjacentTo(tilePosition){
+    hasOnlyOneCorporationAdjacentTo(tilePosition) {
         return this.getAdjacentCorporations(tilePosition).length == 1;
     }
 
-    getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
+    getCoordinatesOfGenericTilesAdjacentTo(tilePosition) {
         let centralCoordinate = Helper.getCoordinateOf(
             tilePosition
         );
@@ -80,83 +86,96 @@ class Board {
             centralCoordinate
         );
         let adjacentGenericCoordinates = [];
-        for (let i = 0; i < adjacentCoordinates.length; i++){
-            if (this.tileSpaces[adjacentCoordinates[i]] === 'G'){
-               adjacentGenericCoordinates.push(adjacentCoordinates[i]);
+        for (let i = 0; i < adjacentCoordinates.length; i++) {
+            if (this.tileSpaces[adjacentCoordinates[i]] === 'G') {
+                adjacentGenericCoordinates.push(adjacentCoordinates[i]);
             }
         }
         return _.sortBy(adjacentGenericCoordinates);
     }
 
-    hasGenericTilesAdjacentTo(tilePosition){
-       return !_.isEmpty(
-           this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
-       )
+    hasGenericTilesAdjacentTo(tilePosition) {
+        return !_.isEmpty(
+            this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
+        )
     }
 
 
-    isTheCorporationAvailableToFound(corporationSymbol){
-        let availableCorporations = this.getAvailableCorporations();
+    canFoundCorporation(corporationSymbol) {
+        let availableCorporations = this.getNonActiveCorporations();
         return availableCorporations.includes(corporationSymbol);
     }
 
-    hasUnfoundedCorporations(){
-        return !_.isEmpty(this.getAvailableCorporations())
+    hasNonActiveCorporations() {
+        return !_.isEmpty(this.getNonActiveCorporations())
     }
 
-    getAvailableCorporations(){
+    getNonActiveCorporations() {
         return _.difference(
-            this.corporationSymbols, this.findExistingCorporations()
+            this.corporationSymbols, this.findActiveCorporations()
         );
     }
 
-    findExistingCorporations(){
+    findActiveCorporations() {
         let existingCorporations = [];
-        for (let i = 0; i < this.tileSpaces.length; i++){
+        for (let i = 0; i < this.tileSpaces.length; i++) {
             let tileSymbol = this.tileSpaces[i];
             if (this.corporationSymbols.includes(tileSymbol)
-                && !existingCorporations.includes(tileSymbol)){
-               existingCorporations.push(tileSymbol);
+                && !existingCorporations.includes(tileSymbol)) {
+                existingCorporations.push(tileSymbol);
             }
         }
         return _.sortBy(existingCorporations);
     }
 
-    getLargestAdjacentCorporations(tileSpace){
+    getLargestAdjacentCorporations(tileSpace) {
         let adjacentCorporations = Array.from(
             new Set(this.getAdjacentCorporations(tileSpace))
         );
 
         let largestSize = 0;
-        for (let i = 0; i < adjacentCorporations.length; i++){
+        for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
-            if (corporationSize > largestSize){
-               largestSize = corporationSize;
+            if (corporationSize > largestSize) {
+                largestSize = corporationSize;
             }
         }
 
         let largestAdjacentCorporations = [];
-        for (let i = 0; i < adjacentCorporations.length; i++){
+        for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
-            if (corporationSize === largestSize){
-               largestAdjacentCorporations.push(adjacentCorporations[i]);
+            if (corporationSize === largestSize) {
+                largestAdjacentCorporations.push(adjacentCorporations[i]);
             }
         }
         return largestAdjacentCorporations;
     }
 
-    incorporateAdjacentGenericTiles(position){
-        let coordinate = Helper.getCoordinateOf(position);
-        let genericCoordinates = this.getCoordinatesOfGenericTilesAdjacentTo(
-                position
-            );
+    incorporateAdjacentGenericTiles(position) {
+        // Todo: Refactor the below later.
         let corporation = this.getAdjacentCorporations(position)[0];
+        let coordinate = Helper.getCoordinateOf(position);
         this.tileSpaces[coordinate] = corporation;
+        let genericCoordinates = this.getCoordinatesOfGenericTilesAdjacentTo(
+            position
+        );
+
         for (let i = 0; i < genericCoordinates.length; i++) {
             this.tileSpaces[genericCoordinates[i]] = corporation;
         }
         return this;
     }
+
+    foundCorporation(tilePosition, corpSymbol) {
+        let central = Helper.getCoordinateOf(tilePosition);
+        let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
+            tilePosition
+        );
+        this.replaceTiles(corpSymbol, central);
+        this.replaceTiles(corpSymbol, adjacentGenerics);
+        return this
+    }
+
 }
 
 
@@ -174,30 +193,26 @@ class Player {
 
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
-        }
-        else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
+        } else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
             return this.board.incorporateAdjacentGenericTiles(position);
-        }
-        else if (
-                this.board.hasGenericTilesAdjacentTo(position) &&
-                this.board.hasUnfoundedCorporations()) {
-           // Refactor above to a single combined function.
-            // Found corporation
+        } else if (
+            this.board.hasGenericTilesAdjacentTo(position) &&
+            this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
+            // Todo: get user input of corporation that user wants to found.
+            //  For the above, use canFoundCorporation().
+            let symbol = '*'; // todo: Replace with user input.
+
+            return this.board.foundCorporation(position, symbol);
 
 
         }
-        let existing = this.board.findExistingCorporations();
+        let existing = this.board.findActiveCorporations();
         // Todo: complete
         return this.board;
     }
 
 
 
-
-
-    foundCorporation(tilePosition){
-        let coordinate = Helper.getCoordinateOf(tilePosition);
-    }
 
 
         //if >= 2 different adjacent corporations, initiate acquisition
@@ -263,6 +278,7 @@ class Helper {
         }
         return coordinates;
     }
+
 
 
     static prompt(question, callback) {
