@@ -368,14 +368,18 @@ tape('\nTest functions relating to founding a new corporation', function (TC) {
     TC.test('Test foundCorporation()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
-        testboard1.tileSpaces[8] = 'G';
-        // tileSpaces[20] (i.e., tilePosition 'B9') will be the search point.
-        testboard1.tileSpaces[19] = 'G';
-        testboard1.tileSpaces[21] = 'T'; // I.e., not a generic tile.
+        let tileSpaces = testboard1.tileSpaces;
+        tileSpaces[0] = 'G';
+        tileSpaces[2] = 'G';
 
         assert.deepEqual(
-            testboard1.getCoordinatesOfGenericTilesAdjacentTo('B9'),
-            [8, 19],
+            [tileSpaces[0], tileSpaces[1], tileSpaces[2]],
+            ['G', 'E', 'G']
+        );
+        testboard1.foundCorporation('A2', 'I');
+        assert.deepEqual(
+            [tileSpaces[0], tileSpaces[1], tileSpaces[2]],
+            ['I', 'I', 'I']
         );
         assert.end();
     });

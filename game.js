@@ -50,9 +50,14 @@ class Board {
     }
 
     replaceTiles(replacement, coordinates){
-        /* replacement: str coordinates: array[int] */
-        for (let i = 0; i < coordinates.length; i++) {
-            this.tileSpaces[coordinates[i]] = replacement;
+        /* replacement: str coordinates: array[int] or int */
+        if (Array.isArray(coordinates)){
+            for (let i = 0; i < coordinates.length; i++) {
+                this.tileSpaces[coordinates[i]] = replacement;
+            }
+        }
+        else{
+            this.tileSpaces[coordinates] = replacement;
         }
     }
 
@@ -99,7 +104,6 @@ class Board {
             this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
         )
     }
-
 
     canFoundCorporation(corporationSymbol) {
         let availableCorporations = this.getNonActiveCorporations();
@@ -171,6 +175,10 @@ class Board {
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
             tilePosition
         );
+        if (_.isEmpty(adjacentGenerics)){
+            throw 'NoAdjacentGenericsError'
+        }
+        // Todo: throw exception if there are no generics adjacent.
         this.replaceTiles(corpSymbol, central);
         this.replaceTiles(corpSymbol, adjacentGenerics);
         return this
