@@ -51,14 +51,18 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition){
-        let centralCoordinate = Helper.getCoordinateOf(tilePosition);
-        let adjacentCorporations = [];
-        let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(
+        let centralCoordinate = Helper.getCoordinateOf(
+            tilePosition
+        );
+        let surroundingCoordinates = Helper.getCoordinatesAdjacentTo(
             centralCoordinate
         );
-        for (let i = 0; i < adjacentCoordinates.length; i++){
-            if (this.corporationSymbols.includes(this.tileSpaces[adjacentCoordinates[i]])){
-               adjacentCorporations.push(this.tileSpaces[adjacentCoordinates[i]]);
+        let adjacentCorporations = [];
+        for (let i = 0; i < surroundingCoordinates.length; i++){
+            if (this.corporationSymbols.includes(
+                this.tileSpaces[surroundingCoordinates[i]])
+            ){
+               adjacentCorporations.push(this.tileSpaces[surroundingCoordinates[i]]);
             }
         }
         return Array.from(new Set(adjacentCorporations));
@@ -69,8 +73,12 @@ class Board {
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition){
-        let centralCoordinate = Helper.getCoordinateOf(tilePosition);
-        let adjacentCoordinates = Helper.getCoordinatesOfTilesAdjacentTo(centralCoordinate);
+        let centralCoordinate = Helper.getCoordinateOf(
+            tilePosition
+        );
+        let adjacentCoordinates = Helper.getCoordinatesAdjacentTo(
+            centralCoordinate
+        );
         let adjacentGenericCoordinates = [];
         for (let i = 0; i < adjacentCoordinates.length; i++){
             if (this.tileSpaces[adjacentCoordinates[i]] === 'G'){
@@ -127,6 +135,19 @@ class Board {
         }
         return largestAdjacentCorporations;
     }
+
+    incorporateAdjacentGenericTiles(position){
+        let coordinate = Helper.getCoordinateOf(position);
+        let genericCoordinates = this.getCoordinatesOfGenericTilesAdjacentTo(
+                position
+            );
+        let corporation = this.getAdjacentCorporations(position)[0];
+        this.tileSpaces[coordinate] = corporation;
+        for (let i = 0; i < genericCoordinates.length; i++) {
+            this.tileSpaces[genericCoordinates[i]] = corporation;
+        }
+        return this;
+    }
 }
 
 
@@ -148,29 +169,27 @@ class Player {
 
         // todo: Refactor this.
         else if (board.hasOnlyOneCorporationAdjacentTo(position)) {
-            let genericCoordinates = board.getCoordinatesOfGenericTilesAdjacentTo(
-                position
-            );
-            let corporation = board.getAdjacentCorporations(position)[0];
-            board.tileSpaces[coordinate] = corporation;
-            for (let i = 0; i < genericCoordinates.length; i++) {
-                board.tileSpaces[genericCoordinates[i]] = corporation;
-            }
+            // let genericCoordinates = board.getCoordinatesOfGenericTilesAdjacentTo(
+            //     position
+            // );
+            // let corporation = board.getAdjacentCorporations(position)[0];
+            // board.tileSpaces[coordinate] = corporation;
+            // for (let i = 0; i < genericCoordinates.length; i++) {
+            //     board.tileSpaces[genericCoordinates[i]] = corporation;
+            // }
+            // return board;
+            board.incorporateAdjacentGenericTiles(position);
             return board;
         } else if (board.getCoordinatesOfGenericTilesAdjacentTo(position)) {
             let existing = board.findExistingCorporations();
             let available = board.getAvailableCorporations();
-            // Helper.prompt(
-            //     'Which corporation do you wish to found?',
-            //     function (input){
-            //         if (board
-            // );
-            // ) // Todo: complete
-            board.foundCorporation(position, corporationSymbol);
+            // Todo: complete
             return board;
         }
 
     }
+
+
 
     foundCorporation(tilePosition){
 
@@ -218,12 +237,12 @@ class Helper {
             'L': 11
         };
         let row = letterToRow[tilePosition.charAt(0)];
-        let column = tilePosition.charAt(1) - 1;  // -1 accounts for 0th-based grid.
+        let column = parseInt(tilePosition.substring(1)) - 1;  // -1 accounts for 0th-based grid.
         let coordinate = row * 12 + column;
         return coordinate;
     }
 
-    static getCoordinatesOfTilesAdjacentTo(boardPosition){
+    static getCoordinatesAdjacentTo(boardPosition){
         // @param: int @return: [int]
         let coordinates = [];
         if (boardPosition % 12 !== 0){
@@ -253,10 +272,15 @@ class Helper {
             callback(data.toString().trim());
         });
     }
-
-
 }
 
+class Corporation {
+    constructor(symbol, pricesTier, stocksAvailable){
+        this.symbol = symbol;
+        // Perhaps add later.
+    }
+
+}
 
 class Prices {
     constructor(board) {
@@ -302,15 +326,6 @@ class Prices {
         this.C = highest;
         this.T = highest;
     }
-
-
-        //  Later: refactor Prices to a Ledger class. This involves:
-        //  1. Changing above corporation property names to single symbols
-        //  2. adding stocksAvailable as a property of the corp.
-        //  3. Altering tests to call corporation.price[amount]
-
-
-
 
     getShareholderBonus(corporation){
         // Todo: write function. Shareholder bonus is directly linked to the stock price.

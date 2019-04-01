@@ -261,18 +261,18 @@ tape('\nStock prices', function(TC){
 
 tape('\nTest finding corporation on board', function (TC) {
 
-    TC.test('Test getCoordinatesOfTilesAdjacentTo()', function (assert) {
+    TC.test('Test getCoordinatesAdjacentTo()', function (assert) {
 
         assert.deepEqual(
-            game.Helper.getCoordinatesOfTilesAdjacentTo(0),
+            game.Helper.getCoordinatesAdjacentTo(0),
             [1, 12],
         );
         assert.end();
    });
 
-    TC.test('Test getCoordinatesOfTilesAdjacentTo()', function (assert) {
+    TC.test('Test getCoordinatesAdjacentTo()', function (assert) {
         assert.deepEqual(
-            game.Helper.getCoordinatesOfTilesAdjacentTo(143),
+            game.Helper.getCoordinatesAdjacentTo(143),
             [142, 131],
         );
         assert.end();
@@ -410,15 +410,27 @@ TC.test('Test isCorporationAvailableToFound() negative', function (assert) {
         assert.end();
     });
 
-    TC.test('Test foundCorporation()', function (assert) {
+
+    TC.test('Test incorporateGenericTilesIntoCorporation()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
-        testboard1.tileSpaces[8] = 'G';
-        // A tile will be placed at tileSpaces[20] to found 'S' corporation.
-        testboard1.tileSpaces[19] = 'G';
+        testboard1.tileSpaces[7] = 'C';
+        testboard1.tileSpaces[8] = 'C';
+        testboard1.tileSpaces[10] = 'C';
 
-
-        // Todo: complete.
-
+        assert.equals(
+            testboard1.tileSpaces[9],
+            'E',
+            'E tile at tileSpaces[9], i.e. A10'
+        );
+        player1.placeTile('A10', testboard1);  // 'A10' is tileSpaces[9].
+        assert.equals(
+            testboard1.tileSpaces[9],
+            'C',
+            'After placing a tile on A10, the adjacent corporation incorporated A10'
+        );
+        assert.end();
     });
+
+
 });
