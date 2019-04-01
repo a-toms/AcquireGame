@@ -133,10 +133,10 @@ class Board {
     }
 
     getLargestAdjacentCorporations(tileSpace) {
+        // Todo: Encapsulate the contents into getLargestSize and getLargestAdjacentCorporations.
         let adjacentCorporations = Array.from(
             new Set(this.getAdjacentCorporations(tileSpace))
         );
-
         let largestSize = 0;
         for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
@@ -206,6 +206,8 @@ class Player {
         } else if (
             this.board.hasGenericTilesAdjacentTo(position) &&
             this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
+
+
             // Todo: get user input of corporation that user wants to found.
             //  For the above, use canFoundCorporation().
             let symbol = '*'; // todo: Replace with user input.
