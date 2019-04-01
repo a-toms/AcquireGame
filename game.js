@@ -88,11 +88,20 @@ class Board {
         return _.sortBy(adjacentGenericCoordinates);
     }
 
+    hasGenericTilesAdjacentTo(tilePosition){
+       return !_.isEmpty(
+           this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
+       )
+    }
 
-    isCorporationAvailableToFound(corporationSymbol){
+
+    isTheCorporationAvailableToFound(corporationSymbol){
         let availableCorporations = this.getAvailableCorporations();
         return availableCorporations.includes(corporationSymbol);
+    }
 
+    hasUnfoundedCorporations(){
+        return !_.isEmpty(this.getAvailableCorporations())
     }
 
     getAvailableCorporations(){
@@ -152,47 +161,42 @@ class Board {
 
 
 class Player {
-    constructor(board, name, money){  // Default money at game start is 6000
+    constructor(board, name, money) {  // Default money at game start is 6000
         this.board = board;
         this.name = name;
         this.money = money;
         this.tiles = [];
     };
 
-    placeTile(position, board) {
+    placeTile(position) {
         // Complete this function.
         let coordinate = Helper.getCoordinateOf(position);
 
-        if (board.getAdjacentCorporations(position).length > 1) {
+        if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
         }
-
-        // todo: Refactor this.
-        else if (board.hasOnlyOneCorporationAdjacentTo(position)) {
-            // let genericCoordinates = board.getCoordinatesOfGenericTilesAdjacentTo(
-            //     position
-            // );
-            // let corporation = board.getAdjacentCorporations(position)[0];
-            // board.tileSpaces[coordinate] = corporation;
-            // for (let i = 0; i < genericCoordinates.length; i++) {
-            //     board.tileSpaces[genericCoordinates[i]] = corporation;
-            // }
-            // return board;
-            board.incorporateAdjacentGenericTiles(position);
-            return board;
-        } else if (board.getCoordinatesOfGenericTilesAdjacentTo(position)) {
-            let existing = board.findExistingCorporations();
-            let available = board.getAvailableCorporations();
-            // Todo: complete
-            return board;
+        else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
+            return this.board.incorporateAdjacentGenericTiles(position);
         }
+        else if (
+                this.board.hasGenericTilesAdjacentTo(position) &&
+                this.board.hasUnfoundedCorporations()) {
+           // Refactor above to a single combined function.
+            // Found corporation
 
+
+        }
+        let existing = this.board.findExistingCorporations();
+        // Todo: complete
+        return this.board;
     }
 
 
 
-    foundCorporation(tilePosition){
 
+
+    foundCorporation(tilePosition){
+        let coordinate = Helper.getCoordinateOf(tilePosition);
     }
 
 

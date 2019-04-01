@@ -48,17 +48,18 @@ tape('\nBoard actions.', function (TC) {
 
 
 tape('\nPlayer class.', function (TC) {
-    let player = new game.Player();
     let testboard = new game.Board();
+    let player = new game.Player(testboard);
 
-    TC.test('Test that Player can place tile', function (assert) {
+    TC.test('Test that placeTile incorporates adjacent generic tiles',
+        function (assert){
         testboard.tileSpaces[5] = 'E';
         testboard.tileSpaces[6] = 'G';  // Generic
         testboard.tileSpaces[7] = 'E';
         testboard.tileSpaces[8] = 'W';  // Worldwide corporation
         testboard.tileSpaces[9] = 'W';  // Worldwide corporation
 
-        player.placeTile('A8', testboard);  // 'A8' is tileSpaces[7].
+        player.placeTile('A8');  // 'A8' is tileSpaces[7].
         assert.equal(
             testboard.tileSpaces[7],
             'W',
@@ -69,6 +70,28 @@ tape('\nPlayer class.', function (TC) {
             'W',
             'Placing the tile also incorporated the G tile, ' +
             'which was adjacent to E, into the W corporation'
+        );
+        assert.end();
+    });
+
+
+    TC.test('Test incorporateAdjacentGenericTiles()', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[7] = 'C';
+        testboard1.tileSpaces[8] = 'C';
+        testboard1.tileSpaces[10] = 'C';
+
+        assert.equals(
+            testboard1.tileSpaces[9],
+            'E',
+            'E tile at tileSpaces[9], i.e. A10'
+        );
+        testboard1.incorporateAdjacentGenericTiles('A10');  // 'A10' is tileSpaces[9].
+        assert.equals(
+            testboard1.tileSpaces[9],
+            'C',
+            'After placing a tile on A10, the adjacent corporation incorporated A10'
         );
         assert.end();
     });
@@ -357,6 +380,26 @@ tape('\nTest founding new corporation', function (TC) {
         assert.end();
     });
 
+     TC.test('Test hasGenericTilesAdjacentTo()', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'G';
+        // tileSpaces[20] (i.e., 'B9') is the first test's search point.
+        testboard1.tileSpaces[19] = 'G';
+        testboard1.tileSpaces[21] = 'T';
+        // tileSpaces[22] (i.e., 'B11') is the second test's search point.
+
+        assert.equals(
+            testboard1.hasGenericTilesAdjacentTo('B9'),
+            true,
+        );
+        assert.equals(
+            testboard1.hasGenericTilesAdjacentTo('B11'),
+            false,
+        );
+        assert.end();
+    });
+
     TC.test('Test findExistingCorporations())', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
@@ -373,7 +416,55 @@ tape('\nTest founding new corporation', function (TC) {
         assert.end();
     });
 
-    TC.test('Test isCorporationAvailableToFound() positive', function (assert) {
+    TC.test('Test hasUnfoundedCorporations() - true', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[7] = 'T';
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[10] = 'C';
+        testboard1.tileSpaces[11] = 'C';
+        testboard1.tileSpaces[19] = 'F';
+        testboard1.tileSpaces[20] = 'F';
+        testboard1.tileSpaces[31] = 'I';
+        testboard1.tileSpaces[32] = 'I';
+        testboard1.tileSpaces[39] = 'S';
+        testboard1.tileSpaces[38] = 'S';
+        testboard1.tileSpaces[50] = 'A';
+        testboard1.tileSpaces[51] = 'A';
+
+        assert.deepEqual(
+            testboard1.hasUnfoundedCorporations(),
+            true,
+        );
+        assert.end();
+    });
+
+   TC.test('Test hasUnfoundedCorporations() - false', function (assert) {
+       let testboard1 = new game.Board();
+       let player1 = new game.Player();
+       testboard1.tileSpaces[7] = 'T';
+       testboard1.tileSpaces[8] = 'T';
+       testboard1.tileSpaces[10] = 'C';
+       testboard1.tileSpaces[11] = 'C';
+       testboard1.tileSpaces[19] = 'F';
+       testboard1.tileSpaces[20] = 'F';
+       testboard1.tileSpaces[31] = 'I';
+       testboard1.tileSpaces[32] = 'I';
+       testboard1.tileSpaces[39] = 'S';
+       testboard1.tileSpaces[38] = 'S';
+       testboard1.tileSpaces[50] = 'A';
+       testboard1.tileSpaces[51] = 'A';
+       testboard1.tileSpaces[71] = 'W';
+       testboard1.tileSpaces[72] = 'W';
+
+       assert.deepEqual(
+           testboard1.hasUnfoundedCorporations(),
+           false,
+       );
+       assert.end();
+   });
+
+    TC.test('Test isTheCorporationAvailableToFound() positive', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'T';
@@ -383,14 +474,14 @@ tape('\nTest founding new corporation', function (TC) {
         testboard1.tileSpaces[32] = 'S';
 
         assert.equals(
-            testboard1.isCorporationAvailableToFound('C'),
+            testboard1.isTheCorporationAvailableToFound('C'),
             true,
             'C is available to found'
         );
         assert.end();
     });
 
-TC.test('Test isCorporationAvailableToFound() negative', function (assert) {
+TC.test('Test isTheCorporationAvailableToFound() negative', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'T';
@@ -403,7 +494,7 @@ TC.test('Test isCorporationAvailableToFound() negative', function (assert) {
         testboard1.tileSpaces[2] = 'C';
 
         assert.equals(
-            testboard1.isCorporationAvailableToFound('C'),
+            testboard1.isTheCorporationAvailableToFound('C'),
             false,
             'C is no longer available to found'
         );
@@ -411,26 +502,6 @@ TC.test('Test isCorporationAvailableToFound() negative', function (assert) {
     });
 
 
-    TC.test('Test incorporateGenericTilesIntoCorporation()', function (assert) {
-        let testboard1 = new game.Board();
-        let player1 = new game.Player();
-        testboard1.tileSpaces[7] = 'C';
-        testboard1.tileSpaces[8] = 'C';
-        testboard1.tileSpaces[10] = 'C';
-
-        assert.equals(
-            testboard1.tileSpaces[9],
-            'E',
-            'E tile at tileSpaces[9], i.e. A10'
-        );
-        player1.placeTile('A10', testboard1);  // 'A10' is tileSpaces[9].
-        assert.equals(
-            testboard1.tileSpaces[9],
-            'C',
-            'After placing a tile on A10, the adjacent corporation incorporated A10'
-        );
-        assert.end();
-    });
 
 
 });
