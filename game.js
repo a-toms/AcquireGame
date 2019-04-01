@@ -1,5 +1,8 @@
 'use strict';
 
+// Todo: Add user input to specify which corporation to found.
+
+
 let _ = require('lodash');
 
 class Board {
