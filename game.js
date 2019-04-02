@@ -136,10 +136,14 @@ class Board {
     }
 
     getLargestAdjacentCorporations(tileSpace) {
-        // Todo: Encapsulate the contents into getLargestSize and getLargestAdjacentCorporations.
         let adjacentCorporations = Array.from(
             new Set(this.getAdjacentCorporations(tileSpace))
         );
+        let largestSize = this.getSizeOfLargest(adjacentCorporations);
+        return this.getLargest(largestSize, adjacentCorporations);
+    }
+
+    getSizeOfLargest(adjacentCorporations){
         let largestSize = 0;
         for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
@@ -147,16 +151,20 @@ class Board {
                 largestSize = corporationSize;
             }
         }
+        return largestSize;
+    }
 
+    getLargest(sizeOfLargest, adjacentCorporations){
         let largestAdjacentCorporations = [];
         for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
-            if (corporationSize === largestSize) {
+            if (corporationSize === sizeOfLargest) {
                 largestAdjacentCorporations.push(adjacentCorporations[i]);
             }
         }
         return largestAdjacentCorporations;
     }
+
 
     incorporateAdjacentGenericTiles(position) {
         // Todo: Refactor the below later.
