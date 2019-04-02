@@ -155,14 +155,13 @@ class Board {
     }
 
     getLargest(sizeOfLargest, adjacentCorporations){
-        let largestAdjacentCorporations = [];
-        for (let i = 0; i < adjacentCorporations.length; i++) {
+        for (let i = adjacentCorporations.length; i > -1; i--) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
-            if (corporationSize === sizeOfLargest) {
-                largestAdjacentCorporations.push(adjacentCorporations[i]);
+            if (corporationSize !== sizeOfLargest) {
+                adjacentCorporations.splice(i, 1);
             }
         }
-        return largestAdjacentCorporations;
+        return _.sortBy(adjacentCorporations);
     }
 
     incorporateAdjacentGenericTiles(position) {
