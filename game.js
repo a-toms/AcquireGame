@@ -59,7 +59,7 @@ class Board {
                 this.tileSpaces[coordinates[i]] = replacement;
             }
         }
-        else{
+        else if (typeof coordinates === 'number'){
             this.tileSpaces[coordinates] = replacement;
         }
     }
@@ -83,7 +83,7 @@ class Board {
     }
 
     hasOnlyOneCorporationAdjacentTo(tilePosition) {
-        return this.getAdjacentCorporations(tilePosition).length == 1;
+        return this.getAdjacentCorporations(tilePosition).length === 1;
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition) {
@@ -165,21 +165,25 @@ class Board {
         return largestAdjacentCorporations;
     }
 
-
     incorporateAdjacentGenericTiles(position) {
-        // Todo: Refactor the below later.
-        let corporation = this.getAdjacentCorporations(position)[0];
-        let coordinate = Helper.getCoordinateOf(position);
-        this.tileSpaces[coordinate] = corporation;
+        let corporationSymbol = this.getAdjacentCorporationSymbol(position);
+        let corporationCoordinate = Helper.getCoordinateOf(position);
         let genericCoordinates = this.getCoordinatesOfGenericTilesAdjacentTo(
             position
         );
-
-        for (let i = 0; i < genericCoordinates.length; i++) {
-            this.tileSpaces[genericCoordinates[i]] = corporation;
-        }
+        this.replaceTiles(corporationSymbol, genericCoordinates);
+        this.replaceTiles(corporationSymbol, corporationCoordinate);
         return this;
     }
+
+    getAdjacentCorporationSymbol(position){
+        if (!this.hasOnlyOneCorporationAdjacentTo(position)){
+            throw 'MoreThanOneAdjacentCorporationError'
+        }
+        return this.getAdjacentCorporations(position)[0];
+    }
+
+
 
     foundCorporation(tilePosition, corpSymbol) {
         let central = Helper.getCoordinateOf(tilePosition);
@@ -189,7 +193,6 @@ class Board {
         if (_.isEmpty(adjacentGenerics)){
             throw 'NoAdjacentGenericsError'
         }
-        // Todo: throw exception if there are no generics adjacent.
         this.replaceTiles(corpSymbol, central);
         this.replaceTiles(corpSymbol, adjacentGenerics);
         return this
