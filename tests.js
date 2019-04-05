@@ -360,6 +360,34 @@ tape('\nTest finding corporation on board', function (TC) {
         assert.end();
     });
 
+    TC.test('Test getLargestAdjacentCorporations()', function (assert) {
+        let testBoard1 = new game.Board();
+        testBoard1.tileSpaces[0] = 'S';
+        testBoard1.tileSpaces[1] = 'S';
+        testBoard1.tileSpaces[2] = 'S';
+        testBoard1.tileSpaces[3] = 'S';
+        testBoard1.tileSpaces[4] = 'S';
+        // tileSpaces[5] (i.e., 'A6') is 'E'.
+        testBoard1.tileSpaces[6] = 'C';
+        testBoard1.tileSpaces[7] = 'C';
+        testBoard1.tileSpaces[8] = 'C';
+        testBoard1.tileSpaces[9] = 'C';
+        testBoard1.tileSpaces[10] = 'C';
+        testBoard1.tileSpaces[17] = 'W';
+        testBoard1.tileSpaces[29] = 'W';
+        testBoard1.tileSpaces[41] = 'W';
+        testBoard1.tileSpaces[53] = 'W';
+        testBoard1.tileSpaces[65] = 'W';
+
+
+        assert.deepEqual(
+            testBoard1.getLargestAdjacentCorporations('A6'), // i.e., tileSpaces[5]
+            ['C', 'S', 'W'],
+            '\'C\', \'S\', and \'W\' are the largest corporations adjancent to A6.'
+        );
+        assert.end();
+    });
+
 
 });
 

@@ -59,7 +59,7 @@ class Board {
                 this.tileSpaces[coordinates[i]] = replacement;
             }
         }
-        else{
+        else if (typeof coordinates === 'number'){
             this.tileSpaces[coordinates] = replacement;
         }
     }
@@ -83,7 +83,7 @@ class Board {
     }
 
     hasOnlyOneCorporationAdjacentTo(tilePosition) {
-        return this.getAdjacentCorporations(tilePosition).length == 1;
+        return this.getAdjacentCorporations(tilePosition).length === 1;
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition) {
@@ -136,10 +136,14 @@ class Board {
     }
 
     getLargestAdjacentCorporations(tileSpace) {
-        // Todo: Encapsulate the contents into getLargestSize and getLargestAdjacentCorporations.
         let adjacentCorporations = Array.from(
             new Set(this.getAdjacentCorporations(tileSpace))
         );
+        let largestSize = this.getSizeOfLargest(adjacentCorporations);
+        return this.getLargest(largestSize, adjacentCorporations);
+    }
+
+    getSizeOfLargest(adjacentCorporations){
         let largestSize = 0;
         for (let i = 0; i < adjacentCorporations.length; i++) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
@@ -147,31 +151,38 @@ class Board {
                 largestSize = corporationSize;
             }
         }
+        return largestSize;
+    }
 
-        let largestAdjacentCorporations = [];
-        for (let i = 0; i < adjacentCorporations.length; i++) {
+    getLargest(sizeOfLargest, adjacentCorporations){
+        for (let i = adjacentCorporations.length; i > -1; i--) {
             let corporationSize = this.countNumberOf(adjacentCorporations[i]);
-            if (corporationSize === largestSize) {
-                largestAdjacentCorporations.push(adjacentCorporations[i]);
+            if (corporationSize !== sizeOfLargest) {
+                adjacentCorporations.splice(i, 1);
             }
         }
-        return largestAdjacentCorporations;
+        return _.sortBy(adjacentCorporations);
     }
 
     incorporateAdjacentGenericTiles(position) {
-        // Todo: Refactor the below later.
-        let corporation = this.getAdjacentCorporations(position)[0];
-        let coordinate = Helper.getCoordinateOf(position);
-        this.tileSpaces[coordinate] = corporation;
+        let corporationSymbol = this.getAdjacentCorporationSymbol(position);
+        let corporationCoordinate = Helper.getCoordinateOf(position);
         let genericCoordinates = this.getCoordinatesOfGenericTilesAdjacentTo(
             position
         );
-
-        for (let i = 0; i < genericCoordinates.length; i++) {
-            this.tileSpaces[genericCoordinates[i]] = corporation;
-        }
+        this.replaceTiles(corporationSymbol, genericCoordinates);
+        this.replaceTiles(corporationSymbol, corporationCoordinate);
         return this;
     }
+
+    getAdjacentCorporationSymbol(position){
+        if (!this.hasOnlyOneCorporationAdjacentTo(position)){
+            throw 'MoreThanOneAdjacentCorporationError'
+        }
+        return this.getAdjacentCorporations(position)[0];
+    }
+
+
 
     foundCorporation(tilePosition, corpSymbol) {
         let central = Helper.getCoordinateOf(tilePosition);
@@ -181,7 +192,6 @@ class Board {
         if (_.isEmpty(adjacentGenerics)){
             throw 'NoAdjacentGenericsError'
         }
-        // Todo: throw exception if there are no generics adjacent.
         this.replaceTiles(corpSymbol, central);
         this.replaceTiles(corpSymbol, adjacentGenerics);
         return this
