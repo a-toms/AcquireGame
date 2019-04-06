@@ -1,7 +1,7 @@
 'use strict';
 
 let tape = require('tape');
-let game = require('./game.js');
+let game = require('./acquire.js');
 
 tape('\nBoard creation.', function (TC) {
     let emptyBoard = new game.Board();

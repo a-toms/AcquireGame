@@ -221,6 +221,7 @@ class Player {
             this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
 
 
+            // s
             // Todo: get user input of corporation that user wants to found.
             //  For the above, use canFoundCorporation().
             let symbol = '*'; // todo: Replace with user input.
