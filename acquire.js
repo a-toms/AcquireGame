@@ -1,7 +1,5 @@
-'use strict';
 
 // Todo: Add user input to specify which corporation to found.
-
 
 let _ = require('lodash');
 
@@ -205,6 +203,7 @@ class Player {
         this.board = board;
         this.name = name;
         this.money = money;
+        this.stocks = [];
         this.tiles = [];
     };
 
@@ -234,26 +233,6 @@ class Player {
         // Todo: complete
         return this.board;
     }
-
-
-
-
-
-        //if >= 2 different adjacent corporations, initiate acquisition
-
-        // if 1 adjcant corporation, inserted tile enlarges corporation. The
-        // corporation also incorporates any adjacent generics.
-
-        // if at least 1 adjacent generic, found corporation if any remain.
-        // The new corporation incorporates any adjacent generics.
-
-        // else insert 'G' at coordinate
-
-
-        // Insert generic.
-        // board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
-        // return board;
-
 
     buy(number, corporationSymbol){
 
@@ -301,20 +280,6 @@ class Helper {
             coordinates.push(boardPosition + 12)
         }
         return coordinates;
-    }
-
-
-
-    static prompt(question, callback) {
-        const stdin = process.stdin,
-            stdout = process.stdout;
-
-        stdin.resume();
-        stdout.write(question);
-
-        stdin.once('data', function (data) {
-            callback(data.toString().trim());
-        });
     }
 }
 
@@ -397,7 +362,6 @@ class Prices {
         }
 }
 
-
 class Display {
     constructor(board) {
         this.board = board;
@@ -411,6 +375,24 @@ class Display {
         }
     }
 }
+
+// Game HTMl testing
+
+let board = new Board();
+let players = [
+    new Player(board, 'Mendeval', 4000),
+    new Player(board, 'Alphi', 4000)
+];
+
+
+function showPlayers(){
+    document.getElementById('player-name').innerHTML = "Robert";
+}
+
+
+
+
+
 
 
 module.exports =  {
