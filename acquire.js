@@ -1,9 +1,6 @@
 
 // Todo: Add user input to specify which corporation to found.
 
-let _ = require('lodash');
-
-
 class Board {
     constructor() {
         /*
@@ -99,13 +96,16 @@ class Board {
             }
         }
         adjacentGenericCoordinates.sort(function(a, b){return a - b});
+        console.log("adj generic coordinates = " + adjacentGenericCoordinates);
         return adjacentGenericCoordinates;
     }
 
     hasGenericTilesAdjacentTo(tilePosition) {
-        return Helper.isEmpty(
+        let capacity = !Helper.isEmpty(
             this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
-        )
+        );
+        console.log("empty = " + capacity);
+        return capacity;
     }
 
     canFoundCorporation(corporationSymbol) {
@@ -114,11 +114,15 @@ class Board {
     }
 
     hasNonActiveCorporations() {
-        return Helper.isEmpty(this.getNonActiveCorporations())
+        return !Helper.isEmpty(this.getNonActiveCorporations())
     }
 
     getNonActiveCorporations() {
-        Helper.getDifferenceBetween(
+
+        console.log(Helper.getDifferenceBetween(
+            this.corporationSymbols, this.findActiveCorporations()
+        ));
+        return Helper.getDifferenceBetween(
             this.corporationSymbols, this.findActiveCorporations()
         );
     }
@@ -215,7 +219,6 @@ class Player {
 
     placeTile(position) {
         // Complete this function.
-        let coordinate = Helper.getCoordinateOf(position);
 
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
@@ -250,9 +253,11 @@ class Helper {
 
     static isEmpty(array) {
         if (Array.isArray(array) && array.length === 0){
+            console.log("empty = " + array);
             return true;
         }
         else if (Array.isArray(array) && array.length > 0){
+            console.log("not empty = " + array);
             return false;
         }
     }
@@ -402,21 +407,32 @@ class Display {
 let board = new Board();
 let players = [
     new Player(board, 'Mendeval', 4000),
-    new Player(board, 'Alphi', 4000)
+    new Player(board, 'Alphi', 4000),
+    new Player(board, 'Paulson', 4000),
+    new Player(board, 'Tuyti', 4000)
 ];
 
 
 function showPlayers(){
-    document.getElementById('player-name').innerHTML = "Robert";
+    let namesPlace = document.getElementById('player-name');
+    for (let i = 0; i < players.length; i++){
+        let para = document.createElement("P");                 // Create a <p> element
+        para.innerHTML = `${players[i].name} has ${players[i].money} money`;
+        namesPlace.appendChild(para)
+    }
+
 }
 
 
 
+// module.exports =  {
+//     Board,
+//     Prices,
+//     Player,
+//     Helper
+//
+// };
 
-module.exports =  {
-    Board,
-    Prices,
-    Player,
-    Helper
 
-};
+
+window.addEventListener('load', showPlayers);

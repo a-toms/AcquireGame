@@ -439,10 +439,12 @@ tape('\nTest functions relating to founding a new corporation', function (TC) {
         assert.equals(
             testboard1.hasGenericTilesAdjacentTo('B9'),
             true,
+            'test - does have adjacent generic tiles.'
         );
         assert.equals(
             testboard1.hasGenericTilesAdjacentTo('B11'),
             false,
+            'test - does not have adjacent generic tiles.'
         );
         assert.end();
     });
