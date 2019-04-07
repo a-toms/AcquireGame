@@ -1,5 +1,5 @@
 
-// Todo: Add user input to specify which corporation to found.
+// Todo: Draw the board!
 
 class Board {
     constructor() {
