@@ -3,6 +3,7 @@
 
 let _ = require('lodash');
 
+
 class Board {
     constructor() {
         /*
@@ -97,11 +98,12 @@ class Board {
                 adjacentGenericCoordinates.push(adjacentCoordinates[i]);
             }
         }
-        return _.sortBy(adjacentGenericCoordinates);
+        adjacentGenericCoordinates.sort(function(a, b){return a - b});
+        return adjacentGenericCoordinates;
     }
 
     hasGenericTilesAdjacentTo(tilePosition) {
-        return !_.isEmpty(
+        return Helper.isEmpty(
             this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
         )
     }
@@ -112,14 +114,16 @@ class Board {
     }
 
     hasNonActiveCorporations() {
-        return !_.isEmpty(this.getNonActiveCorporations())
+        return Helper.isEmpty(this.getNonActiveCorporations())
     }
 
     getNonActiveCorporations() {
-        return _.difference(
+        Helper.getDifferenceBetween(
             this.corporationSymbols, this.findActiveCorporations()
         );
     }
+
+
 
     findActiveCorporations() {
         let existingCorporations = [];
@@ -130,7 +134,8 @@ class Board {
                 existingCorporations.push(tileSymbol);
             }
         }
-        return _.sortBy(existingCorporations);
+        existingCorporations.sort();
+        return existingCorporations;
     }
 
     getLargestAdjacentCorporations(tileSpace) {
@@ -159,7 +164,8 @@ class Board {
                 adjacentCorporations.splice(i, 1);
             }
         }
-        return _.sortBy(adjacentCorporations);
+        adjacentCorporations.sort();
+        return adjacentCorporations;
     }
 
     incorporateAdjacentGenericTiles(position) {
@@ -187,7 +193,7 @@ class Board {
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
             tilePosition
         );
-        if (_.isEmpty(adjacentGenerics)){
+        if (Helper.isEmpty(adjacentGenerics)){
             throw 'NoAdjacentGenericsError'
         }
         this.replaceTiles(corpSymbol, central);
@@ -241,6 +247,21 @@ class Player {
 }
 
 class Helper {
+
+    static isEmpty(array) {
+        if (Array.isArray(array) && array.length === 0){
+            return true;
+        }
+        else if (Array.isArray(array) && array.length > 0){
+            return false;
+        }
+    }
+
+    static getDifferenceBetween(first_arr, second_arr=[]){
+        let difference = first_arr.filter(x => !second_arr.includes(x));
+        difference.sort();
+        return difference;
+    }
 
     static getCoordinateOf(tilePosition){
         /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
@@ -388,9 +409,6 @@ let players = [
 function showPlayers(){
     document.getElementById('player-name').innerHTML = "Robert";
 }
-
-
-
 
 
 

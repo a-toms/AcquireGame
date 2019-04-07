@@ -1,4 +1,8 @@
+function drawBoard(){
+    console.log('LOADED');
+    var link = document.getElementById('demo');
+    link.textContent = 'Mozilla Developer Network';
+}
 
-$(document).ready(function() {
-    $("#demo").html("Hell, World!");
-});
+
+window.addEventListener('load', drawBoard);

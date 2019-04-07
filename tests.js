@@ -511,43 +511,96 @@ tape('\nTest functions relating to founding a new corporation', function (TC) {
        assert.end();
    });
 
-    TC.test('Test canFoundCorporation() positive', function (assert) {
-        let testboard1 = new game.Board();
-        let player1 = new game.Player();
-        testboard1.tileSpaces[8] = 'T';
-        testboard1.tileSpaces[9] = 'T';
-        testboard1.tileSpaces[19] = 'S';
-        testboard1.tileSpaces[31] = 'S';
-        testboard1.tileSpaces[32] = 'S';
+//     TC.test('Test canFoundCorporation() positive', function (assert) {
+//         let testboard1 = new game.Board();
+//         let player1 = new game.Player();
+//         testboard1.tileSpaces[8] = 'T';
+//         testboard1.tileSpaces[9] = 'T';
+//         testboard1.tileSpaces[19] = 'S';
+//         testboard1.tileSpaces[31] = 'S';
+//         testboard1.tileSpaces[32] = 'S';
+//
+//         assert.equals(
+//             testboard1.canFoundCorporation('C'),
+//             true,
+//             'C is available to found'
+//         );
+//         assert.end();
+//     });
+//
+// TC.test('Test canFoundCorporation() negative', function (assert) {
+//         let testboard1 = new game.Board();
+//         let player1 = new game.Player();
+//         testboard1.tileSpaces[8] = 'T';
+//         testboard1.tileSpaces[9] = 'T';
+//         testboard1.tileSpaces[19] = 'S';
+//         testboard1.tileSpaces[31] = 'S';
+//         testboard1.tileSpaces[32] = 'S';
+//         testboard1.tileSpaces[1] = 'C';
+//         testboard1.tileSpaces[2] = 'C';
+//
+//         assert.equals(
+//             testboard1.canFoundCorporation('C'),
+//             false,
+//             'C is no longer available to found'
+//         );
+//         assert.end();
+//     });
+//
 
+
+
+});
+
+tape('\nHelper actions', function (TC) {
+
+    TC.test('\nTest isEmpty', function (assert){
+        let empty_array = [];
+        let filled_array = ['A', 'B'];
         assert.equals(
-            testboard1.canFoundCorporation('C'),
+            game.Helper.isEmpty(empty_array),
             true,
-            'C is available to found'
+            'Array is empty'
         );
-        assert.end();
-    });
-
-TC.test('Test canFoundCorporation() negative', function (assert) {
-        let testboard1 = new game.Board();
-        let player1 = new game.Player();
-        testboard1.tileSpaces[8] = 'T';
-        testboard1.tileSpaces[9] = 'T';
-        testboard1.tileSpaces[19] = 'S';
-        testboard1.tileSpaces[31] = 'S';
-        testboard1.tileSpaces[32] = 'S';
-        testboard1.tileSpaces[1] = 'C';
-        testboard1.tileSpaces[2] = 'C';
-
         assert.equals(
-            testboard1.canFoundCorporation('C'),
+            game.Helper.isEmpty(filled_array),
             false,
-            'C is no longer available to found'
+            'Array is not empty'
         );
         assert.end();
     });
 
-
+    TC.test('\nTest getDifferenceBetween', function (assert){
+        let alpha = ['A', 'B', 'C', 'D'];
+        let beta = ['B', 'E', 'F'];
+        let charlie = [];
+        let delta = [];
+        assert.deepEquals(
+            game.Helper.getDifferenceBetween(alpha, beta),
+            ['A', 'C', 'D'],
+            'alpha has \'A\, \'C\', and \'D\', which beta does not have.'
+        );
+        assert.deepEquals(
+            game.Helper.getDifferenceBetween(alpha, charlie),
+            ['A', 'B', 'C', 'D'],
+            'alpha has \'A\, \'B\', \'C\', and \'D\', which charlie does not have.'
+        );
+        assert.deepEquals(
+            game.Helper.getDifferenceBetween(charlie, delta),
+            [],
+            'charlie has no elements that delta does not have.'
+        );
+        assert.deepEquals(
+            game.Helper.getDifferenceBetween(alpha),
+            alpha,
+            'returned the array when only one array was passed.'
+        );
+        // assert.equals(
+        //     Helper.isEmpty(filled_array),
+        //     false
+        // );
+        assert.end();
+    });
 
 
 });
