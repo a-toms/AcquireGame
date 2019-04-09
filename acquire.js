@@ -424,20 +424,14 @@ function showPlayers(){
 }
 
 function drawBoard(){
-    let tablePlace = document.getElementById('table-place');
-    console.log('Loaded');
-    let table = document.createElement("table");
-    for(let i = 0; i < 5; i++) {
-        let tr = document.createElement('tr');
-        for(let j = 0; j < 8; j++) {
-            let td = document.createElement('td');
-            td.textContent = j;
-            // td.style.backgroundColor = row_data[j];
-            tr.appendChild(td);
-        }
-        table.appendChild(tr)
-    }
-    tablePlace.appendChild(table);
+    let grid = document.getElementById('grid-container');
+    // for(let i = 0; i < 5; i++) {
+    //     // let gridItem = document.createElement('div');
+    //     //     gridItem.className = `grid-item-${i}`;
+    //     //     gridItem.textContent = i;
+    //     //     grid.appendChild(gridItem);
+    //     // }
+
 }
 
 
