@@ -428,6 +428,7 @@ function showPlayers(){
 function drawBoard(){
     let boardContainer = document.createElement("div");
     boardContainer.className = "board-container";
+    let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
     let v = 12;
     for(let i = 0; i < 12; i++){
         let row = document.createElement("div");
@@ -435,8 +436,8 @@ function drawBoard(){
         for(let x = 1; x < 13; x++){
             let cell = document.createElement("button");
             cell.id = (i * v) + x;
-            cell.className = "boardSpace";
-            cell.innerText = x;
+            cell.className = "board-space";
+            cell.innerText = `${x}${letters[i]}`;
             row.appendChild(cell);
         }
         boardContainer.append(row);

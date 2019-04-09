@@ -1,5 +1,6 @@
 .board-container {
     background-color: #cbfff7;
+    margin: 10px;
 
 
 }
@@ -8,13 +9,42 @@
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 }
 
-.row > div {
-    background-color: rgba(180, 214, 255, 0.8);
-    border: 1px solid black;
-    height: 20px;
-    text-align: center;
-    font-size: medium;
+.row button {
+    background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer/hand icon */
+    float: snap; /* Float the buttons side by side */
+    font-size: large;
+    font-family: "Arial";
+    padding: 10px;
+}
 
+.row button:hover{
+    background-color: #6fa7f9;
+}
+
+.row button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Clear floats (clearfix hack) */
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Ripple effect */
+.row button:active{
+    opacity:0.5;
+    transition:opacity 0s;
+    /* could show color/s of potential acquisition when hovering over button */
+}
+
+/* Remove blue button outline after clicking in chrome */
+button:focus {
+    outline:0;
 }
 
 .btn-group button {
