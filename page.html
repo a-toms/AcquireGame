@@ -3,38 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Acquire</title>
-
     <link rel="stylesheet" href="acquireStyleSheet.css">
-
-
-
 </head>
 Acquire Game
 <body>
 
-
-
-
 <h2 >Board</h2>
-
 <div id="boardPlace"></div>
 
 <h2>Corporations</h2>
-        <div class="btn-group">
-            <button style="width:10%">Tower</button>
-            <button id='C' onclick="placeTile('C')">Continental</button>
-            <button>Worldwide</button>
-            <button>Imperial</button>
-            <button>Festival</button>
-            <button>Sackson</button>
-            <button>American</button>
-        </div>
 
-<h2>Players</h2>
+// Todo: Add corporation colors.
 
+<div class="btn-group">
+    <button>Tower</button>
+    <button>Continental</button>
+    <button>Worldwide</button>
+    <button>Imperial</button>
+    <button>Festival</button>
+    <button>Sackson</button>
+    <button>American</button>
+</div>
 
+// Todo: Show player's tiles below.
+<h2>Player</h2>
 <p id='player-information'></p>
-<button onclick="takeMoneyFrom(players[0])">Take money from Mendeval</button>
 
 <script src="acquire.js"></script>
 </body>

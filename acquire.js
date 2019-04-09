@@ -416,7 +416,7 @@ function drawPlayers(players){
     }
 }
 
-// Todo: refactor the below. It is too big currently.
+// TD later: refactor the below. It is too big currently.
 function drawBoard(){
     let boardContainer = document.createElement("div");
     boardContainer.className = "board-container";
