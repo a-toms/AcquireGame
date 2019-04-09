@@ -426,19 +426,22 @@ function showPlayers(){
 // Todo next: Style the grid. Change the inner text to buttons. Refactor the names.
 
 function drawBoard(){
+    let boardContainer = document.createElement("div");
+    boardContainer.className = "board-container";
     let v = 12;
-    for(var i = 0; i < 12; i++){
-        var row = document.createElement("div");
+    for(let i = 0; i < 12; i++){
+        let row = document.createElement("div");
         row.className = "row";
-        for(var x = 1; x <= v; x++){
-            var cell = document.createElement("div")
+        for(let x = 1; x < 13; x++){
+            let cell = document.createElement("button");
             cell.id = (i * v) + x;
-            cell.className = "gridsquare";
-            cell.innerText = (i * v) + x;
+            cell.className = "boardSpace";
+            cell.innerText = x;
             row.appendChild(cell);
         }
-        document.getElementById("code").appendChild(row);
+        boardContainer.append(row);
     }
+    document.getElementById("boardPlace").appendChild(boardContainer);
 
 }
 
