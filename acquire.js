@@ -302,13 +302,6 @@ class Helper {
     }
 }
 
-class Corporation {
-    constructor(symbol, pricesTier, stocksAvailable){
-        this.symbol = symbol;
-        // Perhaps add later.
-    }
-
-}
 
 class Prices {
     constructor(board) {
@@ -381,19 +374,6 @@ class Prices {
         }
 }
 
-class Display {
-    constructor(board) {
-        this.board = board;
-    }
-
-    showAllBoard() {
-        for (let row = 0; i < 12; i++) {
-            for (let column = 0; j < 12; j++) {
-                console.log(this.board.tileSpaces[row][column])
-            }
-        }
-    }
-}
 
 // Game page testing
 
@@ -434,6 +414,7 @@ function drawBoard(){
             tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
             tilespace.onclick = function() {
                 placeTile(tilespace.id);
+                placeTile(tilespace.id);
             };
             row.appendChild(tilespace);
         }
@@ -449,11 +430,12 @@ function takeMoneyFrom(player){
     mendevalInfo.innerHTML = `${players[0].name} has ${players[0].money} money`;
 }
 
-function placeTile(tile_id){
-    let tileSpace = document.getElementById(tile_id);
+function placeTile(tileId){
+    let tileSpace = document.getElementById(tileId);
     tileSpace.style.backgroundColor= "#FF8D6F";
 }
 
+// Todo: Integrate amalgamate placeTile and placeTile.
 
 
 // module.exports =  {
