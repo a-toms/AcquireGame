@@ -413,14 +413,13 @@ let players = [
 ];
 
 
-function showPlayers(){
-    let namesPlace = document.getElementById('player-name');
+function drawPlayers(){
+    let namesPlace = document.getElementById('player-information');
     for (let i = 0; i < players.length; i++){
-        let para = document.createElement("P");                 // Create a <p> element
+        let para = document.createElement("P");
         para.innerHTML = `${players[i].name} has ${players[i].money} money`;
         namesPlace.appendChild(para)
     }
-
 }
 
 // Todo next: Style the grid. Change the inner text to buttons. Refactor the names.
@@ -428,23 +427,26 @@ function showPlayers(){
 function drawBoard(){
     let boardContainer = document.createElement("div");
     boardContainer.className = "board-container";
-    let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
+    const letters = Object.freeze(
+        ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    );
     let v = 12;
-    for(let i = 0; i < 12; i++){
+    for(let rowNumber = 0; rowNumber < 9; rowNumber++){
         let row = document.createElement("div");
         row.className = "row";
-        for(let x = 1; x < 13; x++){
+        for(let columnNumber = 1; columnNumber < 13; columnNumber++){
             let cell = document.createElement("button");
-            cell.id = (i * v) + x;
+            cell.id = (rowNumber * v) + columnNumber;
             cell.className = "board-space";
-            cell.innerText = `${x}${letters[i]}`;
+            cell.innerText = `${columnNumber}${letters[rowNumber]}`;
             row.appendChild(cell);
         }
         boardContainer.append(row);
     }
     document.getElementById("boardPlace").appendChild(boardContainer);
-
 }
+
+
 
 // module.exports =  {
 //     Board,
@@ -454,6 +456,9 @@ function drawBoard(){
 //
 // };
 
+function loadGame(){
+    drawBoard();
+    drawPlayers()
+}
 
-
-window.addEventListener('load', drawBoard());
+window.addEventListener('load', loadGame);
