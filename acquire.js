@@ -423,13 +423,7 @@ function showPlayers(){
 
 }
 
-// function drawBoard(){
-//     let container = document.getElementById('grid-container');
-//     for(let i = 0; i < 5; i++) {
-//         let newDiv = document.createElement("<div>1<div>");
-//         container.appendChild(newDiv);
-//     }
-// }
+// Todo next: Style the grid. Change the inner text to buttons. Refactor the names.
 
 function drawBoard(){
     let v = 12;
@@ -437,7 +431,8 @@ function drawBoard(){
         var row = document.createElement("div");
         row.className = "row";
         for(var x = 1; x <= v; x++){
-            var cell = document.createElement("div");
+            var cell = document.createElement("div")
+            cell.id = (i * v) + x;
             cell.className = "gridsquare";
             cell.innerText = (i * v) + x;
             row.appendChild(cell);
