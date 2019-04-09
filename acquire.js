@@ -1,9 +1,5 @@
-'use strict';
 
-// Todo: Add user input to specify which corporation to found.
-
-
-let _ = require('lodash');
+// Todo: Draw the board!
 
 class Board {
     constructor() {
@@ -99,13 +95,17 @@ class Board {
                 adjacentGenericCoordinates.push(adjacentCoordinates[i]);
             }
         }
-        return _.sortBy(adjacentGenericCoordinates);
+        adjacentGenericCoordinates.sort(function(a, b){return a - b});
+        console.log("adj generic coordinates = " + adjacentGenericCoordinates);
+        return adjacentGenericCoordinates;
     }
 
     hasGenericTilesAdjacentTo(tilePosition) {
-        return !_.isEmpty(
+        let capacity = !Helper.isEmpty(
             this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
-        )
+        );
+        console.log("empty = " + capacity);
+        return capacity;
     }
 
     canFoundCorporation(corporationSymbol) {
@@ -114,14 +114,20 @@ class Board {
     }
 
     hasNonActiveCorporations() {
-        return !_.isEmpty(this.getNonActiveCorporations())
+        return !Helper.isEmpty(this.getNonActiveCorporations())
     }
 
     getNonActiveCorporations() {
-        return _.difference(
+
+        console.log(Helper.getDifferenceBetween(
+            this.corporationSymbols, this.findActiveCorporations()
+        ));
+        return Helper.getDifferenceBetween(
             this.corporationSymbols, this.findActiveCorporations()
         );
     }
+
+
 
     findActiveCorporations() {
         let existingCorporations = [];
@@ -132,7 +138,8 @@ class Board {
                 existingCorporations.push(tileSymbol);
             }
         }
-        return _.sortBy(existingCorporations);
+        existingCorporations.sort();
+        return existingCorporations;
     }
 
     getLargestAdjacentCorporations(tileSpace) {
@@ -161,7 +168,8 @@ class Board {
                 adjacentCorporations.splice(i, 1);
             }
         }
-        return _.sortBy(adjacentCorporations);
+        adjacentCorporations.sort();
+        return adjacentCorporations;
     }
 
     incorporateAdjacentGenericTiles(position) {
@@ -189,7 +197,7 @@ class Board {
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
             tilePosition
         );
-        if (_.isEmpty(adjacentGenerics)){
+        if (Helper.isEmpty(adjacentGenerics)){
             throw 'NoAdjacentGenericsError'
         }
         this.replaceTiles(corpSymbol, central);
@@ -205,12 +213,12 @@ class Player {
         this.board = board;
         this.name = name;
         this.money = money;
+        this.stocks = [];
         this.tiles = [];
     };
 
     placeTile(position) {
         // Complete this function.
-        let coordinate = Helper.getCoordinateOf(position);
 
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
@@ -221,6 +229,7 @@ class Player {
             this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
 
 
+            // s
             // Todo: get user input of corporation that user wants to found.
             //  For the above, use canFoundCorporation().
             let symbol = '*'; // todo: Replace with user input.
@@ -234,26 +243,6 @@ class Player {
         return this.board;
     }
 
-
-
-
-
-        //if >= 2 different adjacent corporations, initiate acquisition
-
-        // if 1 adjcant corporation, inserted tile enlarges corporation. The
-        // corporation also incorporates any adjacent generics.
-
-        // if at least 1 adjacent generic, found corporation if any remain.
-        // The new corporation incorporates any adjacent generics.
-
-        // else insert 'G' at coordinate
-
-
-        // Insert generic.
-        // board.tileSpaces[coordinate] = 'G';  // 'G' stands for 'Generic'.
-        // return board;
-
-
     buy(number, corporationSymbol){
 
     }
@@ -261,6 +250,23 @@ class Player {
 }
 
 class Helper {
+
+    static isEmpty(array) {
+        if (Array.isArray(array) && array.length === 0){
+            console.log("empty = " + array);
+            return true;
+        }
+        else if (Array.isArray(array) && array.length > 0){
+            console.log("not empty = " + array);
+            return false;
+        }
+    }
+
+    static getDifferenceBetween(first_arr, second_arr=[]){
+        let difference = first_arr.filter(x => !second_arr.includes(x));
+        difference.sort();
+        return difference;
+    }
 
     static getCoordinateOf(tilePosition){
         /* Converts tilePosition (e.g., A1, B2) to coordinates (0, 13). */
@@ -300,20 +306,6 @@ class Helper {
             coordinates.push(boardPosition + 12)
         }
         return coordinates;
-    }
-
-
-
-    static prompt(question, callback) {
-        const stdin = process.stdin,
-            stdout = process.stdout;
-
-        stdin.resume();
-        stdout.write(question);
-
-        stdin.once('data', function (data) {
-            callback(data.toString().trim());
-        });
     }
 }
 
@@ -396,7 +388,6 @@ class Prices {
         }
 }
 
-
 class Display {
     constructor(board) {
         this.board = board;
@@ -411,11 +402,63 @@ class Display {
     }
 }
 
+// Game HTMl testing
 
-module.exports =  {
-    Board,
-    Prices,
-    Player,
-    Helper
+let board = new Board();
+let players = [
+    new Player(board, 'Mendeval', 4000),
+    new Player(board, 'Alphi', 4000),
+    new Player(board, 'Paulson', 4000),
+    new Player(board, 'Tuyti', 4000)
+];
 
-};
+
+function drawPlayers(){
+    let namesPlace = document.getElementById('player-information');
+    for (let i = 0; i < players.length; i++){
+        let para = document.createElement("P");
+        para.innerHTML = `${players[i].name} has ${players[i].money} money`;
+        namesPlace.appendChild(para)
+    }
+}
+
+// Todo next: Style the grid. Change the inner text to buttons. Refactor the names.
+
+function drawBoard(){
+    let boardContainer = document.createElement("div");
+    boardContainer.className = "board-container";
+    const letters = Object.freeze(
+        ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    );
+    let v = 12;
+    for(let rowNumber = 0; rowNumber < 9; rowNumber++){
+        let row = document.createElement("div");
+        row.className = "row";
+        for(let columnNumber = 1; columnNumber < 13; columnNumber++){
+            let cell = document.createElement("button");
+            cell.id = (rowNumber * v) + columnNumber;
+            cell.className = "board-space";
+            cell.innerText = `${columnNumber}${letters[rowNumber]}`;
+            row.appendChild(cell);
+        }
+        boardContainer.append(row);
+    }
+    document.getElementById("boardPlace").appendChild(boardContainer);
+}
+
+
+
+// module.exports =  {
+//     Board,
+//     Prices,
+//     Player,
+//     Helper
+//
+// };
+
+function loadGame(){
+    drawBoard();
+    drawPlayers()
+}
+
+window.addEventListener('load', loadGame);
