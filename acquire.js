@@ -1,6 +1,4 @@
 
-// Todo: Draw the board!
-
 class Board {
     constructor() {
         /*
@@ -127,8 +125,6 @@ class Board {
         );
     }
 
-
-
     findActiveCorporations() {
         let existingCorporations = [];
         for (let i = 0; i < this.tileSpaces.length; i++) {
@@ -190,8 +186,6 @@ class Board {
         return this.getAdjacentCorporations(position)[0];
     }
 
-
-
     foundCorporation(tilePosition, corpSymbol) {
         let central = Helper.getCoordinateOf(tilePosition);
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
@@ -206,7 +200,6 @@ class Board {
     }
 
 }
-
 
 class Player {
     constructor(board, name, money) {  // Default money at game start is 6000
@@ -402,7 +395,7 @@ class Display {
     }
 }
 
-// Game HTMl testing
+// Game page testing
 
 let board = new Board();
 let players = [
@@ -413,37 +406,52 @@ let players = [
 ];
 
 
-function drawPlayers(){
+function drawPlayers(players){
     let namesPlace = document.getElementById('player-information');
     for (let i = 0; i < players.length; i++){
-        let para = document.createElement("P");
-        para.innerHTML = `${players[i].name} has ${players[i].money} money`;
-        namesPlace.appendChild(para)
+        let playerInfo = document.createElement("P");
+        playerInfo.id = `${players[i].name}`;
+        playerInfo.innerHTML = `${players[i].name} has ${players[i].money} money`;
+        namesPlace.appendChild(playerInfo)
     }
 }
 
-// Todo next: Style the grid. Change the inner text to buttons. Refactor the names.
-
+// Todo: refactor the below. It is too big currently.
 function drawBoard(){
     let boardContainer = document.createElement("div");
     boardContainer.className = "board-container";
     const letters = Object.freeze(
         ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
     );
-    let v = 12;
+    let rowLength = 12;
     for(let rowNumber = 0; rowNumber < 9; rowNumber++){
         let row = document.createElement("div");
         row.className = "row";
         for(let columnNumber = 1; columnNumber < 13; columnNumber++){
-            let cell = document.createElement("button");
-            cell.id = (rowNumber * v) + columnNumber;
-            cell.className = "board-space";
-            cell.innerText = `${columnNumber}${letters[rowNumber]}`;
-            row.appendChild(cell);
+            let tilespace = document.createElement("button");
+            tilespace.id = rowNumber * rowLength + columnNumber;
+            tilespace.className = "board-space";
+            tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
+            tilespace.onclick = function() {
+                placeTile(tilespace.id);
+            };
+            row.appendChild(tilespace);
         }
         boardContainer.append(row);
     }
     document.getElementById("boardPlace").appendChild(boardContainer);
+}
+
+
+function takeMoneyFrom(player){
+    player.money -= 100;
+    let mendevalInfo = document.getElementById('Mendeval');
+    mendevalInfo.innerHTML = `${players[0].name} has ${players[0].money} money`;
+}
+
+function placeTile(tile_id){
+    let tileSpace = document.getElementById(tile_id);
+    tileSpace.style.backgroundColor= "#FF8D6F";
 }
 
 
@@ -458,7 +466,7 @@ function drawBoard(){
 
 function loadGame(){
     drawBoard();
-    drawPlayers()
+    drawPlayers(players)
 }
 
 window.addEventListener('load', loadGame);

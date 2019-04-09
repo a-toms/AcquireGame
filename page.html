@@ -22,9 +22,8 @@ Acquire Game
 <h2>Corporations</h2>
         <div class="btn-group">
             <button style="width:10%">Tower</button>
-            <button>Continental</button>
+            <button id='C' onclick="placeTile('C')">Continental</button>
             <button>Worldwide</button>
-            <button>Button</button>
             <button>Imperial</button>
             <button>Festival</button>
             <button>Sackson</button>
@@ -35,6 +34,7 @@ Acquire Game
 
 
 <p id='player-information'></p>
+<button onclick="takeMoneyFrom(players[0])">Take money from Mendeval</button>
 
 <script src="acquire.js"></script>
 </body>

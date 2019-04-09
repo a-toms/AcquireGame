@@ -1,5 +1,6 @@
 .board-container {
     background-color: #cbfff7;
+    background-color: #cbfff7;
     margin: 10px;
 
 
@@ -10,9 +11,9 @@
 }
 
 .row button {
-    background-color: #3b5385; /* Green background */
+    background-color: #e5e6ff; /* Green background */
     border: 1px solid #101744; /* Green border */
-    color: white; /* White text */
+    color: black; /* White text */
     cursor: pointer; /* Pointer/hand icon */
     float: snap; /* Float the buttons side by side */
     font-size: large;
