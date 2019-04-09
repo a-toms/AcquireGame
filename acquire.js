@@ -423,18 +423,29 @@ function showPlayers(){
 
 }
 
+// function drawBoard(){
+//     let container = document.getElementById('grid-container');
+//     for(let i = 0; i < 5; i++) {
+//         let newDiv = document.createElement("<div>1<div>");
+//         container.appendChild(newDiv);
+//     }
+// }
+
 function drawBoard(){
-    let grid = document.getElementById('grid-container');
-    // for(let i = 0; i < 5; i++) {
-    //     // let gridItem = document.createElement('div');
-    //     //     gridItem.className = `grid-item-${i}`;
-    //     //     gridItem.textContent = i;
-    //     //     grid.appendChild(gridItem);
-    //     // }
+    let v = 12;
+    for(var i = 0; i < 12; i++){
+        var row = document.createElement("div");
+        row.className = "row";
+        for(var x = 1; x <= v; x++){
+            var cell = document.createElement("div");
+            cell.className = "gridsquare";
+            cell.innerText = (i * v) + x;
+            row.appendChild(cell);
+        }
+        document.getElementById("code").appendChild(row);
+    }
 
 }
-
-
 
 // module.exports =  {
 //     Board,
@@ -446,4 +457,4 @@ function drawBoard(){
 
 
 
-window.addEventListener('load', drawBoard);
+window.addEventListener('load', drawBoard());
