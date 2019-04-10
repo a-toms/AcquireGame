@@ -48,8 +48,6 @@ button:focus {
 }
 
 .btn-group button {
-    background-color: #4CAF50; /* Green background */
-    border: 1px solid green; /* Green border */
     color: white; /* White text */
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
@@ -57,7 +55,7 @@ button:focus {
 }
 
 .btn-group button:active{
-    opacity:0.5;
+    opacity:0.6;
     transition:opacity 0s;
     /* could show color/s of potential acquisition when hovering over button */
 }
