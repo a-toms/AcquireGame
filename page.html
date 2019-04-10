@@ -11,18 +11,23 @@ Acquire Game
 <h2 >Board</h2>
 <div id="boardPlace"></div>
 
-<h2>Corporations</h2>
-
-
+<h3>Buy
 <div class="btn-group">
-    <button style="background-color: lightslategrey">Tower</button>
-    <button style="background-color: red">Continental</button>
-    <button style="background-color: rebeccapurple">Worldwide</button>
-    <button style="background-color: goldenrod">Imperial</button>
-    <button style="background-color: forestgreen">Festival</button>
-    <button style="background-color: darkorange">Sackson</button>
-    <button style="background-color: cornflowerblue">American</button>
+    <button id='T stock' onclick="addStock(id)" style="background-color: lightslategrey">Tower [price]</button>
+    <button id='C stock' onclick="addStock(id)" style="background-color: red">Continental</button>
+    <button id='W stock' onclick="addStock(id)" style="background-color: rebeccapurple">Worldwide</button>
+    <button id='I stock' onclick="addStock(id)" style="background-color: goldenrod">Imperial</button>
+    <button id='F stock' onclick="addStock(id)" style="background-color: forestgreen">Festival</button>
+    <button id='S stock' onclick="addStock(id)" style="background-color: darkorange">Sackson</button>
+    <button id='A stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
 </div>
+    <div>
+        Current order: $900 (2 Tower, 1 Festival)
+    </div>
+    <div>
+        <button id='buy stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
+    </div>
+    </h3>
 
 // Todo: Show player's tiles below.
 <h2>Player</h2>

@@ -303,7 +303,7 @@ class Helper {
 }
 
 
-class Prices {
+class Stocks {
     constructor(board) {
         this.board = board;
         let lowest = Object.freeze({
@@ -414,13 +414,38 @@ function drawBoard(){
             tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
             tilespace.onclick = function() {
                 placeTile(tilespace.id);
-                placeTile(tilespace.id);
             };
             row.appendChild(tilespace);
         }
         boardContainer.append(row);
     }
     document.getElementById("boardPlace").appendChild(boardContainer);
+}
+
+
+// Todo: complete addStock. Integrate within Stocks class.
+//  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
+let availableStocks = {
+    'W' : 1,
+    'T' : 3
+};
+
+let shoppingBasket = [];
+
+function addStock(id){
+    let stockSymbol = id.charAt(0);
+    if (availableStocks[stockSymbol] > 0 ){
+        console.log("Bought 1 " + stockSymbol);
+        availableStocks[stockSymbol] -= 1;
+        shoppingBasket.push(stockSymbol);
+    }
+    else if (availableStocks[stockSymbol] <= 0){
+        console.log("No " + stockSymbol + " available to buy")
+    }
+}
+
+function buyStock(){
+    // Execute shopping basket transactions.
 }
 
 
@@ -440,7 +465,7 @@ function placeTile(tileId){
 
 // module.exports =  {
 //     Board,
-//     Prices,
+//     Stocks,
 //     Player,
 //     Helper
 //
@@ -450,5 +475,5 @@ function loadGame(){
     drawBoard();
     drawPlayers(players)
 }
-
+//
 window.addEventListener('load', loadGame);
