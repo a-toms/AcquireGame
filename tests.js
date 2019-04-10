@@ -102,7 +102,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function (assert) {
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 2);
 
         assert.equal(
@@ -114,7 +114,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 3);
 
         assert.equal(
@@ -126,7 +126,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 4);
 
         assert.equal(
@@ -138,7 +138,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 5);
 
         assert.equal(
@@ -150,7 +150,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 6);
 
         assert.equal(
@@ -162,7 +162,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 11);
 
         assert.equal(
@@ -174,7 +174,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 21);
 
         assert.equal(
@@ -186,7 +186,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 31);
 
         assert.equal(
@@ -198,7 +198,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('S', 41);
 
         assert.equal(
@@ -210,7 +210,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get lowestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('W', 41);
 
         assert.equal(
@@ -222,7 +222,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('F', 2);
 
         assert.equal(
@@ -234,7 +234,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('I', 11);
 
         assert.equal(
@@ -246,7 +246,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('A', 42);
 
         assert.equal(
@@ -258,7 +258,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('C', 2);
 
         assert.equal(
@@ -270,7 +270,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Prices(testBoard);
+        let prices = new game.Stocks(testBoard);
         testBoard._insertTiles('T', 42);
 
         assert.equal(

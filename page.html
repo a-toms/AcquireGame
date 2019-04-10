@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Acquire</title>
-
     <link rel="stylesheet" href="acquireStyleSheet.css">
-
-
-
 </head>
 Acquire Game
 <body>
 
-
-
-
 <h2 >Board</h2>
-
 <div id="boardPlace"></div>
 
-<h2>Corporations</h2>
-        <div class="btn-group">
-            <button style="width:10%">Tower</button>
-            <button>Continental</button>
-            <button>Worldwide</button>
-            <button>Button</button>
-            <button>Imperial</button>
-            <button>Festival</button>
-            <button>Sackson</button>
-            <button>American</button>
-        </div>
+<h3>Buy
+<div class="btn-group">
+    <button id='T stock' onclick="addStock(id)" style="background-color: lightslategrey">Tower [price]</button>
+    <button id='C stock' onclick="addStock(id)" style="background-color: red">Continental</button>
+    <button id='W stock' onclick="addStock(id)" style="background-color: rebeccapurple">Worldwide</button>
+    <button id='I stock' onclick="addStock(id)" style="background-color: goldenrod">Imperial</button>
+    <button id='F stock' onclick="addStock(id)" style="background-color: forestgreen">Festival</button>
+    <button id='S stock' onclick="addStock(id)" style="background-color: darkorange">Sackson</button>
+    <button id='A stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
+</div>
+    <div>
+        Current order: $900 (2 Tower, 1 Festival)
+    </div>
+    <div>
+        <button id='buy stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
+    </div>
+    </h3>
 
-<h2>Players</h2>
-
-
+// Todo: Show player's tiles below.
+<h2>Player</h2>
 <p id='player-information'></p>
 
 <script src="acquire.js"></script>
