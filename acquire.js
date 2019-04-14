@@ -354,6 +354,9 @@ class Stocks {
 
     getStockPriceOf(corporation) {
         let numberOfTiles = this.board.countNumberOf(corporation);
+        if (numberOfTiles === 0){
+            return 0;
+        }
         if (numberOfTiles <= 5) {
             return this[corporation][`${numberOfTiles}`];
         }
@@ -426,14 +429,22 @@ function drawBoard(){
 // Todo: complete addStock. Integrate within Stocks class.
 //  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 let availableStocks = {
-    'W' : 1,
-    'T' : 3
+    'w' : 1,
+    't' : 3
+};
+
+
+let prices = {
+    'w': 1000,
+    't': 600
 };
 
 let shoppingBasket = [];
 
 function addStock(id){
+    console.log(id);
     let stockSymbol = id.charAt(0);
+    console.log('Show');
     if (availableStocks[stockSymbol] > 0 ){
         console.log("Bought 1 " + stockSymbol);
         availableStocks[stockSymbol] -= 1;
@@ -447,6 +458,7 @@ function addStock(id){
 function buyStock(){
     // Execute shopping basket transactions.
 }
+
 
 
 function takeMoneyFrom(player){
@@ -471,9 +483,25 @@ function placeTile(tileId){
 //
 // };
 
+function showPrice(s){
+    idString = 't-stock';
+    let stock = document.getElementById(idString);
+    stock.textContent = idString + '\n' + prices[idString.charAt(0)]
+    console.log(stock);
+
+
+}
+
+
+// GAME ///
+
 function loadGame(){
+    let stocks = new Stocks();
+    console.log(stocks.getStockPriceOf('C'));
     drawBoard();
-    drawPlayers(players)
+    drawPlayers(players);
+    showPrice();
+
 }
 //
 window.addEventListener('load', loadGame);
