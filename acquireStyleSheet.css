@@ -7,7 +7,7 @@
 .columns-container {
     margin: auto;
     width: 90%;
-    height: 10%;
+    overflow: hidden;
 }
 
 .columns-container .column-left {
