@@ -481,8 +481,9 @@ function placeTile(tileId){
 function showPrice(idString, stockLedger){
     let stock = document.getElementById(idString);
     let corporateSymbol = idString.toUpperCase().charAt(0);
-    console.log(stockLedger.getStockPriceOf(corporateSymbol));
-    console.log(stock);
+    let price = stockLedger.getStockPriceOf(corporateSymbol);
+    stock.getElementsByClassName("priceShown")[0].textContent = price;
+
 
 
 }
@@ -490,12 +491,12 @@ function showPrice(idString, stockLedger){
 
 function showPrices(stockLedger){
     showPrice('t-stock', stockLedger);
-    showPrice('c-stock', stockLedger);
-    showPrice('w-stock', stockLedger);
-    showPrice('i-stock', stockLedger);
-    showPrice('f-stock', stockLedger);
-    showPrice('s-stock', stockLedger);
-    showPrice('a-stock', stockLedger);
+    // showPrice('c-stock', stockLedger);
+    // showPrice('w-stock', stockLedger);
+    // showPrice('i-stock', stockLedger);
+    // showPrice('f-stock', stockLedger);
+    // showPrice('s-stock', stockLedger);
+    // showPrice('a-stock', stockLedger);
 // Todo: complete showPrices to display
 
 }
@@ -506,7 +507,7 @@ function showPrices(stockLedger){
 function loadGame(){
     let board = new Board();
     let stocks = new Stocks(board);
-    board._insertTiles('T', 3);
+    board._insertTiles('T', 120);
     showPrices(stocks);
     drawBoard();
     drawPlayers(players);
