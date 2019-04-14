@@ -102,6 +102,31 @@ button:focus {
     display: table;
 }
 
+#t-stock{
+    background-color: lightslategrey;
+}
 
+#c-stock{
+    background-color: red;
+}
 
+#w-stock{
+    background-color: rebeccapurple;
+}
 
+#i-stock{
+    background: goldenrod;
+}
+
+#f-stock{
+    background-color: forestgreen;
+}
+
+#s-stock{
+    background-color: darkorange;
+}
+
+#a-stock{
+    background-color: cornflowerblue;
+
+}

@@ -13,13 +13,13 @@ Acquire Game
 
 <div class="stocks-order">
     <div class="stock-btn-group">
-        <button id='T stock' onclick="addStock(id)" style="background-color: lightslategrey">Tower [price]</button>
-        <button id='C stock' onclick="addStock(id)" style="background-color: red">Continental</button>
-        <button id='W stock' onclick="addStock(id)" style="background-color: rebeccapurple">Worldwide</button>
-        <button id='I stock' onclick="addStock(id)" style="background-color: goldenrod">Imperial</button>
-        <button id='F stock' onclick="addStock(id)" style="background-color: forestgreen">Festival</button>
-        <button id='S stock' onclick="addStock(id)" style="background-color: darkorange">Sackson</button>
-        <button id='A stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
+        <button id='t-stock' onclick="addStock(id)">Tower [price]</button>
+        <button id='c-stock' onclick="addStock(id)">Continental</button>
+        <button id='w-stock' onclick="addStock(id)">Worldwide</button>
+        <button id='i-stock' onclick="addStock(id)">Imperial</button>
+        <button id='f-stock' onclick="addStock(id)">Festival</button>
+        <button id='s-stock' onclick="addStock(id)">Sackson</button>
+        <button id='a-stock' onclick="addStock(id)">American</button>
     </div>
 </div>
 
@@ -27,7 +27,7 @@ Acquire Game
     <div class="column-left">
         <div>Current order:</div>
         <div>$900 (2 Tower, 1 Festival)</div>
-        <button id='buy stock' onclick="addStock(id)" style="background-color: cornflowerblue">Buy</button>
+        <button id='buy-stock' onclick="addStock(id)" style="background-color: cornflowerblue">Buy</button>
     </div>
     <div class="column-right">
             NAME
@@ -39,6 +39,7 @@ Acquire Game
 
 
 
+<button id='end-turn' onclick="addStock(id)" style="background-color: cornflowerblue">End turn</button>
 <h2>Player</h2>
 <div id='player-information'></div>
 
