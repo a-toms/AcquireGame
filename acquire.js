@@ -396,7 +396,7 @@ function drawPlayers(players){
     }
 }
 
-// TD later: refactor the below. It is too big currently.
+// Todo: TD later: refactor the below. It is too big currently.
 function drawBoard(){
     let boardContainer = document.createElement("div");
     boardContainer.className = "board-container";
@@ -426,8 +426,14 @@ function drawBoard(){
 // Todo: complete addStock. Integrate within Stocks class.
 //  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 let availableStocks = {
-    'W' : 1,
-    'T' : 3
+    'w' : 1,
+    't' : 3
+};
+
+
+let prices = {
+    'w': 1000,
+    't': 600
 };
 
 let shoppingBasket = [];
@@ -447,6 +453,7 @@ function addStock(id){
 function buyStock(){
     // Execute shopping basket transactions.
 }
+
 
 
 function takeMoneyFrom(player){
@@ -471,9 +478,40 @@ function placeTile(tileId){
 //
 // };
 
+function showPrice(idString, stockLedger){
+    let stock = document.getElementById(idString);
+    let corporateSymbol = idString.toUpperCase().charAt(0);
+    let price = stockLedger.getStockPriceOf(corporateSymbol);
+    stock.getElementsByClassName("priceShown")[0].textContent = price;
+
+
+
+}
+
+
+function showPrices(stockLedger){
+    showPrice('t-stock', stockLedger);
+    // showPrice('c-stock', stockLedger);
+    // showPrice('w-stock', stockLedger);
+    // showPrice('i-stock', stockLedger);
+    // showPrice('f-stock', stockLedger);
+    // showPrice('s-stock', stockLedger);
+    // showPrice('a-stock', stockLedger);
+// Todo: complete showPrices to display
+
+}
+
+
+// GAME ///
+
 function loadGame(){
+    let board = new Board();
+    let stocks = new Stocks(board);
+    board._insertTiles('T', 120);
+    showPrices(stocks);
     drawBoard();
-    drawPlayers(players)
+    drawPlayers(players);
+
 }
 //
 window.addEventListener('load', loadGame);

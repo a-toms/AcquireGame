@@ -1,9 +1,28 @@
 .board-container {
     background-color: #cbfff7;
-    margin: 10px;
-
-
+    margin: 2%;
 }
+
+
+.columns-container {
+    margin: auto;
+    width: 90%;
+    overflow: hidden;
+}
+
+.column-left {
+    background-color: #defffd;
+    width: 40%;
+    float: left;
+}
+
+.column-right {
+    float: right;
+    min-height: 100%;
+    width: 50%;
+    background-color: red;
+}
+
 .row {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
@@ -28,54 +47,93 @@
     border-right: none; /* Prevent double borders */
 }
 
-/* Clear floats (clearfix hack) */
 .row:after {
+    /* Clear floats (clearfix hack) */
     content: "";
     clear: both;
     display: table;
+
 }
 
-/* Ripple effect */
 .row button:active{
     opacity:0.5;
     transition:opacity 0s;
+    /* Ripple effect */
     /* could show color/s of potential acquisition when hovering over button */
 }
 
-/* Remove blue button outline after clicking in chrome */
 button:focus {
+    /* Remove blue button outline after clicking in chrome */
     outline:0;
 }
 
-.btn-group button {
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    float: left; /* Float the buttons side by side */
+.stock-btn-group {
+    padding: 5%;
 }
 
-.btn-group button:active{
+.stock-btn-group button {
+    width: 13%;
+    color: white;
+    padding: 1% 1%;
+    cursor: pointer;
+}
+
+.stock-btn-group button:active{
     opacity:0.6;
     transition:opacity 0s;
     /* could show color/s of potential acquisition when hovering over button */
 }
 
-/* Add a background color on hover */
-.btn-group button:hover {
+.stock-btn-group button:hover {
+    /* Add a background color on hover */
     background-color: #3e8e41;
 }
 
-.btn-group button:not(:last-child) {
+.stock-btn-group button:not(:last-child) {
     border-right: none; /* Prevent double borders */
 }
 
 /* Clear floats (clearfix hack) */
-.btn-group:after {
+.stock-btn-group:after {
     content: "";
     clear: both;
     display: table;
 }
 
+#t-stock{
+    background-color: lightslategrey;
+}
 
+#c-stock{
+    background-color: red;
+}
 
+#w-stock{
+    background-color: rebeccapurple;
+}
 
+#i-stock{
+    background: goldenrod;
+}
+
+#f-stock{
+    background-color: forestgreen;
+}
+
+#s-stock{
+    background-color: darkorange;
+}
+
+#a-stock{
+    background-color: cornflowerblue;
+}
+
+#end-turn{
+    background-color: deeppink;
+    margin: auto;
+    display: block;
+    padding: 1% 1%;
+    height: 50px;
+    width: 50px;
+
+}
