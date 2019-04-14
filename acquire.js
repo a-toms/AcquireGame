@@ -478,12 +478,25 @@ function placeTile(tileId){
 //
 // };
 
-function showPrice(s){
-    idString = 't-stock';
+function showPrice(idString, stockLedger){
     let stock = document.getElementById(idString);
-    stock.textContent = idString + '\n' + prices[idString.charAt(0)];
+    let corporateSymbol = idString.toUpperCase().charAt(0);
+    console.log(stockLedger.getStockPriceOf(corporateSymbol));
     console.log(stock);
 
+
+}
+
+
+function showPrices(stockLedger){
+    showPrice('t-stock', stockLedger);
+    showPrice('c-stock', stockLedger);
+    showPrice('w-stock', stockLedger);
+    showPrice('i-stock', stockLedger);
+    showPrice('f-stock', stockLedger);
+    showPrice('s-stock', stockLedger);
+    showPrice('a-stock', stockLedger);
+// Todo: complete showPrices to display
 
 }
 
@@ -493,10 +506,10 @@ function showPrice(s){
 function loadGame(){
     let board = new Board();
     let stocks = new Stocks(board);
-    console.log(stocks.getStockPriceOf('C'));
+    board._insertTiles('T', 3);
+    showPrices(stocks);
     drawBoard();
     drawPlayers(players);
-    showPrice();
 
 }
 //
