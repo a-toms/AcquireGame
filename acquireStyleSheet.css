@@ -1,19 +1,26 @@
 .board-container {
     background-color: #cbfff7;
-    margin: 10px;
+    margin: 2%;
 }
 
+
 .columns-container {
-    width: 50%;
+    margin: auto;
+    width: 90%;
+    height: 10%;
 }
 
 .columns-container .column-left {
-    background-color: blue;
+    text-align: center;
+    background-color: #defffd;
+    width: 50%;
     float: left;
 }
 
 .columns-container .column-right {
+    text-align: center;
     float: right;
+    width: 50%;
     background-color: red;
 }
 
