@@ -13,13 +13,14 @@
 .columns-container .column-left {
     text-align: center;
     background-color: #defffd;
-    width: 50%;
+    width: 40%;
     float: left;
 }
 
 .columns-container .column-right {
     text-align: center;
     float: right;
+    min-height: 100%;
     width: 50%;
     background-color: red;
 }
@@ -67,30 +68,30 @@ button:focus {
     outline:0;
 }
 
-.btn-group button {
+.stock-btn-group button {
     color: white; /* White text */
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     float: left; /* Float the buttons side by side */
 }
 
-.btn-group button:active{
+.stock-btn-group button:active{
     opacity:0.6;
     transition:opacity 0s;
     /* could show color/s of potential acquisition when hovering over button */
 }
 
-/* Add a background color on hover */
-.btn-group button:hover {
+.stock-btn-group button:hover {
+    /* Add a background color on hover */
     background-color: #3e8e41;
 }
 
-.btn-group button:not(:last-child) {
+.stock-btn-group button:not(:last-child) {
     border-right: none; /* Prevent double borders */
 }
 
 /* Clear floats (clearfix hack) */
-.btn-group:after {
+.stock-btn-group:after {
     content: "";
     clear: both;
     display: table;
