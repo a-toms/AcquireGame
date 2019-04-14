@@ -11,27 +11,33 @@ Acquire Game
 <h2 >Board</h2>
 <div id="boardPlace"></div>
 
-<h3>Buy
-<div class="btn-group">
-    <button id='T stock' onclick="addStock(id)" style="background-color: lightslategrey">Tower [price]</button>
-    <button id='C stock' onclick="addStock(id)" style="background-color: red">Continental</button>
-    <button id='W stock' onclick="addStock(id)" style="background-color: rebeccapurple">Worldwide</button>
-    <button id='I stock' onclick="addStock(id)" style="background-color: goldenrod">Imperial</button>
-    <button id='F stock' onclick="addStock(id)" style="background-color: forestgreen">Festival</button>
-    <button id='S stock' onclick="addStock(id)" style="background-color: darkorange">Sackson</button>
-    <button id='A stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
-</div>
-    <div>
-        Current order: $900 (2 Tower, 1 Festival)
+<div>Buy
+    <div class="btn-group">
+        <button id='T stock' onclick="addStock(id)" style="background-color: lightslategrey">Tower [price]</button>
+        <button id='C stock' onclick="addStock(id)" style="background-color: red">Continental</button>
+        <button id='W stock' onclick="addStock(id)" style="background-color: rebeccapurple">Worldwide</button>
+        <button id='I stock' onclick="addStock(id)" style="background-color: goldenrod">Imperial</button>
+        <button id='F stock' onclick="addStock(id)" style="background-color: forestgreen">Festival</button>
+        <button id='S stock' onclick="addStock(id)" style="background-color: darkorange">Sackson</button>
+        <button id='A stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
     </div>
-    <div>
+</div>
+
+<div class="columns-container">
+    <div class="column-left">
+        Current order:
+        $900 (2 Tower, 1 Festival)
         <button id='buy stock' onclick="addStock(id)" style="background-color: cornflowerblue">American</button>
     </div>
-    </h3>
+    <div class="column-right">
+        Player inventory
+    </div>
+</div>
 
-// Todo: Show player's tiles below.
+
 <h2>Player</h2>
-<p id='player-information'></p>
+<div id='player-information'></div>
+
 
 <script src="acquire.js"></script>
 </body>

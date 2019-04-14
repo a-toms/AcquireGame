@@ -1,9 +1,22 @@
 .board-container {
     background-color: #cbfff7;
     margin: 10px;
-
-
 }
+
+.columns-container {
+    width: 50%;
+}
+
+.columns-container .column-left {
+    background-color: blue;
+    float: left;
+}
+
+.columns-container .column-right {
+    float: right;
+    background-color: red;
+}
+
 .row {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
