@@ -116,10 +116,6 @@ class Board {
     }
 
     getNonActiveCorporations() {
-
-        console.log(Helper.getDifferenceBetween(
-            this.corporationSymbols, this.findActiveCorporations()
-        ));
         return Helper.getDifferenceBetween(
             this.corporationSymbols, this.findActiveCorporations()
         );
@@ -354,6 +350,10 @@ class Stocks {
 
     getStockPriceOf(corporation) {
         let numberOfTiles = this.board.countNumberOf(corporation);
+        if (this.board.getNonActiveCorporations().includes(corporation)) {
+            // Corporation is not yet founded. Display the starting price.
+            return this[corporation][2];
+        }
         if (numberOfTiles <= 5) {
             return this[corporation][`${numberOfTiles}`];
         }
@@ -423,8 +423,7 @@ function drawBoard(){
 }
 
 
-// Todo: complete addStock. Integrate within Stocks class.
-//  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
+
 let availableStocks = {
     'w' : 1,
     't' : 3
@@ -478,14 +477,12 @@ function placeTile(tileId){
 //
 // };
 
+
 function showPrice(idString, stockLedger){
     let stock = document.getElementById(idString);
     let corporateSymbol = idString.toUpperCase().charAt(0);
-    let price = stockLedger.getStockPriceOf(corporateSymbol);
-    stock.getElementsByClassName("priceShown")[0].textContent = price;
-
-
-
+    let priceToDisplay = stockLedger.getStockPriceOf(corporateSymbol);
+    stock.getElementsByClassName("priceShown")[0].textContent = priceToDisplay;
 }
 
 
@@ -497,18 +494,20 @@ function showPrices(stockLedger){
     showPrice('f-stock', stockLedger);
     showPrice('s-stock', stockLedger);
     showPrice('a-stock', stockLedger);
-// Todo: complete showPrices to display
 
 }
 
 
 // GAME ///
 
+// Todo: complete addStock(). Integrate addStock() to the Stocks class.
+//  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
+
 function loadGame(){
     let board = new Board();
     let stocks = new Stocks(board);
+    board._insertTiles('S', 12);
     board._insertTiles('T', 3);
-    // board._insertTiles('S', 12);
     showPrices(stocks);
     drawBoard();
     drawPlayers(players);
