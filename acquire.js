@@ -503,6 +503,8 @@ function showPrices(stockLedger){
 // Todo: complete addStock(). Integrate addStock() to the Stocks class.
 //  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 
+// Show stock colour as grayscale when unavailable.
+
 function loadGame(){
     let board = new Board();
     let stocks = new Stocks(board);
