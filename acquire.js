@@ -47,7 +47,7 @@ class Board {
     }
 
     replaceTiles(replacement, coordinates){
-        /* replacement: str coordinates: array[int] or int */
+        /* replacement: str coordinates: array[number] or number */
         if (Array.isArray(coordinates)){
             for (let i = 0; i < coordinates.length; i++) {
                 this.tileSpaces[coordinates[i]] = replacement;
@@ -94,7 +94,6 @@ class Board {
             }
         }
         adjacentGenericCoordinates.sort(function(a, b){return a - b});
-        console.log("adj generic coordinates = " + adjacentGenericCoordinates);
         return adjacentGenericCoordinates;
     }
 
@@ -102,7 +101,6 @@ class Board {
         let capacity = !Helper.isEmpty(
             this.getCoordinatesOfGenericTilesAdjacentTo(tilePosition)
         );
-        console.log("empty = " + capacity);
         return capacity;
     }
 
@@ -342,9 +340,18 @@ class Stocks {
         this.A = middle;
         this.C = highest;
         this.T = highest;
+        this.availableStocks = {
+            'W': 10,
+            'S': 10,
+            'F': 10,
+            'I': 10,
+            'A': 10,
+            'C': 10,
+            'T': 10,
+        }
     }
 
-    getShareholderBonus(corporation){
+    getShareholderBonus(corporation) {
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
 
@@ -356,22 +363,38 @@ class Stocks {
         }
         if (numberOfTiles <= 5) {
             return this[corporation][`${numberOfTiles}`];
-        }
-        else if (numberOfTiles <= 10){
+        } else if (numberOfTiles <= 10) {
             return this[corporation]['6To10'];
-        }
-        else if (numberOfTiles <= 20){
+        } else if (numberOfTiles <= 20) {
             return this[corporation]['11To20'];
-        }
-        else if (numberOfTiles <= 30){
+        } else if (numberOfTiles <= 30) {
             return this[corporation]['21To30'];
-        }
-        else if (numberOfTiles <= 40){
+        } else if (numberOfTiles <= 40) {
             return this[corporation]['31To40'];
-        }
-        else if (numberOfTiles >= 41)
+        } else if (numberOfTiles >= 41)
             return this[corporation]['41AndOver'];
+    }
+
+
+
+// Todo: continue writing the below. Add test.
+    addStock(id) {
+        const shoppingBasket = [];
+        const stockSymbol = id.charAt(0);
+        if (availableStocks[stockSymbol] > 0) {
+            console.log("Bought 1 " + stockSymbol);
+            availableStocks[stockSymbol] -= 1;
+            shoppingBasket.push(stockSymbol);
+        } else if (availableStocks[stockSymbol] <= 0) {
+            console.log("No " + stockSymbol + " available to buy")
         }
+    }
+
+
+
+
+
+
 }
 
 
@@ -435,19 +458,6 @@ let prices = {
     't': 600
 };
 
-let shoppingBasket = [];
-
-function addStock(id){
-    let stockSymbol = id.charAt(0);
-    if (availableStocks[stockSymbol] > 0 ){
-        console.log("Bought 1 " + stockSymbol);
-        availableStocks[stockSymbol] -= 1;
-        shoppingBasket.push(stockSymbol);
-    }
-    else if (availableStocks[stockSymbol] <= 0){
-        console.log("No " + stockSymbol + " available to buy")
-    }
-}
 
 function buyStock(){
     // Execute shopping basket transactions.
@@ -494,7 +504,6 @@ function showPrices(stockLedger){
     showPrice('f-stock', stockLedger);
     showPrice('s-stock', stockLedger);
     showPrice('a-stock', stockLedger);
-
 }
 
 
