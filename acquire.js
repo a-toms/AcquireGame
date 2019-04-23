@@ -196,7 +196,8 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money) {  // Default money at game start is 6000
+    constructor(board, name, money, stocks) {  // Todo: Move stocks to second position.
+        // Default money at game start is 6000
         this.board = board;
         this.name = name;
         this.money = money;
@@ -215,10 +216,7 @@ class Player {
             this.board.hasGenericTilesAdjacentTo(position) &&
             this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
 
-
-            // s
-            // Todo: get user input of corporation that user wants to found.
-            //  For the above, use canFoundCorporation().
+            // Todo: get user input of corporation that user wants to found from the DOM.
             let symbol = '*'; // todo: Replace with user input.
 
             return this.board.foundCorporation(position, symbol);
@@ -237,7 +235,6 @@ class Player {
 }
 
 class Helper {
-
     static isEmpty(array) {
         if (Array.isArray(array) && array.length === 0){
             console.log("empty = " + array);
@@ -297,7 +294,7 @@ class Helper {
 }
 
 
-class Stocks {
+class StockExchange {
     constructor(board) {
         this.board = board;
         let lowest = Object.freeze({
@@ -357,8 +354,8 @@ class Stocks {
 
     getStockPriceOf(corporation) {
         let numberOfTiles = this.board.countNumberOf(corporation);
+        // Display the starting price if the corporation is not yet founded.
         if (this.board.getNonActiveCorporations().includes(corporation)) {
-            // Corporation is not yet founded. Display the starting price.
             return this[corporation][2];
         }
         if (numberOfTiles <= 5) {
@@ -378,18 +375,20 @@ class Stocks {
 
 
 // Todo: continue writing the below. Add test.
-    addStock(id) {
+    addStockToShoppingBasket(id) {
         const shoppingBasket = [];
         const stockSymbol = id.charAt(0);
-        if (availableStocks[stockSymbol] > 0) {
-            console.log("Bought 1 " + stockSymbol);
-            availableStocks[stockSymbol] -= 1;
+        if (this.availableStocks[stockSymbol] > 0) {
             shoppingBasket.push(stockSymbol);
-        } else if (availableStocks[stockSymbol] <= 0) {
-            console.log("No " + stockSymbol + " available to buy")
+            this.availableStocks[stockSymbol] -= 1;
+            return shoppingBasket;
         }
     }
 
+
+    // function buyStock(){
+    // Execute shopping basket transactions.
+// }
 
 
 
@@ -445,26 +444,6 @@ function drawBoard(){
     document.getElementById("boardPlace").appendChild(boardContainer);
 }
 
-
-
-let availableStocks = {
-    'w' : 1,
-    't' : 3
-};
-
-
-let prices = {
-    'w': 1000,
-    't': 600
-};
-
-
-function buyStock(){
-    // Execute shopping basket transactions.
-}
-
-
-
 function takeMoneyFrom(player){
     player.money -= 100;
     let mendevalInfo = document.getElementById('Mendeval');
@@ -479,13 +458,13 @@ function placeTile(tileId){
 // Todo: Integrate amalgamate placeTile and placeTile.
 
 
-// module.exports =  {
-//     Board,
-//     Stocks,
-//     Player,
-//     Helper
-//
-// };
+module.exports =  {
+    Board,
+    StockExchange: StockExchange,
+    Player,
+    Helper
+
+};
 
 
 function showPrice(idString, stockLedger){
@@ -509,14 +488,14 @@ function showPrices(stockLedger){
 
 // GAME ///
 
-// Todo: complete addStock(). Integrate addStock() to the Stocks class.
+// Todo: complete addStock(). Integrate addStock() to the StockExchange class.
 //  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 
 // Show stock colour as grayscale when unavailable.
 
 function loadGame(){
     let board = new Board();
-    let stocks = new Stocks(board);
+    let stocks = new StockExchange(board);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
     showPrices(stocks);
@@ -525,4 +504,4 @@ function loadGame(){
 
 }
 //
-window.addEventListener('load', loadGame);
+// window.addEventListener('load', loadGame);
