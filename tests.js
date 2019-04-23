@@ -598,10 +598,12 @@ tape('\nHelper actions', function (TC) {
 
 
 tape('\Buy stock after clicking button on page', function (TC) {
+
+    // Todo: Create tape setUp().
     const board = new game.Board();
-    const stocks = new game.StockExchange(board);
-    const player = new game.Player(board, 'Kiaq', 2500, stocks);
-    stocks.availableStocks = {
+    const stockExchange = new game.StockExchange(board);
+    const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+    stockExchange.availableStocks = {
             'W': 0,
             'S': 3,
             'F': 1,
@@ -621,8 +623,21 @@ tape('\Buy stock after clicking button on page', function (TC) {
 
     TC.test('\nClicking on buy causes the player to buy the stocks in' +
         ' the shopping basket', function (assert) {
-        const buttonId = 'a-stock';
+        const board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 0,
+            'S': 3,
+            'F': 1,
+            'I': 1,
+            'A': 1,
+            'C': 1,
+            'T': 1,
+        };
+        const stockPurchaseOrder = {'A': 1, 'S': 2};
         assert.equals(
+            player.buy(
         );
         assert.end();
     });

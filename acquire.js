@@ -196,9 +196,9 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money, stocks) {  // Todo: Move stocks to second position.
-        // Default money at game start is 6000
+    constructor(board, name, money, stockExchange) {  // Todo: Move stocks to second position.
         this.board = board;
+        this.stockExchange = stockExchange;
         this.name = name;
         this.money = money;
         this.stocks = [];
@@ -206,8 +206,6 @@ class Player {
     };
 
     placeTile(position) {
-        // Complete this function.
-
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
         } else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
@@ -218,18 +216,19 @@ class Player {
 
             // Todo: get user input of corporation that user wants to found from the DOM.
             let symbol = '*'; // todo: Replace with user input.
-
             return this.board.foundCorporation(position, symbol);
-
-
         }
         let existing = this.board.findActiveCorporations();
         // Todo: complete
         return this.board;
     }
 
-    buy(number, corporationSymbol){
+    buy(purchaseOrder){
+        // DOM creates an purchaseOrder object.
+        // @param purchaseOrder: Object
 
+        // After pressing 'buy', check that player has enough money. If the player does,
+    // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
     }
 
 }
