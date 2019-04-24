@@ -196,12 +196,12 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money, stockExchange) {  // Todo: Move stocks to second position.
+    constructor(board, name, money, stockExchange) {  // Todo: Move stockPortfolio to second position.
         this.board = board;
         this.stockExchange = stockExchange;
         this.name = name;
         this.money = money;
-        this.stocks = {
+        this.stockPortfolio = {
             'W': 0,
             'S': 0,
             'F': 0,
@@ -231,21 +231,26 @@ class Player {
         return this.board;
     }
 
-    buy(shoppingBasket){
-        // DOM creates an purchaseOrder object.
+    buy(stocks){
+        // DOM creates an object.
         // @param purchaseOrder: Object
 
-        if (!this.areSelectedStocksAllAvailable(shoppingBasket)){
+        if (!this.areSelectedStocksAllAvailable(stocks)){
             return 'Invalid Order'
         }
+        else if (!this.canAfford(stocks)){
+            return 'Invalid Order'
+        }
+        else{
 
+            // Todo: payFor(stocks)
 
-        // if (canAfford)
+            this.receiveFromStockExchange(stocks);
 
-        this.moveStocksToPlayerFrom(shoppingBasket)
+        }
 
         // After pressing 'buy', check that player has enough money. If the player does,
-    // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
+    // lower his money by $X; move the stockPortfolio to him; remove the stockPortfolio from available stockPortfolio.
     }
 
     canAfford(shoppingBasket){
@@ -257,7 +262,6 @@ class Player {
             totalPrice += individualStockPrice;
         }
         return totalPrice <= this.money;
-        // Todo: Return bool if player has enough money to fulfil purchase order.
     }
 
     areSelectedStocksAllAvailable(shoppingBasket){
@@ -273,12 +277,12 @@ class Player {
         return this.stockExchange.availableStocks[corporateSymbol] > 0;
     }
 
-    moveStocksToPlayerFrom(purchaseOrder){
-        // @param purchaseOrder: Object
-        for (let k of Object.keys(purchaseOrder)){
-            this.stocks[k] += purchaseOrder[k];
+    receiveFromStockExchange(purchasedStocks){
+        for (let stockSymbol of Object.keys(purchasedStocks)){
+            this.stockExchange.availableStocks[stockSymbol] -= purchasedStocks[stockSymbol];
+            this.stockPortfolio[stockSymbol] += purchasedStocks[stockSymbol];
         }
-        return this.stocks;
+        return this.stockPortfolio;
     }
 
 }

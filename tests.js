@@ -614,7 +614,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
     };
 
 
-    TC.test('\nClicking on buy causes the player to buy the stocks in' +
+    TC.test('\nClicking on buy causes the player to buy the stockPortfolio in' +
         ' the shopping basket', function (assert) {
 
         // Test setup.
@@ -634,21 +634,21 @@ tape('\Buy stock after clicking button on page', function (TC) {
 
         // The test.
         assert.deepEquals(
-            player.stocks,
+            player.stockPortfolio,
             {'W': 0, 'S': 0, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
-            'The player has no stocks before buying.'
+            'The player has no stockPortfolio before buying.'
         );
         player.buy(stockPurchaseOrder);
         assert.deepEquals(
-            player.stocks,
+            player.stockPortfolio,
             {'W': 1, 'S': 2, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
-            'The player has stocks after buying.'
+            'The player has stockPortfolio after buying.'
         );
         assert.end();
     });
 
 
-    TC.test('\nTest if stocks available', function (assert) {
+    TC.test('\nTest if stockPortfolio available', function (assert) {
         const board = new game.Board();
         const stockExchange = new game.StockExchange(board);
         const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
@@ -718,17 +718,101 @@ tape('\Buy stock after clicking button on page', function (TC) {
             poorer_player.canAfford(basket),
             false,
             `test that canAfford => false because the poorer player does not
-            have enough money to buy the stocks in the basket`
+            have enough money to buy the stocks in the basket.`
         );
         assert.equals(
             richer_player.canAfford(basket),
             true,
-            `test that canAfford => true because the richer player does not
-            have enough money to buy the stocks in the basket`
+            `test that canAfford => true because the richer player 
+            has enough money to buy the stocks in the basket.`
         );
         assert.end();
     });
 
+    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+
+        // Setup.
+        let board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const receivingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 2,
+            'S': 2,
+            'F': 0,
+            'I': 2,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Test assertions.
+        assert.deepEquals(
+            receivingPlayer.stockPortfolio,
+            {
+                'W': 0,
+                'S': 0,
+                'F': 0,
+                'I': 0,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'receivingPlayer has no stocks before the transfer.'
+        );
+        receivingPlayer.receiveFromStockExchange(basket);
+        assert.deepEquals(
+            receivingPlayer.stockPortfolio,
+            {
+                'W': 1,
+                'S': 1,
+                'F': 0,
+                'I': 1,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'receivingPlayer has stocks after receiveFromStockExchange().'
+        );
+        assert.deepEquals(
+            stockExchange.availableStocks,
+            {
+                'W': 1,
+                'S': 1,
+                'F': 0,
+                'I': 1,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'The transferred stocks are no longer in stockExchange.availableStocks.'
+        );
+        assert.end();
+    });
+
+
+    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+
+        // Setup.
+        let board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const receivingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 2,
+            'S': 2,
+            'F': 0,
+            'I': 2,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Test assertions.
+        // Todo: Write payFor() test.
+        assert.end();
+    })
+
         // After pressing 'buy', check that player has enough money. If the player does,
-    // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
+    // lower his money by $X; move the stockPortfolio to him; remove the stockPortfolio from available stockPortfolio.
 });
