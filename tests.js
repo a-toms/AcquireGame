@@ -613,35 +613,84 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'T': 1,
     };
 
-    TC.test('\nTest that ', function (assert) {
-        const buttonId ='a-stock';
-        assert.equals(
 
+    TC.test('\nClicking on buy causes the player to buy the stocks in' +
+        ' the shopping basket', function (assert) {
+
+        // Test setup.
+        const board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 1,
+            'S': 3,
+            'F': 0,
+            'I': 0,
+            'A': 1,
+            'C': 1,
+            'T': 1,
+        };
+        const stockPurchaseOrder = {'W': 1, 'S': 2};
+
+        // The test.
+        assert.deepEquals(
+            player.stocks,
+            {'W': 0, 'S': 0, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
+            'The player has no stocks before buying.'
+        );
+        player.buy(stockPurchaseOrder);
+        assert.deepEquals(
+            player.stocks,
+            {'W': 1, 'S': 2, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
+            'The player has stocks after buying.'
         );
         assert.end();
     });
 
-    TC.test('\nClicking on buy causes the player to buy the stocks in' +
-        ' the shopping basket', function (assert) {
+
+    TC.test('\nTest if stocks available', function (assert) {
         const board = new game.Board();
         const stockExchange = new game.StockExchange(board);
         const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
         stockExchange.availableStocks = {
             'W': 0,
-            'S': 3,
-            'F': 1,
-            'I': 1,
-            'A': 1,
-            'C': 1,
-            'T': 1,
+            'S': 0,
+            'F': 0,
+            'I': 0,
+            'A': 0,
+            'C': 0,
+            'T': 0,
         };
-        const stockPurchaseOrder = {'A': 1, 'S': 2};
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Tests.
         assert.equals(
-            player.buy(
+            player.areSelectedStocksAllAvailable(basket),
+            false,
+            'areSelectedStocksAllAvailable returns false when there are not ' +
+            'at least the number of availableStocks in the StockExchange ' +
+            'as in the shopping basket.'
+        );
+        stockExchange.availableStocks = {
+            'W': 1,
+            'S': 1,
+            'F': 0,
+            'I': 1,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        assert.equals(
+            player.areSelectedStocksAllAvailable(basket),
+            true,
+            'areSelectedStocksAllAvailable returns true when there are ' +
+            'at least the number of availableStocks in the StockExchange ' +
+            'as in the shopping basket.'
         );
         assert.end();
     });
 
-    // After pressing 'buy', check that player has enough money. If the player does,
+
+        // After pressing 'buy', check that player has enough money. If the player does,
     // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
 });

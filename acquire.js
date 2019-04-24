@@ -201,7 +201,15 @@ class Player {
         this.stockExchange = stockExchange;
         this.name = name;
         this.money = money;
-        this.stocks = [];
+        this.stocks = {
+            'W': 0,
+            'S': 0,
+            'F': 0,
+            'I': 0,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
         this.tiles = [];
     };
 
@@ -223,12 +231,50 @@ class Player {
         return this.board;
     }
 
-    buy(purchaseOrder){
+    buy(shoppingBasket){
         // DOM creates an purchaseOrder object.
         // @param purchaseOrder: Object
 
+        if (!this.areSelectedStocksAllAvailable(shoppingBasket)){
+            return 'Invalid Order'
+        }
+
+
+        // if (canAfford)
+
+        this.moveStocksToPlayerFrom(shoppingBasket)
+
         // After pressing 'buy', check that player has enough money. If the player does,
     // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
+    }
+
+    canAfford(shoppingBasket){
+        let price = 0;
+        for (let k of Object.keys(shoppingBasket)) {
+            this.stocks[k] += shoppingBasket[k];
+        }
+        // Todo: Return bool if player has enough money to fulfil purchase order.
+    }
+
+    areSelectedStocksAllAvailable(shoppingBasket){
+        for (let k of Object.keys(shoppingBasket)) {
+            if (!this.isStockAvailable(k)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isStockAvailable(corporateSymbol){
+        return this.stockExchange.availableStocks[corporateSymbol] > 0;
+    }
+
+    moveStocksToPlayerFrom(purchaseOrder){
+        // @param purchaseOrder: Object
+        for (let k of Object.keys(purchaseOrder)){
+            this.stocks[k] += purchaseOrder[k];
+        }
+        return this.stocks;
     }
 
 }
