@@ -691,6 +691,44 @@ tape('\Buy stock after clicking button on page', function (TC) {
     });
 
 
+    TC.test('\nTest canAfford()', function (assert) {
+        let board = new game.Board();
+        board.tileSpaces[0] = 'W';
+        board.tileSpaces[1] = 'W';
+        board.tileSpaces[3] = 'I';
+        board.tileSpaces[4] = 'I';
+        board.tileSpaces[6] = 'S';
+        board.tileSpaces[7] = 'S';
+        const stockExchange = new game.StockExchange(board);
+        const richer_player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        const poorer_player = new game.Player(board, 'Nikilat', 500, stockExchange);
+         stockExchange.availableStocks = {
+            'W': 1,
+            'S': 1,
+            'F': 0,
+            'I': 1,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Tests.
+        assert.equals(
+            poorer_player.canAfford(basket),
+            false,
+            `test that canAfford => false because the poorer player does not
+            have enough money to buy the stocks in the basket`
+        );
+        assert.equals(
+            richer_player.canAfford(basket),
+            true,
+            `test that canAfford => true because the richer player does not
+            have enough money to buy the stocks in the basket`
+        );
+        assert.end();
+    });
+
         // After pressing 'buy', check that player has enough money. If the player does,
     // lower his money by $X; move the stocks to him; remove the stocks from available stocks.
 });

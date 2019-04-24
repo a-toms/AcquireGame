@@ -249,10 +249,14 @@ class Player {
     }
 
     canAfford(shoppingBasket){
-        let price = 0;
-        for (let k of Object.keys(shoppingBasket)) {
-            this.stocks[k] += shoppingBasket[k];
+        let totalPrice = 0;
+        for (let stockSymbol of Object.keys(shoppingBasket)) {
+            let individualStockPrice = this.stockExchange.getStockPriceOf(
+                stockSymbol
+            );
+            totalPrice += individualStockPrice;
         }
+        return totalPrice <= this.money;
         // Todo: Return bool if player has enough money to fulfil purchase order.
     }
 
