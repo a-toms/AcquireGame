@@ -804,7 +804,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         const payingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
         const basket = {'W': 1, 'S': 1, 'I': 1};
 
-
         assert.equals(
             payingPlayer.money,
             2500,
@@ -817,6 +816,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     })
 
-        // After pressing 'buy', check that player has enough money. If the player does,
-    // lower his money by $X; move the stockPortfolio to him; remove the stockPortfolio from available stockPortfolio.
+    // Todo: Write tests for Player.buy()
+
 });

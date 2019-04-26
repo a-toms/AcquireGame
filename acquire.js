@@ -232,9 +232,14 @@ class Player {
     }
 
     buy(stocks){
-        // DOM creates an object.
-        // @param purchaseOrder: Object
-
+        // @param: {str:int}
+        /*
+         After pressing 'buy', check that all selected stocks are available and
+         that player has enough money. If the player does have enough money:
+         lower his money by $X;
+         move the stocks to him; and
+         remove the stocks from the available stocks.
+         */
         if (!this.areSelectedStocksAllAvailable(stocks)){
             return 'Invalid Order'
         }
@@ -244,11 +249,16 @@ class Player {
         else{
             this.payFor(stocks);
             this.receiveFromStockExchange(stocks);
-
         }
+    }
 
-        // After pressing 'buy', check that player has enough money. If the player does,
-    // lower his money by $X; move the stockPortfolio to him; remove the stockPortfolio from available stockPortfolio.
+    areSelectedStocksAllAvailable(stocks){
+        for (let stockSymbol of Object.keys(stocks)) {
+            if (!this.isStockAvailable(stockSymbol)){
+                return false;
+            }
+        }
+        return true;
     }
 
     canAfford(stocks){
@@ -260,18 +270,8 @@ class Player {
         this.money -= price;
     }
 
-
-    areSelectedStocksAllAvailable(shoppingBasket){
-        for (let k of Object.keys(shoppingBasket)) {
-            if (!this.isStockAvailable(k)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    isStockAvailable(corporateSymbol){
-        return this.stockExchange.availableStocks[corporateSymbol] > 0;
+    isStockAvailable(stockSymbol){
+        return this.stockExchange.availableStocks[stockSymbol] > 0;
     }
 
     receiveFromStockExchange(purchasedStocks){
@@ -281,7 +281,6 @@ class Player {
         }
         return this.stockPortfolio;
     }
-
 }
 
 class Helper {
