@@ -242,9 +242,7 @@ class Player {
             return 'Invalid Order'
         }
         else{
-
-            // Todo: payFor(stocks)
-
+            this.payFor(stocks);
             this.receiveFromStockExchange(stocks);
 
         }
@@ -253,16 +251,15 @@ class Player {
     // lower his money by $X; move the stockPortfolio to him; remove the stockPortfolio from available stockPortfolio.
     }
 
-    canAfford(shoppingBasket){
-        let totalPrice = 0;
-        for (let stockSymbol of Object.keys(shoppingBasket)) {
-            let individualStockPrice = this.stockExchange.getStockPriceOf(
-                stockSymbol
-            );
-            totalPrice += individualStockPrice;
-        }
-        return totalPrice <= this.money;
+    canAfford(stocks){
+        return this.stockExchange.getTotalPriceOf(stocks) <= this.money;
     }
+
+    payFor(stocks){
+        const price = this.stockExchange.getTotalPriceOf(stocks);
+        this.money -= price;
+    }
+
 
     areSelectedStocksAllAvailable(shoppingBasket){
         for (let k of Object.keys(shoppingBasket)) {
@@ -405,24 +402,36 @@ class StockExchange {
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
 
-    getStockPriceOf(corporation) {
-        let numberOfTiles = this.board.countNumberOf(corporation);
+    getStockPriceOf(stockSymbol) {
+        let numberOfTiles = this.board.countNumberOf(stockSymbol);
         // Display the starting price if the corporation is not yet founded.
-        if (this.board.getNonActiveCorporations().includes(corporation)) {
-            return this[corporation][2];
+        if (this.board.getNonActiveCorporations().includes(stockSymbol)) {
+            return this[stockSymbol][2];
         }
         if (numberOfTiles <= 5) {
-            return this[corporation][`${numberOfTiles}`];
+            return this[stockSymbol][`${numberOfTiles}`];
         } else if (numberOfTiles <= 10) {
-            return this[corporation]['6To10'];
+            return this[stockSymbol]['6To10'];
         } else if (numberOfTiles <= 20) {
-            return this[corporation]['11To20'];
+            return this[stockSymbol]['11To20'];
         } else if (numberOfTiles <= 30) {
-            return this[corporation]['21To30'];
+            return this[stockSymbol]['21To30'];
         } else if (numberOfTiles <= 40) {
-            return this[corporation]['31To40'];
+            return this[stockSymbol]['31To40'];
         } else if (numberOfTiles >= 41)
-            return this[corporation]['41AndOver'];
+            return this[stockSymbol]['41AndOver'];
+    }
+
+    getTotalPriceOf(stockSymbolsAndQuantity){
+        // @param: {corporate symbol : int}
+        let totalPrice = 0;
+        for (let stockSymbol of Object.keys(stockSymbolsAndQuantity)) {
+            let individualStockPrice = this.getStockPriceOf(
+                stockSymbol
+            );
+            totalPrice += individualStockPrice;
+        }
+        return totalPrice;
     }
 
 
@@ -513,7 +522,7 @@ function placeTile(tileId){
 
 module.exports =  {
     Board,
-    StockExchange: StockExchange,
+    StockExchange,
     Player,
     Helper
 

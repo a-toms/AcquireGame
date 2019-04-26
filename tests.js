@@ -746,7 +746,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         };
         const basket = {'W': 1, 'S': 1, 'I': 1};
 
-        // Test assertions.
         assert.deepEquals(
             receivingPlayer.stockPortfolio,
             {
@@ -791,25 +790,30 @@ tape('\Buy stock after clicking button on page', function (TC) {
     });
 
 
-    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+    TC.test('\nTest payFor()', function (assert) {
 
         // Setup.
         let board = new game.Board();
+        board.tileSpaces[0] = 'W';
+        board.tileSpaces[1] = 'W';
+        board.tileSpaces[3] = 'I';
+        board.tileSpaces[4] = 'I';
+        board.tileSpaces[6] = 'S';
+        board.tileSpaces[7] = 'S';
         const stockExchange = new game.StockExchange(board);
-        const receivingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
-        stockExchange.availableStocks = {
-            'W': 2,
-            'S': 2,
-            'F': 0,
-            'I': 2,
-            'A': 0,
-            'C': 0,
-            'T': 0,
-        };
+        const payingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
         const basket = {'W': 1, 'S': 1, 'I': 1};
 
-        // Test assertions.
-        // Todo: Write payFor() test.
+
+        assert.equals(
+            payingPlayer.money,
+            2500,
+        );
+        payingPlayer.payFor(basket);
+        assert.equals(
+            payingPlayer.money,
+            1800
+        );
         assert.end();
     })
 
