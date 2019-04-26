@@ -435,8 +435,7 @@ class StockExchange {
 
 
 
-// Todo: continue writing the below. Add test.
-    addStockToShoppingBasket(id) {
+    addStock(id) {
         const shoppingBasket = [];
         const stockSymbol = id.charAt(0);
         if (this.availableStocks[stockSymbol] > 0) {
@@ -444,6 +443,9 @@ class StockExchange {
             this.availableStocks[stockSymbol] -= 1;
             return shoppingBasket;
         }
+        const basket = document.querySelector("shopping-basket");
+        console.log(basket);
+        // basket.textContent = shoppingBasket.join(" ");
     }
 
 
@@ -519,13 +521,13 @@ function placeTile(tileId){
 // Todo: Integrate amalgamate placeTile and placeTile.
 
 
-module.exports =  {
-    Board,
-    StockExchange,
-    Player,
-    Helper
-
-};
+// module.exports =  {
+//     Board,
+//     StockExchange,
+//     Player,
+//     Helper
+//
+// };
 
 
 function showPrice(idString, stockLedger){
@@ -556,13 +558,13 @@ function showPrices(stockLedger){
 
 function loadGame(){
     let board = new Board();
-    let stocks = new StockExchange(board);
+    let stockExchange = new StockExchange(board);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
-    showPrices(stocks);
+    showPrices(stockExchange);
     drawBoard();
     drawPlayers(players);
 
 }
-//
-// window.addEventListener('load', loadGame);
+
+window.addEventListener('load', loadGame);

@@ -789,7 +789,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     });
 
-
     TC.test('\nTest payFor()', function (assert) {
 
         // Setup.
