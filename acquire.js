@@ -433,31 +433,41 @@ class StockExchange {
         return totalPrice;
     }
 
-
-
-    addStock(id) {
-        const shoppingBasket = [];
-        const stockSymbol = id.charAt(0);
-        if (this.availableStocks[stockSymbol] > 0) {
-            shoppingBasket.push(stockSymbol);
-            this.availableStocks[stockSymbol] -= 1;
-            return shoppingBasket;
-        }
-        const basket = document.querySelector("shopping-basket");
-        console.log(basket);
-        // basket.textContent = shoppingBasket.join(" ");
+    addStock(e) {
+        const stockSymbol = document.activeElement;
+        console.log(stockSymbol);
     }
 
+    handleBuyStock(){
 
-    // function buyStock(){
-    // Execute shopping basket transactions.
-// }
+        const stockButtons = document.querySelectorAll(".stock-button-group");
+        stockButtons.forEach(
+            stockButton => stockButton.addEventListener('click', this.addStock)
+        );
+    }
+
+    showCurrentPrices(){
+        const stockButtons = document.querySelector('.stock-button-group').children;
+        Array.from(stockButtons).forEach(
+            stockButton => {
+                let symbol = stockButton.className.charAt(0).toUpperCase();
+                let display = stockButton.querySelector('span');
+                display.innerText = this.getStockPriceOf(symbol);
+            }
+        );
 
 
-
-
-
+        // stockButtons.forEach(
+        //     stockButton => {
+                // console.log(symbol);
+                // let price = this.getStockPriceOf(symbol);
+        //         // stockButton.querySelector('.priceShown').textContent = price;
+        //     }
+        // )
+    }
 }
+
+
 
 
 // Game page testing
@@ -530,23 +540,12 @@ function placeTile(tileId){
 // };
 
 
-function showPrice(idString, stockLedger){
-    let stock = document.getElementById(idString);
-    let corporateSymbol = idString.toUpperCase().charAt(0);
-    let priceToDisplay = stockLedger.getStockPriceOf(corporateSymbol);
-    stock.getElementsByClassName("priceShown")[0].textContent = priceToDisplay;
-}
 
 
-function showPrices(stockLedger){
-    showPrice('t-stock', stockLedger);
-    showPrice('c-stock', stockLedger);
-    showPrice('w-stock', stockLedger);
-    showPrice('i-stock', stockLedger);
-    showPrice('f-stock', stockLedger);
-    showPrice('s-stock', stockLedger);
-    showPrice('a-stock', stockLedger);
-}
+
+
+
+
 
 
 // GAME ///
@@ -557,13 +556,15 @@ function showPrices(stockLedger){
 // Show stock colour as grayscale when unavailable.
 
 function loadGame(){
-    let board = new Board();
-    let stockExchange = new StockExchange(board);
+    const board = new Board();
+    const stockExchange = new StockExchange(board);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
-    showPrices(stockExchange);
+    stockExchange.showCurrentPrices();
     drawBoard();
     drawPlayers(players);
+    stockExchange.handleBuyStock();
+
 
 }
 
