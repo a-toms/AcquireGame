@@ -11,45 +11,49 @@ Acquire Game
 <h2 >Board</h2>
 <div id="boardPlace"></div>
 
-<div class="stocks-order">
-    <div class="stock-btn-group">
-        <button id='t-stock' onclick="addStock(id)">Tower
-            <br>
-            <span class="priceShown"></span>
-        </button>
-        <button id='c-stock' onclick="addStock(id)">Continental
-                        <br>
-
-            <span class="priceShown"></p></span>
-        </button>
-        <button id='w-stock' onclick="addStock(id)">Worldwide
-                        <br>
-            <span class="priceShown"></span>
-        </button>
-        <button id='i-stock' onclick="addStock(id)">Imperial
-            <br>
-            <span class="priceShown"></span>
-        </button>
-        <button id='f-stock' onclick="addStock(id)">Festival
-            <br>
-            <span class="priceShown"></span>
-        </button>
-        <button id='s-stock' onclick="addStock(id)">Sackson
-            <br>
-            <span class="priceShown"></span>
-        </button>
-        <button id='a-stock' onclick="addStock(id)">American
-            <br>
-            <span class="priceShown"></span>
-        </button>
-    </div>
+<div class="stock-button-group">
+    <button class="tower">
+        Tower
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="continental">
+        Continental
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="worldwide">
+        Worldwide
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="imperial">
+        Imperial
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="festival">
+        Festival
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="sackson">
+        Sackson
+        <br>
+        <span class="priceShown"></span>
+    </button>
+    <button class="american">
+        American
+        <br>
+        <span class="priceShown"></span>
+    </button>
 </div>
 
 <div class="columns-container">
     <div class="column-left">
-        <div>Current order:</div>
+        <div id="shopping-basket">Current order:</div>
         <div>$900 (2 Tower, 1 Festival)</div>
-        <button id='buy-stock' onclick="addStock(id)" style="background-color: cornflowerblue">Buy</button>
+        <button id='buy-stock' onclick="" style="background-color: cornflowerblue">Buy</button>
     </div>
     <div class="column-right">
             NAME

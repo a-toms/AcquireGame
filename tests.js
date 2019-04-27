@@ -53,27 +53,26 @@ tape('\nPlayer class.', function (TC) {
 
     TC.test('Test that placeTile incorporates adjacent generic tiles',
         function (assert){
-        testboard.tileSpaces[5] = 'E';
-        testboard.tileSpaces[6] = 'G';  // Generic
-        testboard.tileSpaces[7] = 'E';
-        testboard.tileSpaces[8] = 'W';  // Worldwide corporation
-        testboard.tileSpaces[9] = 'W';  // Worldwide corporation
+            testboard.tileSpaces[5] = 'E';
+            testboard.tileSpaces[6] = 'G';  // Generic
+            testboard.tileSpaces[7] = 'E';
+            testboard.tileSpaces[8] = 'W';  // Worldwide corporation
+            testboard.tileSpaces[9] = 'W';  // Worldwide corporation
 
-        player.placeTile('A8');  // 'A8' is tileSpaces[7].
-        assert.equal(
-            testboard.tileSpaces[7],
-            'W',
-            'Placing the tile incorporated E into the W corporation'
-        );
-        assert.equal(
-            testboard.tileSpaces[6],
-            'W',
-            'Placing the tile also incorporated the G tile, ' +
-            'which was adjacent to E, into the W corporation'
-        );
-        assert.end();
-    });
-
+            player.placeTile('A8');  // 'A8' is tileSpaces[7].
+            assert.equal(
+                testboard.tileSpaces[7],
+                'W',
+                'Placing the tile incorporated E into the W corporation'
+            );
+            assert.equal(
+                testboard.tileSpaces[6],
+                'W',
+                'Placing the tile also incorporated the G tile, ' +
+                'which was adjacent to E, into the W corporation'
+            );
+            assert.end();
+        });
 
     TC.test('Test incorporateAdjacentGenericTiles()', function (assert) {
         let testboard1 = new game.Board();
@@ -99,10 +98,9 @@ tape('\nPlayer class.', function (TC) {
 
 
 tape('\nStock prices', function(TC){
-
     TC.test('Test get corporation stock price', function (assert) {
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 2);
 
         assert.equal(
@@ -114,7 +112,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 3);
 
         assert.equal(
@@ -126,7 +124,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 4);
 
         assert.equal(
@@ -138,7 +136,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 5);
 
         assert.equal(
@@ -150,7 +148,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 6);
 
         assert.equal(
@@ -162,7 +160,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 11);
 
         assert.equal(
@@ -174,7 +172,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price.', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 21);
 
         assert.equal(
@@ -186,7 +184,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 31);
 
         assert.equal(
@@ -198,7 +196,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('S', 41);
 
         assert.equal(
@@ -210,7 +208,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get lowestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('W', 41);
 
         assert.equal(
@@ -222,7 +220,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('F', 2);
 
         assert.equal(
@@ -234,7 +232,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('I', 11);
 
         assert.equal(
@@ -246,7 +244,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get middlePriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('A', 42);
 
         assert.equal(
@@ -258,7 +256,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('C', 2);
 
         assert.equal(
@@ -270,7 +268,7 @@ tape('\nStock prices', function(TC){
 
     TC.test('Test get highestPriceTier corporation stock price', function(assert){
         let testBoard = new game.Board();
-        let prices = new game.Stocks(testBoard);
+        let prices = new game.StockExchange(testBoard);
         testBoard._insertTiles('T', 42);
 
         assert.equal(
@@ -291,7 +289,7 @@ tape('\nTest finding corporation on board', function (TC) {
             [1, 12],
         );
         assert.end();
-   });
+    });
 
     TC.test('Test getCoordinatesAdjacentTo()', function (assert) {
         assert.deepEqual(
@@ -340,7 +338,7 @@ tape('\nTest finding corporation on board', function (TC) {
         assert.end();
     });
 
-     TC.test('Test getLargestAdjacentCorporations()', function (assert) {
+    TC.test('Test getLargestAdjacentCorporations()', function (assert) {
         let testBoard1 = new game.Board();
         testBoard1.tileSpaces[0] = 'S';
         testBoard1.tileSpaces[1] = 'S';
@@ -353,7 +351,7 @@ tape('\nTest finding corporation on board', function (TC) {
         testBoard1.tileSpaces[8] = 'C';
 
         assert.deepEqual(
-        testBoard1.getLargestAdjacentCorporations('A6'), // i.e., tileSpaces[5]
+            testBoard1.getLargestAdjacentCorporations('A6'), // i.e., tileSpaces[5]
             ['S'],
             '\'S\' is the largest adjacent corporation'
         );
@@ -427,7 +425,7 @@ tape('\nTest functions relating to founding a new corporation', function (TC) {
         assert.end();
     });
 
-     TC.test('Test hasGenericTilesAdjacentTo()', function (assert) {
+    TC.test('Test hasGenericTilesAdjacentTo()', function (assert) {
         let testboard1 = new game.Board();
         let player1 = new game.Player();
         testboard1.tileSpaces[8] = 'G';
@@ -488,71 +486,68 @@ tape('\nTest functions relating to founding a new corporation', function (TC) {
         assert.end();
     });
 
-   TC.test('Test hasNonActiveCorporations() - false', function (assert) {
-       let testboard1 = new game.Board();
-       let player1 = new game.Player();
-       testboard1.tileSpaces[7] = 'T';
-       testboard1.tileSpaces[8] = 'T';
-       testboard1.tileSpaces[10] = 'C';
-       testboard1.tileSpaces[11] = 'C';
-       testboard1.tileSpaces[19] = 'F';
-       testboard1.tileSpaces[20] = 'F';
-       testboard1.tileSpaces[31] = 'I';
-       testboard1.tileSpaces[32] = 'I';
-       testboard1.tileSpaces[39] = 'S';
-       testboard1.tileSpaces[38] = 'S';
-       testboard1.tileSpaces[50] = 'A';
-       testboard1.tileSpaces[51] = 'A';
-       testboard1.tileSpaces[71] = 'W';
-       testboard1.tileSpaces[72] = 'W';
+    TC.test('Test hasNonActiveCorporations() - false', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[7] = 'T';
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[10] = 'C';
+        testboard1.tileSpaces[11] = 'C';
+        testboard1.tileSpaces[19] = 'F';
+        testboard1.tileSpaces[20] = 'F';
+        testboard1.tileSpaces[31] = 'I';
+        testboard1.tileSpaces[32] = 'I';
+        testboard1.tileSpaces[39] = 'S';
+        testboard1.tileSpaces[38] = 'S';
+        testboard1.tileSpaces[50] = 'A';
+        testboard1.tileSpaces[51] = 'A';
+        testboard1.tileSpaces[71] = 'W';
+        testboard1.tileSpaces[72] = 'W';
 
-       assert.deepEqual(
-           testboard1.hasNonActiveCorporations(),
-           false,
-       );
-       assert.end();
-   });
+        assert.deepEqual(
+            testboard1.hasNonActiveCorporations(),
+            false,
+        );
+        assert.end();
+    });
 
-//     TC.test('Test canFoundCorporation() positive', function (assert) {
-//         let testboard1 = new game.Board();
-//         let player1 = new game.Player();
-//         testboard1.tileSpaces[8] = 'T';
-//         testboard1.tileSpaces[9] = 'T';
-//         testboard1.tileSpaces[19] = 'S';
-//         testboard1.tileSpaces[31] = 'S';
-//         testboard1.tileSpaces[32] = 'S';
-//
-//         assert.equals(
-//             testboard1.canFoundCorporation('C'),
-//             true,
-//             'C is available to found'
-//         );
-//         assert.end();
-//     });
-//
-// TC.test('Test canFoundCorporation() negative', function (assert) {
-//         let testboard1 = new game.Board();
-//         let player1 = new game.Player();
-//         testboard1.tileSpaces[8] = 'T';
-//         testboard1.tileSpaces[9] = 'T';
-//         testboard1.tileSpaces[19] = 'S';
-//         testboard1.tileSpaces[31] = 'S';
-//         testboard1.tileSpaces[32] = 'S';
-//         testboard1.tileSpaces[1] = 'C';
-//         testboard1.tileSpaces[2] = 'C';
-//
-//         assert.equals(
-//             testboard1.canFoundCorporation('C'),
-//             false,
-//             'C is no longer available to found'
-//         );
-//         assert.end();
-//     });
-//
+    TC.test('Test canFoundCorporation() positive', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[9] = 'T';
+        testboard1.tileSpaces[19] = 'S';
+        testboard1.tileSpaces[31] = 'S';
+        testboard1.tileSpaces[32] = 'S';
 
+        assert.equals(
+            testboard1.canFoundCorporation('C'),
+            true,
+            'C is available to found'
+        );
+        assert.end();
+    });
 
+    TC.test('Test canFoundCorporation() negative', function (assert) {
+        let testboard1 = new game.Board();
+        let player1 = new game.Player();
+        testboard1.tileSpaces[8] = 'T';
+        testboard1.tileSpaces[9] = 'T';
+        testboard1.tileSpaces[19] = 'S';
+        testboard1.tileSpaces[31] = 'S';
+        testboard1.tileSpaces[32] = 'S';
+        testboard1.tileSpaces[1] = 'C';
+        testboard1.tileSpaces[2] = 'C';
 
+        assert.equals(
+            testboard1.canFoundCorporation('C'),
+            false,
+            'C is no longer available to found'
+        );
+        assert.end();
+    });
 });
+
 
 tape('\nHelper actions', function (TC) {
 
@@ -597,12 +592,229 @@ tape('\nHelper actions', function (TC) {
             alpha,
             'returned the array when only one array was passed.'
         );
-        // assert.equals(
-        //     Helper.isEmpty(filled_array),
-        //     false
-        // );
+        assert.end();
+    });
+});
+
+
+tape('\Buy stock after clicking button on page', function (TC) {
+
+    // Todo: Create tape setUp().
+    const board = new game.Board();
+    const stockExchange = new game.StockExchange(board);
+    const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+    stockExchange.availableStocks = {
+            'W': 0,
+            'S': 3,
+            'F': 1,
+            'I': 1,
+            'A': 1,
+            'C': 1,
+            'T': 1,
+    };
+
+
+    TC.test('\nClicking on buy causes the player to buy the stockPortfolio in' +
+        ' the shopping basket', function (assert) {
+
+        // Test setup.
+        const board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 1,
+            'S': 3,
+            'F': 0,
+            'I': 0,
+            'A': 1,
+            'C': 1,
+            'T': 1,
+        };
+        const stockPurchaseOrder = {'W': 1, 'S': 2};
+
+        // The test.
+        assert.deepEquals(
+            player.stockPortfolio,
+            {'W': 0, 'S': 0, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
+            'The player has no stockPortfolio before buying.'
+        );
+        player.buy(stockPurchaseOrder);
+        assert.deepEquals(
+            player.stockPortfolio,
+            {'W': 1, 'S': 2, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
+            'The player has stockPortfolio after buying.'
+        );
         assert.end();
     });
 
+
+    TC.test('\nTest if stockPortfolio available', function (assert) {
+        const board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 0,
+            'S': 0,
+            'F': 0,
+            'I': 0,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Tests.
+        assert.equals(
+            player.areSelectedStocksAllAvailable(basket),
+            false,
+            'areSelectedStocksAllAvailable returns false when there are not ' +
+            'at least the number of availableStocks in the StockExchange ' +
+            'as in the shopping basket.'
+        );
+        stockExchange.availableStocks = {
+            'W': 1,
+            'S': 1,
+            'F': 0,
+            'I': 1,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        assert.equals(
+            player.areSelectedStocksAllAvailable(basket),
+            true,
+            'areSelectedStocksAllAvailable returns true when there are ' +
+            'at least the number of availableStocks in the StockExchange ' +
+            'as in the shopping basket.'
+        );
+        assert.end();
+    });
+
+
+    TC.test('\nTest canAfford()', function (assert) {
+        let board = new game.Board();
+        board.tileSpaces[0] = 'W';
+        board.tileSpaces[1] = 'W';
+        board.tileSpaces[3] = 'I';
+        board.tileSpaces[4] = 'I';
+        board.tileSpaces[6] = 'S';
+        board.tileSpaces[7] = 'S';
+        const stockExchange = new game.StockExchange(board);
+        const richer_player = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        const poorer_player = new game.Player(board, 'Nikilat', 500, stockExchange);
+         stockExchange.availableStocks = {
+            'W': 1,
+            'S': 1,
+            'F': 0,
+            'I': 1,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        // Tests.
+        assert.equals(
+            poorer_player.canAfford(basket),
+            false,
+            `test that canAfford => false because the poorer player does not
+            have enough money to buy the stocks in the basket.`
+        );
+        assert.equals(
+            richer_player.canAfford(basket),
+            true,
+            `test that canAfford => true because the richer player 
+            has enough money to buy the stocks in the basket.`
+        );
+        assert.end();
+    });
+
+    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+
+        // Setup.
+        let board = new game.Board();
+        const stockExchange = new game.StockExchange(board);
+        const receivingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        stockExchange.availableStocks = {
+            'W': 2,
+            'S': 2,
+            'F': 0,
+            'I': 2,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        assert.deepEquals(
+            receivingPlayer.stockPortfolio,
+            {
+                'W': 0,
+                'S': 0,
+                'F': 0,
+                'I': 0,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'receivingPlayer has no stocks before the transfer.'
+        );
+        receivingPlayer.receiveFromStockExchange(basket);
+        assert.deepEquals(
+            receivingPlayer.stockPortfolio,
+            {
+                'W': 1,
+                'S': 1,
+                'F': 0,
+                'I': 1,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'receivingPlayer has stocks after receiveFromStockExchange().'
+        );
+        assert.deepEquals(
+            stockExchange.availableStocks,
+            {
+                'W': 1,
+                'S': 1,
+                'F': 0,
+                'I': 1,
+                'A': 0,
+                'C': 0,
+                'T': 0,
+            },
+            'The transferred stocks are no longer in stockExchange.availableStocks.'
+        );
+        assert.end();
+    });
+
+    TC.test('\nTest payFor()', function (assert) {
+
+        // Setup.
+        let board = new game.Board();
+        board.tileSpaces[0] = 'W';
+        board.tileSpaces[1] = 'W';
+        board.tileSpaces[3] = 'I';
+        board.tileSpaces[4] = 'I';
+        board.tileSpaces[6] = 'S';
+        board.tileSpaces[7] = 'S';
+        const stockExchange = new game.StockExchange(board);
+        const payingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
+        const basket = {'W': 1, 'S': 1, 'I': 1};
+
+        assert.equals(
+            payingPlayer.money,
+            2500,
+        );
+        payingPlayer.payFor(basket);
+        assert.equals(
+            payingPlayer.money,
+            1800
+        );
+        assert.end();
+    })
+
+    // Todo: Write tests for Player.buy()
 
 });

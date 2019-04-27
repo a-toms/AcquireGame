@@ -100,31 +100,31 @@ button:focus {
     display: table;
 }
 
-#t-stock{
+.tower {
     background-color: lightslategrey;
 }
 
-#c-stock{
+.continental {
     background-color: red;
 }
 
-#w-stock{
+.worldwide{
     background-color: rebeccapurple;
 }
 
-#i-stock{
+.imperial{
     background: goldenrod;
 }
 
-#f-stock{
+.festival{
     background-color: forestgreen;
 }
 
-#s-stock{
+.sackson{
     background-color: darkorange;
 }
 
-#a-stock{
+.american{
     background-color: cornflowerblue;
 }
 

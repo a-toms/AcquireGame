@@ -196,17 +196,24 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money) {  // Default money at game start is 6000
+    constructor(board, name, money, stockExchange) {  // Todo: Move stockPortfolio to second position.
         this.board = board;
+        this.stockExchange = stockExchange;
         this.name = name;
         this.money = money;
-        this.stocks = [];
+        this.stockPortfolio = {
+            'W': 0,
+            'S': 0,
+            'F': 0,
+            'I': 0,
+            'A': 0,
+            'C': 0,
+            'T': 0,
+        };
         this.tiles = [];
     };
 
     placeTile(position) {
-        // Complete this function.
-
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
         } else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
@@ -215,29 +222,68 @@ class Player {
             this.board.hasGenericTilesAdjacentTo(position) &&
             this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
 
-
-            // s
-            // Todo: get user input of corporation that user wants to found.
-            //  For the above, use canFoundCorporation().
+            // Todo: get user input of corporation that user wants to found from the DOM.
             let symbol = '*'; // todo: Replace with user input.
-
             return this.board.foundCorporation(position, symbol);
-
-
         }
         let existing = this.board.findActiveCorporations();
         // Todo: complete
         return this.board;
     }
 
-    buy(number, corporationSymbol){
-
+    buy(stocks){
+        // @param: {str:int}
+        /*
+         After pressing 'buy', check that all selected stocks are available and
+         that player has enough money. If the player does have enough money:
+         lower his money by $X;
+         move the stocks to him; and
+         remove the stocks from the available stocks.
+         */
+        if (!this.areSelectedStocksAllAvailable(stocks)){
+            return 'Invalid Order'
+        }
+        else if (!this.canAfford(stocks)){
+            return 'Invalid Order'
+        }
+        else{
+            this.payFor(stocks);
+            this.receiveFromStockExchange(stocks);
+        }
     }
 
+    areSelectedStocksAllAvailable(stocks){
+        for (let stockSymbol of Object.keys(stocks)) {
+            if (!this.isStockAvailable(stockSymbol)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    canAfford(stocks){
+        return this.stockExchange.getTotalPriceOf(stocks) <= this.money;
+    }
+
+    payFor(stocks){
+        const price = this.stockExchange.getTotalPriceOf(stocks);
+        this.money -= price;
+    }
+
+    isStockAvailable(stockSymbol){
+        return this.stockExchange.availableStocks[stockSymbol] > 0;
+    }
+
+    receiveFromStockExchange(purchasedStocks){
+        for (let stockSymbol of Object.keys(purchasedStocks)){
+            this.stockExchange.availableStocks[stockSymbol] -= purchasedStocks[stockSymbol];
+            this.stockPortfolio[stockSymbol] += purchasedStocks[stockSymbol];
+        }
+        return this.stockPortfolio;
+    }
 }
 
 class Helper {
-
     static isEmpty(array) {
         if (Array.isArray(array) && array.length === 0){
             console.log("empty = " + array);
@@ -297,7 +343,7 @@ class Helper {
 }
 
 
-class Stocks {
+class StockExchange {
     constructor(board) {
         this.board = board;
         let lowest = Object.freeze({
@@ -355,47 +401,73 @@ class Stocks {
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
 
-    getStockPriceOf(corporation) {
-        let numberOfTiles = this.board.countNumberOf(corporation);
-        if (this.board.getNonActiveCorporations().includes(corporation)) {
-            // Corporation is not yet founded. Display the starting price.
-            return this[corporation][2];
+    getStockPriceOf(stockSymbol) {
+        let numberOfTiles = this.board.countNumberOf(stockSymbol);
+        // Display the starting price if the corporation is not yet founded.
+        if (this.board.getNonActiveCorporations().includes(stockSymbol)) {
+            return this[stockSymbol][2];
         }
         if (numberOfTiles <= 5) {
-            return this[corporation][`${numberOfTiles}`];
+            return this[stockSymbol][`${numberOfTiles}`];
         } else if (numberOfTiles <= 10) {
-            return this[corporation]['6To10'];
+            return this[stockSymbol]['6To10'];
         } else if (numberOfTiles <= 20) {
-            return this[corporation]['11To20'];
+            return this[stockSymbol]['11To20'];
         } else if (numberOfTiles <= 30) {
-            return this[corporation]['21To30'];
+            return this[stockSymbol]['21To30'];
         } else if (numberOfTiles <= 40) {
-            return this[corporation]['31To40'];
+            return this[stockSymbol]['31To40'];
         } else if (numberOfTiles >= 41)
-            return this[corporation]['41AndOver'];
+            return this[stockSymbol]['41AndOver'];
     }
 
-
-
-// Todo: continue writing the below. Add test.
-    addStock(id) {
-        const shoppingBasket = [];
-        const stockSymbol = id.charAt(0);
-        if (availableStocks[stockSymbol] > 0) {
-            console.log("Bought 1 " + stockSymbol);
-            availableStocks[stockSymbol] -= 1;
-            shoppingBasket.push(stockSymbol);
-        } else if (availableStocks[stockSymbol] <= 0) {
-            console.log("No " + stockSymbol + " available to buy")
+    getTotalPriceOf(stockSymbolsAndQuantity){
+        // @param: {corporate symbol : int}
+        let totalPrice = 0;
+        for (let stockSymbol of Object.keys(stockSymbolsAndQuantity)) {
+            let individualStockPrice = this.getStockPriceOf(
+                stockSymbol
+            );
+            totalPrice += individualStockPrice;
         }
+        return totalPrice;
     }
 
+    addStock(e) {
+        const stockSymbol = document.activeElement;
+        console.log(stockSymbol);
+    }
+
+    handleBuyStock(){
+
+        const stockButtons = document.querySelectorAll(".stock-button-group");
+        stockButtons.forEach(
+            stockButton => stockButton.addEventListener('click', this.addStock)
+        );
+    }
+
+    showCurrentPrices(){
+        const stockButtons = document.querySelector('.stock-button-group').children;
+        Array.from(stockButtons).forEach(
+            stockButton => {
+                let symbol = stockButton.className.charAt(0).toUpperCase();
+                let display = stockButton.querySelector('span');
+                display.innerText = this.getStockPriceOf(symbol);
+            }
+        );
 
 
-
-
-
+        // stockButtons.forEach(
+        //     stockButton => {
+                // console.log(symbol);
+                // let price = this.getStockPriceOf(symbol);
+        //         // stockButton.querySelector('.priceShown').textContent = price;
+        //     }
+        // )
+    }
 }
+
+
 
 
 // Game page testing
@@ -445,26 +517,6 @@ function drawBoard(){
     document.getElementById("boardPlace").appendChild(boardContainer);
 }
 
-
-
-let availableStocks = {
-    'w' : 1,
-    't' : 3
-};
-
-
-let prices = {
-    'w': 1000,
-    't': 600
-};
-
-
-function buyStock(){
-    // Execute shopping basket transactions.
-}
-
-
-
 function takeMoneyFrom(player){
     player.money -= 100;
     let mendevalInfo = document.getElementById('Mendeval');
@@ -481,48 +533,39 @@ function placeTile(tileId){
 
 // module.exports =  {
 //     Board,
-//     Stocks,
+//     StockExchange,
 //     Player,
 //     Helper
 //
 // };
 
 
-function showPrice(idString, stockLedger){
-    let stock = document.getElementById(idString);
-    let corporateSymbol = idString.toUpperCase().charAt(0);
-    let priceToDisplay = stockLedger.getStockPriceOf(corporateSymbol);
-    stock.getElementsByClassName("priceShown")[0].textContent = priceToDisplay;
-}
 
 
-function showPrices(stockLedger){
-    showPrice('t-stock', stockLedger);
-    showPrice('c-stock', stockLedger);
-    showPrice('w-stock', stockLedger);
-    showPrice('i-stock', stockLedger);
-    showPrice('f-stock', stockLedger);
-    showPrice('s-stock', stockLedger);
-    showPrice('a-stock', stockLedger);
-}
+
+
+
+
 
 
 // GAME ///
 
-// Todo: complete addStock(). Integrate addStock() to the Stocks class.
+// Todo: complete addStock(). Integrate addStock() to the StockExchange class.
 //  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 
 // Show stock colour as grayscale when unavailable.
 
 function loadGame(){
-    let board = new Board();
-    let stocks = new Stocks(board);
+    const board = new Board();
+    const stockExchange = new StockExchange(board);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
-    showPrices(stocks);
+    stockExchange.showCurrentPrices();
     drawBoard();
     drawPlayers(players);
+    stockExchange.handleBuyStock();
+
 
 }
-//
+
 window.addEventListener('load', loadGame);
