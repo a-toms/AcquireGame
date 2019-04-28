@@ -140,10 +140,10 @@ button:focus {
 
 #end-turn{
     background-color: deeppink;
-    margin: auto;
+    margin: 5% auto;
     display: block;
     padding: 1% 1%;
-    height: 50px;
-    width: 50px;
+    height: 1%;
+    width: 10%;
 
 }

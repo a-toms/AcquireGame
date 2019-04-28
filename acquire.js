@@ -281,6 +281,21 @@ class Player {
         }
         return this.stockPortfolio;
     }
+
+    // Todo: complete showInformation
+    showInformation(){
+        const displayedInformation = document.querySelector("player-information");
+        console.log(displayedInformation);
+        displayedInformation.querySelector('name').textContent = 'Michael';
+    }
+
+
+
+
+
+
+
+
 }
 
 class Helper {
@@ -608,12 +623,14 @@ function placeTile(tileId){
 function loadGame(){
     const board = new Board();
     const stockExchange = new StockExchange(board);
+    const player1 = new Player(board, 'Verban', 2000, stockExchange);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
     drawPlayers(players);
     stockExchange.handleAnyBuyOrders();
+    player1.showInformation();
 
 
 
