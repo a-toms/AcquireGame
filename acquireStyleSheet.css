@@ -37,10 +37,13 @@
     font-size: large;
     font-family: "Arial";
     padding: 10px;
+    transition: transform 0.2s;
 }
 
 .row button:hover{
     background-color: #6fa7f9;
+    transform: scale(1.05);
+    transition: transform 0.2s;
 }
 
 .row button:not(:last-child) {

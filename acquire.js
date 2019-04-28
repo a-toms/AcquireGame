@@ -435,11 +435,11 @@ class StockExchange {
 
 
     handleAnyBuyOrders(){
-        let stocksOrder = {};
+        const outerClass = this; // Outer class access point for the nested function.
+        let orderStocks = {};
+        let orderPrice = 0;
 
-        let displayedOrderPrice = document.querySelector('#current-order-price');
 
-        displayedOrderPrice.textContent = 'price';
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
             stockButton => {
@@ -449,40 +449,36 @@ class StockExchange {
 
         function addStock(e){
             // Get the stock symbol of the button pressed.
-            let desiredStockSymbol = new String();
+            let stockSymbol = new String();
             if (e.target.className === 'priceShown'){
-                desiredStockSymbol = e.target.parentNode.className.charAt(0).toUpperCase();
+                stockSymbol = e.target.parentNode.className.charAt(0).toUpperCase();
             }
             else{
-                desiredStockSymbol = e.target.className.charAt(0).toUpperCase();
+                stockSymbol = e.target.className.charAt(0).toUpperCase();
             }
 
-            // Update the stocksOrder
-            if (desiredStockSymbol in stocksOrder){
-                stocksOrder[desiredStockSymbol] += 1;
+            // Update the stocksOrder.
+            if (stockSymbol in orderStocks){
+                orderStocks[stockSymbol] += 1;
             }
             else{
-                stocksOrder[desiredStockSymbol] = 1;
+                orderStocks[stockSymbol] = 1;
             }
-            console.log(stocksOrder);
+            console.log(orderStocks);
+
+            // Increase the price.
+            orderPrice += outerClass.getStockPriceOf(stockSymbol);
 
             // Show the updated order contents
-            let displayedOrderStocks = "Order: ";
-            for (let stockSymbol of Object.keys(stocksOrder)){
-                displayedOrderStocks += `${stockSymbol} ${stocksOrder[stockSymbol]}\n`;
-                document.querySelector('#current-order-stocks').textContent = displayedOrderStocks;
+            let shownOrder = "Order: ";
+            for (let stockSymbol of Object.keys(orderStocks)){
+                shownOrder += `${stockSymbol} ${orderStocks[stockSymbol]} - `;
+                document.querySelector('#current-order-stocks').textContent = shownOrder;
             }
 
             // Show the updated price
-
-
-
-
-
-
-
-            console.log(desiredStockSymbol);
-            console.log(stocksOrder);
+            let shownPrice = `$ ${orderPrice}`;
+                document.querySelector('#current-order-price').textContent = shownPrice;
 
         }
 
