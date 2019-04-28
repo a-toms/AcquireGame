@@ -435,10 +435,9 @@ class StockExchange {
 
 
     handleAnyBuyOrders(){
-        const outerClass = this; // Outer class access point for the nested function.
+        const outerClass = this; // Outer class access point for the nested functions.
         let orderStocks = {};
         let orderPrice = 0;
-
 
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
@@ -448,43 +447,99 @@ class StockExchange {
         );
 
         function addStock(e){
+            const symbol = getStockSymbolFromStockButtonEvent(e);
+            orderStocks = addStockToOrder(symbol, orderStocks);
+            orderPrice = addStockPriceToOrderPrice(symbol, orderPrice);
+            displayOrderPrice(orderPrice);
+            displayOrderStocks(orderStocks);
+        }
+
+        function getStockSymbolFromStockButtonEvent(event){
             // Get the stock symbol of the button pressed.
             let stockSymbol = new String();
-            if (e.target.className === 'priceShown'){
-                stockSymbol = e.target.parentNode.className.charAt(0).toUpperCase();
+            if (event.target.className === 'priceShown') {
+                stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
             }
-            else{
-                stockSymbol = e.target.className.charAt(0).toUpperCase();
+            else {
+                stockSymbol = event.target.className.charAt(0).toUpperCase();
             }
+            return stockSymbol
+        }
 
-            // Update the stocksOrder.
-            if (stockSymbol in orderStocks){
-                orderStocks[stockSymbol] += 1;
+        function addStockToOrder(stockSymbol, order) {
+            if (stockSymbol in order) {
+                order[stockSymbol] += 1;
+            } else {
+                order[stockSymbol] = 1;
             }
-            else{
-                orderStocks[stockSymbol] = 1;
-            }
-            console.log(orderStocks);
+            return order;
+        }
 
-            // Increase the price.
-            orderPrice += outerClass.getStockPriceOf(stockSymbol);
+        function addStockPriceToOrderPrice(stockSymbol, orderPrice){
+            orderPrice += this.getStockPriceOf(stockSymbol);
+            return orderPrice;
+        }
 
-            // Show the updated order contents
+        function displayOrderStocks(order){
             let shownOrder = "Order: ";
-            for (let stockSymbol of Object.keys(orderStocks)){
-                shownOrder += `${stockSymbol} ${orderStocks[stockSymbol]} - `;
+            for (let stockSymbol of Object.keys(order)){
+                shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
                 document.querySelector('#current-order-stocks').textContent = shownOrder;
             }
+        }
 
-            // Show the updated price
-            let shownPrice = `$ ${orderPrice}`;
-                document.querySelector('#current-order-price').textContent = shownPrice;
+        function displayOrderPrice(price){
+            let shownPrice = `$ ${price}`;
+            document.querySelector('#current-order-price').textContent = shownPrice;
+        }
 
+        function getStockSymbolFromStockButtonEvent(event){
+            // Get the stock symbol of the button pressed.
+            let stockSymbol = new String();
+            if (event.target.className === 'priceShown') {
+                stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
+            }
+            else {
+                stockSymbol = event.target.className.charAt(0).toUpperCase();
+            }
+            return stockSymbol
+        }
+
+        function addStockToOrder(stockSymbol, order) {
+            if (stockSymbol in order) {
+                order[stockSymbol] += 1;
+            }
+            else {
+                order[stockSymbol] = 1;
+            }
+            return order;
+        }
+
+        function addStockPriceToOrderPrice(stockSymbol, orderPrice){
+            orderPrice += outerClass.getStockPriceOf(stockSymbol);
+            return orderPrice;
+        }
+
+        function displayOrderStocks(order){
+            // Show the order stocks in the DOM.
+            let shownOrder = "Order: ";
+            for (let stockSymbol of Object.keys(order)){
+                shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
+                document.querySelector('#current-order-stocks').textContent = shownOrder;
+            }
+        }
+
+        function displayOrderPrice(price){
+            // Show the order price in the DOM.
+            let shownPrice = `$ ${price}`;
+            document.querySelector('#current-order-price').textContent = shownPrice;
         }
 
     }
 
-    showCurrentPrices(){
+
+
+    showCurrentPricesOnStockButtons() {
         const stockButtons = document.querySelector('.stock-button-group').children;
         Array.from(stockButtons).forEach(
             stockButton => {
@@ -493,15 +548,6 @@ class StockExchange {
                 display.innerText = this.getStockPriceOf(symbol);
             }
         );
-
-
-        // stockButtons.forEach(
-        //     stockButton => {
-                // console.log(symbol);
-                // let price = this.getStockPriceOf(symbol);
-        //         // stockButton.querySelector('.priceShown').textContent = price;
-        //     }
-        // )
     }
 }
 
@@ -598,7 +644,7 @@ function loadGame(){
     const stockExchange = new StockExchange(board);
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
-    stockExchange.showCurrentPrices();
+    stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
     drawPlayers(players);
     stockExchange.handleAnyBuyOrders();
