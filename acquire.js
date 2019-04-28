@@ -450,50 +450,11 @@ class StockExchange {
         );
 
         function addStock(e){
-            const symbol = getStockSymbolFromStockButtonEvent(e);
-            orderStocks = addStockToOrder(symbol, orderStocks);
-            orderPrice = addStockPriceToOrderPrice(symbol, orderPrice);
+            const tickerSymbol = getStockSymbolFromStockButtonEvent(e);
+            orderStocks = addStockToOrder(tickerSymbol, orderStocks);
+            orderPrice = addStockPriceToOrderPrice(tickerSymbol, orderPrice);
             displayOrderPrice(orderPrice);
             displayOrderStocks(orderStocks);
-        }
-
-        function getStockSymbolFromStockButtonEvent(event){
-            // Get the stock symbol of the button pressed.
-            let stockSymbol = new String();
-            if (event.target.className === 'priceShown') {
-                stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
-            }
-            else {
-                stockSymbol = event.target.className.charAt(0).toUpperCase();
-            }
-            return stockSymbol
-        }
-
-        function addStockToOrder(stockSymbol, order) {
-            if (stockSymbol in order) {
-                order[stockSymbol] += 1;
-            } else {
-                order[stockSymbol] = 1;
-            }
-            return order;
-        }
-
-        function addStockPriceToOrderPrice(stockSymbol, orderPrice){
-            orderPrice += this.getStockPriceOf(stockSymbol);
-            return orderPrice;
-        }
-
-        function displayOrderStocks(order){
-            let shownOrder = "Order: ";
-            for (let stockSymbol of Object.keys(order)){
-                shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
-                document.querySelector('#current-order-stocks').textContent = shownOrder;
-            }
-        }
-
-        function displayOrderPrice(price){
-            let shownPrice = `$ ${price}`;
-            document.querySelector('#current-order-price').textContent = shownPrice;
         }
 
         function getStockSymbolFromStockButtonEvent(event){
@@ -524,7 +485,7 @@ class StockExchange {
         }
 
         function displayOrderStocks(order){
-            // Show the order stocks in the DOM.
+            // Show the stocks of the order in the DOM.
             let shownOrder = "Order: ";
             for (let stockSymbol of Object.keys(order)){
                 shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
@@ -533,10 +494,12 @@ class StockExchange {
         }
 
         function displayOrderPrice(price){
-            // Show the order price in the DOM.
+            // Show the price of the order in the DOM.
             let shownPrice = `$ ${price}`;
             document.querySelector('#current-order-price').textContent = shownPrice;
         }
+
+        // Todo: Add ability for the player to buy the order.
 
     }
 
