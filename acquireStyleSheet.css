@@ -67,34 +67,42 @@ button:focus {
     outline:0;
 }
 
-.stock-btn-group {
+.stock-button-group {
     padding: 5%;
 }
 
-.stock-btn-group button {
+.stock-button-group button {
     width: 13%;
     color: white;
     padding: 1% 1%;
     cursor: pointer;
+    transition: transform 0.3s;
+
 }
 
-.stock-btn-group button:active{
+.stock-button-group button:active{
     opacity:0.6;
     transition:opacity 0s;
     /* could show color/s of potential acquisition when hovering over button */
 }
 
-.stock-btn-group button:hover {
+.stock-button-group button:hover {
     /* Add a background color on hover */
-    background-color: #3e8e41;
+    opacity: 50%;
+    transform: scale(1.1);
+    transition: transform 0.5s;
+
 }
 
-.stock-btn-group button:not(:last-child) {
+
+
+
+.stock-button-group button:not(:last-child) {
     border-right: none; /* Prevent double borders */
 }
 
 /* Clear floats (clearfix hack) */
-.stock-btn-group:after {
+.stock-button-group:after {
     content: "";
     clear: both;
     display: table;

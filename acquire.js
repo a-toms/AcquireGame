@@ -433,17 +433,59 @@ class StockExchange {
         return totalPrice;
     }
 
-    addStock(e) {
-        const stockSymbol = document.activeElement;
-        console.log(stockSymbol);
-    }
 
-    handleBuyStock(){
+    handleAnyBuyOrders(){
+        let stocksOrder = {};
 
+        let displayedOrderPrice = document.querySelector('#current-order-price');
+
+        displayedOrderPrice.textContent = 'price';
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
-            stockButton => stockButton.addEventListener('click', this.addStock)
+            stockButton => {
+                stockButton.addEventListener('click', addStock);
+            }
         );
+
+        function addStock(e){
+            // Get the stock symbol of the button pressed.
+            let desiredStockSymbol = new String();
+            if (e.target.className === 'priceShown'){
+                desiredStockSymbol = e.target.parentNode.className.charAt(0).toUpperCase();
+            }
+            else{
+                desiredStockSymbol = e.target.className.charAt(0).toUpperCase();
+            }
+
+            // Update the stocksOrder
+            if (desiredStockSymbol in stocksOrder){
+                stocksOrder[desiredStockSymbol] += 1;
+            }
+            else{
+                stocksOrder[desiredStockSymbol] = 1;
+            }
+            console.log(stocksOrder);
+
+            // Show the updated order contents
+            let displayedOrderStocks = "Order: ";
+            for (let stockSymbol of Object.keys(stocksOrder)){
+                displayedOrderStocks += `${stockSymbol} ${stocksOrder[stockSymbol]}\n`;
+                document.querySelector('#current-order-stocks').textContent = displayedOrderStocks;
+            }
+
+            // Show the updated price
+
+
+
+
+
+
+
+            console.log(desiredStockSymbol);
+            console.log(stocksOrder);
+
+        }
+
     }
 
     showCurrentPrices(){
@@ -563,7 +605,8 @@ function loadGame(){
     stockExchange.showCurrentPrices();
     drawBoard();
     drawPlayers(players);
-    stockExchange.handleBuyStock();
+    stockExchange.handleAnyBuyOrders();
+
 
 
 }
