@@ -435,6 +435,9 @@ class StockExchange {
 
 
     handleAnyBuyOrders(){
+        /*
+        Handles the user pressing the DOM stock buttons to order and to buy stocks.
+        */
         const outerClass = this; // Outer class access point for the nested functions.
         let orderStocks = {};
         let orderPrice = 0;
