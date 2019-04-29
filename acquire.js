@@ -227,7 +227,6 @@ class Player {
             return this.board.foundCorporation(position, symbol);
         }
         let existing = this.board.findActiveCorporations();
-        // Todo: complete
         return this.board;
     }
 
@@ -282,11 +281,11 @@ class Player {
         return this.stockPortfolio;
     }
 
-    // Todo: complete showInformation
     showInformation(){
-        const displayedInformation = document.querySelector("player-information");
-        console.log(displayedInformation);
-        displayedInformation.querySelector('name').textContent = 'Michael';
+        const displayedInformation = document.querySelector(".player-information");
+        displayedInformation.querySelector('.name').textContent = this.name;
+        displayedInformation.querySelector('.money').textContent = `$ ${this.money}`;
+        displayedInformation.querySelector('.stock-portfolio').textContent = Object.entries(this.stockPortfolio);
     }
 
 
@@ -546,15 +545,7 @@ let players = [
 ];
 
 
-function drawPlayers(players){
-    let namesPlace = document.getElementById('player-information');
-    for (let i = 0; i < players.length; i++){
-        let playerInfo = document.createElement("P");
-        playerInfo.id = `${players[i].name}`;
-        playerInfo.innerHTML = `${players[i].name} has ${players[i].money} money`;
-        namesPlace.appendChild(playerInfo)
-    }
-}
+
 
 // Todo: TD later: refactor the below. It is too big currently.
 function drawBoard(){
@@ -628,7 +619,6 @@ function loadGame(){
     board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
-    drawPlayers(players);
     stockExchange.handleAnyBuyOrders();
     player1.showInformation();
 
