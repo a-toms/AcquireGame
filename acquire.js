@@ -282,10 +282,13 @@ class Player {
     }
 
     showInformation(){
-        const displayedInformation = document.querySelector(".player-information");
-        displayedInformation.querySelector('.name').textContent = this.name;
-        displayedInformation.querySelector('.money').textContent = `$ ${this.money}`;
-        displayedInformation.querySelector('.stock-portfolio').textContent = Object.entries(this.stockPortfolio);
+        const display = document.querySelector(".player-information");
+        display.querySelector('.name')
+            .textContent = this.name;
+        display.querySelector('.money')
+            .textContent = `$ ${this.money}`;
+        display.querySelector('.stock-portfolio')
+            .textContent = `${Object.entries(this.stockPortfolio)}`;
     }
 
 
@@ -448,13 +451,16 @@ class StockExchange {
     }
 
 
-    handleAnyBuyOrders(){
+    handleBuyOrders(){
         /*
         Handles the user pressing the DOM stock buttons to order and to buy stocks.
         */
         const outerClass = this; // Outer class access point for the nested functions.
-        let orderStocks = {};
+
+
+        let orderStocks = {}; // Todo: Refactor this. Use the array only to track order rather than object.
         let orderPrice = 0;
+        let orderStockSymbols = []; // Added to allow order to be altered.
 
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
@@ -464,16 +470,19 @@ class StockExchange {
         );
 
         function addStock(e){
+            /*
+            Add stock to order basket and stock price to order price.
+             */
             const tickerSymbol = getStockSymbolFromStockButtonEvent(e);
             orderStocks = addStockToOrder(tickerSymbol, orderStocks);
-            orderPrice = addStockPriceToOrderPrice(tickerSymbol, orderPrice);
+            orderPrice = calculateOrderPrice(orderStockSymbols);
             displayOrderPrice(orderPrice);
             displayOrderStocks(orderStocks);
         }
 
         function getStockSymbolFromStockButtonEvent(event){
             // Get the stock symbol of the button pressed.
-            let stockSymbol = new String();
+            let stockSymbol = '';
             if (event.target.className === 'priceShown') {
                 stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
             }
@@ -484,26 +493,49 @@ class StockExchange {
         }
 
         function addStockToOrder(stockSymbol, order) {
+
+            // Remove first added stock if more than 3 stock in order.
+            if (orderStockSymbols.length === 3){
+                let discarded = orderStockSymbols.shift();
+                order[discarded] -= 1;
+            }
+
+
+            // Add stock to order
             if (stockSymbol in order) {
                 order[stockSymbol] += 1;
+                orderStockSymbols.push(stockSymbol);
             }
             else {
                 order[stockSymbol] = 1;
+                orderStockSymbols.push(stockSymbol);
             }
+
+            console.log(orderStockSymbols);
             return order;
+
+
         }
 
-        function addStockPriceToOrderPrice(stockSymbol, orderPrice){
-            orderPrice += outerClass.getStockPriceOf(stockSymbol);
-            return orderPrice;
+
+        function calculateOrderPrice(stockSymbolsOfOrder, orderPrice){
+            let price = stockSymbolsOfOrder.reduce(
+                (total, stockSymbol) => {
+                    return total + outerClass.getStockPriceOf(stockSymbol)
+                }, 0
+            );
+            return price;
         }
 
         function displayOrderStocks(order){
             // Show the stocks of the order in the DOM.
             let shownOrder = "Order: ";
             for (let stockSymbol of Object.keys(order)){
-                shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
-                document.querySelector('#current-order-stocks').textContent = shownOrder;
+                if (order[stockSymbol] > 0){
+                    shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
+                    document.querySelector('#current-order-stocks').textContent = shownOrder;
+                }
+
             }
         }
 
@@ -530,22 +562,6 @@ class StockExchange {
         );
     }
 }
-
-
-
-
-// Game page testing
-
-let board = new Board();
-let players = [
-    new Player(board, 'Mendeval', 4000),
-    new Player(board, 'Alphi', 4000),
-    new Player(board, 'Paulson', 4000),
-    new Player(board, 'Tuyti', 4000)
-];
-
-
-
 
 // Todo: TD later: refactor the below. It is too big currently.
 function drawBoard(){
@@ -619,7 +635,7 @@ function loadGame(){
     board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
-    stockExchange.handleAnyBuyOrders();
+    stockExchange.handleBuyOrders();
     player1.showInformation();
 
 
