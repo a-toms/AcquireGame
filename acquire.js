@@ -458,7 +458,7 @@ class StockExchange {
         const outerClass = this; // Outer class access point for the nested functions.
 
 
-        let orderStocks = {}; // Todo: Refactor this. Use the array only to track order rather than object.
+        let orderStocks = {}; // Todo: Refactor this. Use the array only to track order. Remove the object.
         let orderPrice = 0;
         let orderStockSymbols = []; // Added to allow order to be altered.
 
@@ -545,8 +545,7 @@ class StockExchange {
             document.querySelector('#current-order-price').textContent = shownPrice;
         }
 
-        // Todo: Add ability for the player to buy the order.
-
+        /* Todo: Add ability for the player to buy the order.*/
     }
 
 
