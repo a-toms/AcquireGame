@@ -567,6 +567,25 @@ tape('\nHelper actions', function (TC) {
         assert.end();
     });
 
+    TC.test('\nTest count()', function (assert) {
+        let filled_array = ['A', 'B', 'A'];
+        assert.equals(
+            game.Helper.count('A', filled_array),
+            2,
+        );
+        assert.equals(
+            game.Helper.count('B', filled_array),
+            1,
+        );
+        assert.equals(
+            game.Helper.count('C', filled_array),
+            0,
+        );
+        assert.end();
+    });
+
+
+
     TC.test('\nTest getDifferenceBetween', function (assert){
         let alpha = ['A', 'B', 'C', 'D'];
         let beta = ['B', 'E', 'F'];
@@ -665,7 +684,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
 
         // Tests.
         assert.equals(
-            player.areSelectedStocksAllAvailable(basket),
+            stockExchange.areSelectedStocksAllAvailable(basket),
             false,
             'areSelectedStocksAllAvailable returns false when there are not ' +
             'at least the number of availableStocks in the StockExchange ' +
@@ -681,7 +700,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'T': 0,
         };
         assert.equals(
-            player.areSelectedStocksAllAvailable(basket),
+            stockExchange.areSelectedStocksAllAvailable(basket),
             true,
             'areSelectedStocksAllAvailable returns true when there are ' +
             'at least the number of availableStocks in the StockExchange ' +

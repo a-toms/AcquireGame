@@ -239,7 +239,8 @@ class Player {
          move the stocks to him; and
          remove the stocks from the available stocks.
          */
-        if (!this.areSelectedStocksAllAvailable(stocks)){
+        if (!this.stockExchange.areSelectedStocksAllAvailable(stocks)){
+
             return 'Invalid Order'
         }
         else if (!this.canAfford(stocks)){
@@ -300,6 +301,16 @@ class Helper {
             console.log("not empty = " + array);
             return false;
         }
+    }
+
+    static count(element, array){
+        let quantity = 0;
+        for (let i = 0; i < array.length; i++){
+            if (array[i] === element){
+                quantity += 1;
+            }
+        }
+        return quantity;
     }
 
     static getDifferenceBetween(first_arr, second_arr=[]){
@@ -461,9 +472,8 @@ class StockExchange {
         const outerClass = this; // Outer class access point for the nested functions.
 
 
-        let orderStocks = {}; // Todo: Refactor this. Use the array only to track order. Remove the object.
         let orderPrice = 0;
-        let orderStockSymbols = []; // Added to allow order to be altered.
+        let orderStocks = []; // Added to allow order to be altered.
 
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
@@ -478,7 +488,7 @@ class StockExchange {
              */
             const tickerSymbol = getStockSymbolFromStockButtonEvent(e);
             orderStocks = addStockToOrder(tickerSymbol, orderStocks);
-            orderPrice = calculateOrderPrice(orderStockSymbols);
+            orderPrice = calculateOrderPrice(orderStocks);
             displayOrderPrice(orderPrice);
             displayOrderStocks(orderStocks);
         }
@@ -498,26 +508,14 @@ class StockExchange {
         function addStockToOrder(stockSymbol, order) {
 
             // Remove first added stock if more than 3 stock in order.
-            if (orderStockSymbols.length === 3){
-                let discarded = orderStockSymbols.shift();
-                order[discarded] -= 1;
+            if (orderStocks.length === 3){
+                let discarded = orderStocks.shift();
             }
-
 
             // Add stock to order
-            if (stockSymbol in order) {
-                order[stockSymbol] += 1;
-                orderStockSymbols.push(stockSymbol);
-            }
-            else {
-                order[stockSymbol] = 1;
-                orderStockSymbols.push(stockSymbol);
-            }
-
-            console.log(orderStockSymbols);
+            order.push(stockSymbol);
+            console.log(orderStocks);
             return order;
-
-
         }
 
 
@@ -530,17 +528,18 @@ class StockExchange {
             return price;
         }
 
+
+
         function displayOrderStocks(order){
             // Show the stocks of the order in the DOM.
             let shownOrder = "Order: ";
-            for (let stockSymbol of Object.keys(order)){
-                if (order[stockSymbol] > 0){
-                    shownOrder += `${stockSymbol} ${order[stockSymbol]} `;
-                    document.querySelector('#current-order-stocks').textContent = shownOrder;
+            for (let stockSymbol of Array.from(new Set(order))){
+                let quantity = Helper.count(stockSymbol, order);
+                shownOrder += `${stockSymbol} ${quantity}`;
+                document.querySelector('#current-order-stocks').textContent = shownOrder;
                 }
 
             }
-        }
 
         function displayOrderPrice(price){
             // Show the price of the order in the DOM.
