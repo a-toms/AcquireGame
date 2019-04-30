@@ -251,14 +251,7 @@ class Player {
         }
     }
 
-    areSelectedStocksAllAvailable(stocks){
-        for (let stockSymbol of Object.keys(stocks)) {
-            if (!this.isStockAvailable(stockSymbol)){
-                return false;
-            }
-        }
-        return true;
-    }
+
 
     canAfford(stocks){
         return this.stockExchange.getTotalPriceOf(stocks) <= this.money;
@@ -269,9 +262,6 @@ class Player {
         this.money -= price;
     }
 
-    isStockAvailable(stockSymbol){
-        return this.stockExchange.availableStocks[stockSymbol] > 0;
-    }
 
     receiveFromStockExchange(purchasedStocks){
         for (let stockSymbol of Object.keys(purchasedStocks)){
@@ -414,6 +404,19 @@ class StockExchange {
         }
     }
 
+    isStockAvailable(stockSymbol){
+        return this.availableStocks[stockSymbol] > 0;
+    }
+
+    areSelectedStocksAllAvailable(stocks) {
+        for (let stockSymbol of Object.keys(stocks)) {
+            if (!this.isStockAvailable(stockSymbol)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     getShareholderBonus(corporation) {
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
@@ -532,7 +535,7 @@ class StockExchange {
             let shownOrder = "Order: ";
             for (let stockSymbol of Object.keys(order)){
                 if (order[stockSymbol] > 0){
-                    shownOrder += `${stockSymbol} ${order[stockSymbol]} - `;
+                    shownOrder += `${stockSymbol} ${order[stockSymbol]} `;
                     document.querySelector('#current-order-stocks').textContent = shownOrder;
                 }
 
