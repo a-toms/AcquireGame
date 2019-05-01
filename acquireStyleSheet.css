@@ -5,22 +5,22 @@
 
 
 .columns-container {
-    margin: auto;
-    width: 90%;
+    padding-left: 10%;
+    padding-right: 10%;
     overflow: hidden;
 }
 
 .column-left {
-    background-color: #defffd;
-    width: 40%;
+    background-color: #f9edff;
+    width: 49%;
     float: left;
 }
 
 .column-right {
     float: right;
     min-height: 100%;
-    width: 50%;
-    background-color: red;
+    width: 49%;
+    background-color: #f9edff;
 }
 
 .row {
@@ -55,7 +55,6 @@
     content: "";
     clear: both;
     display: table;
-
 }
 
 .row button:active{
@@ -71,11 +70,16 @@ button:focus {
 }
 
 .stock-button-group {
-    padding: 5%;
+
+    /*Todo: Center this group without using padding.*/
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-bottom: 2%;
 }
 
 .stock-button-group button {
-    width: 13%;
+    justify-content: center;
+    margin: auto;
     color: white;
     padding: 1% 1%;
     cursor: pointer;
