@@ -80,7 +80,6 @@ button:focus {
     padding: 1% 1%;
     cursor: pointer;
     transition: transform 0.3s;
-
 }
 
 .stock-button-group button:active{
@@ -95,9 +94,6 @@ button:focus {
     transform: scale(1.1);
     transition: transform 0.5s;
 }
-
-
-
 
 .stock-button-group button:not(:last-child) {
     border-right: none; /* Prevent double borders */

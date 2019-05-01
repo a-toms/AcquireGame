@@ -748,7 +748,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     });
 
-    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+    TC.test('\nTest receiveTransferFromStockExchange()', function (assert) {
 
         // Setup.
         let board = new game.Board();
@@ -778,7 +778,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             },
             'receivingPlayer has no stocks before the transfer.'
         );
-        receivingPlayer.receiveFromStockExchange(basket);
+        receivingPlayer.receiveTransferFromStockExchange(basket);
         assert.deepEquals(
             receivingPlayer.stockPortfolio,
             {
@@ -790,7 +790,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
                 'C': 0,
                 'T': 0,
             },
-            'receivingPlayer has stocks after receiveFromStockExchange().'
+            'receivingPlayer has stocks after receiveTransferFromStockExchange().'
         );
         assert.deepEquals(
             stockExchange.availableStocks,

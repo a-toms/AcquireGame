@@ -248,11 +248,9 @@ class Player {
         }
         else{
             this.payFor(stocks);
-            this.receiveFromStockExchange(stocks);
+            this.receiveTransferFromStockExchange(stocks);
         }
     }
-
-
 
     canAfford(stocks){
         return this.stockExchange.getTotalPriceOf(stocks) <= this.money;
@@ -264,7 +262,7 @@ class Player {
     }
 
 
-    receiveFromStockExchange(purchasedStocks){
+    receiveTransferFromStockExchange(purchasedStocks){
         for (let stockSymbol of Object.keys(purchasedStocks)){
             this.stockExchange.availableStocks[stockSymbol] -= purchasedStocks[stockSymbol];
             this.stockPortfolio[stockSymbol] += purchasedStocks[stockSymbol];
@@ -281,15 +279,8 @@ class Player {
         display.querySelector('.stock-portfolio')
             .textContent = `${Object.entries(this.stockPortfolio)}`;
     }
-
-
-
-
-
-
-
-
 }
+
 
 class Helper {
     static isEmpty(array) {
@@ -469,13 +460,12 @@ class StockExchange {
         /*
         Handles the user pressing the DOM stock buttons to order and to buy stocks.
         */
+
         const outerClass = this; // Outer class access point for the nested functions.
-
-
         let orderPrice = 0;
-        let orderStocks = []; // Added to allow order to be altered.
-
+        let orderStocks = [];
         const stockButtons = document.querySelectorAll(".stock-button-group");
+
         stockButtons.forEach(
             stockButton => {
                 stockButton.addEventListener('click', addStock);
@@ -518,7 +508,6 @@ class StockExchange {
             return order;
         }
 
-
         function calculateOrderPrice(stockSymbolsOfOrder, orderPrice){
             let price = stockSymbolsOfOrder.reduce(
                 (total, stockSymbol) => {
@@ -528,14 +517,12 @@ class StockExchange {
             return price;
         }
 
-
-
         function displayOrderStocks(order){
             // Show the stocks of the order in the DOM.
             let shownOrder = "Order: ";
             for (let stockSymbol of Array.from(new Set(order))){
                 let quantity = Helper.count(stockSymbol, order);
-                shownOrder += `${stockSymbol} ${quantity}`;
+                shownOrder += `${stockSymbol} ${quantity} `;
                 document.querySelector('#current-order-stocks').textContent = shownOrder;
                 }
 
@@ -547,7 +534,16 @@ class StockExchange {
             document.querySelector('#current-order-price').textContent = shownPrice;
         }
 
-        /* Todo: Add ability for the player to buy the order.*/
+        /* Todo: Add ability for the player to buy the order.
+        *
+        * - handleBuyOrders() will be called before.
+        *
+        * Buy must:
+        * -Access order in stockExchange.handleBuyOrders().
+        * Access this instance through the composition link in Player.
+        * -
+        *
+        * */
     }
 
 
