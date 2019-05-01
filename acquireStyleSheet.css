@@ -1,5 +1,10 @@
+h2 {
+    text-align: center;
+}
+
+
 .board-container {
-    background-color: #cbfff7;
+    background-color: #371b6a;
     margin: 2%;
 }
 
@@ -29,11 +34,11 @@
 }
 
 .row button {
-    background-color: #e5e6ff; /* Green background */
-    border: 1px solid #101744; /* Green border */
-    color: black; /* White text */
-    cursor: pointer; /* Pointer/hand icon */
-    float: snap; /* Float the buttons side by side */
+    background-color: #78787a;
+    border: 1px solid #c1c0c4;
+    color: #f9f9f9;
+    cursor: pointer;
+    float: snap;
     font-size: large;
     font-family: "Arial";
     padding: 10px;
@@ -70,7 +75,6 @@ button:focus {
 }
 
 .stock-button-group {
-
     /*Todo: Center this group without using padding.*/
     padding-left: 15%;
     padding-right: 15%;
@@ -140,10 +144,16 @@ button:focus {
 
 #end-turn{
     background-color: deeppink;
-    margin: 5% auto;
+    margin: 3% auto;
     display: block;
     padding: 1% 1%;
     height: 1%;
     width: 10%;
 
+}
+
+.tiles{
+    margin: 3% 3%;
+    display: block;
+    text-align: center;
 }
