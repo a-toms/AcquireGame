@@ -649,7 +649,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 1,
             'T': 1,
         };
-        const stockPurchaseOrder = {'W': 1, 'S': 2};
+        const stockPurchaseOrder = ['W', 'S', 'S'];
 
         // The test.
         assert.deepEquals(
@@ -657,7 +657,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             {'W': 0, 'S': 0, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
             'The player has no stockPortfolio before buying.'
         );
-        player.buy(stockPurchaseOrder);
+        player.buyOrder(stockPurchaseOrder);
         assert.deepEquals(
             player.stockPortfolio,
             {'W': 1, 'S': 2, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
@@ -680,7 +680,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         // Tests.
         assert.equals(
@@ -730,7 +730,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         // Tests.
         assert.equals(
@@ -763,7 +763,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         assert.deepEquals(
             receivingPlayer.stockPortfolio,
@@ -820,7 +820,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
         board.tileSpaces[7] = 'S';
         const stockExchange = new game.StockExchange(board);
         const payingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         assert.equals(
             payingPlayer.money,
@@ -834,6 +834,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     })
 
-    // Todo: Write tests for Player.buy()
+    // Todo: Write tests for Player.buyOrder()
 
 });

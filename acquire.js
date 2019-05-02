@@ -211,6 +211,9 @@ class Player {
             'T': 0,
         };
         this.tiles = [];
+        this.orderStocks = [];
+        this.orderPrice = 0;
+        this.hasBoughtStocksThisTurn = false;
     };
 
     placeTile(position) {
@@ -230,20 +233,94 @@ class Player {
         return this.board;
     }
 
-    buy(stocks){
-        // @param: {str:int}
+    prepareOrder() {
         /*
-         After pressing 'buy', check that all selected stocks are available and
-         that player has enough money. If the player does have enough money:
-         lower his money by $X;
-         move the stocks to him; and
-         remove the stocks from the available stocks.
-         */
-        if (!this.stockExchange.areSelectedStocksAllAvailable(stocks)){
+        Handles the user pressing the DOM stock buttons to order and to buy stocks.
+        */
+        const stockButtons = document.querySelectorAll(".stock-button-group");
+        stockButtons.forEach(
+            stockButton => {
+                stockButton.addEventListener('click', this.addStock);
+            }
+        );
+    }
 
+    addStock(e) {
+        /*
+        Add stock to order basket and stock price to order price.
+         */
+        const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
+        this.orderStocks = this.addStockToOrder(tickerSymbol, this.orderStocks);
+        this.orderPrice = this.calculateOrderPrice(this.orderPrice);
+        this.displayOrderPrice(this.orderPrice);
+        this.displayOrderStocks(this.orderStocks);
+    }
+
+    getStockSymbolFromStockButtonEvent(event) {
+        // Get the stock symbol of the button pressed.
+        let stockSymbol = '';
+        if (event.target.className === 'priceShown') {
+            stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
+        }
+        else {
+            stockSymbol = event.target.className.charAt(0).toUpperCase();
+        }
+        return stockSymbol
+    }
+
+    addStockToOrder(stockSymbol, order) {
+        // Remove first added stock if more than 3 stock in order.
+        if (this.orderStocks.length === 3) {
+            this.orderStocks.shift();
+        }
+
+        // Add stock to order
+        order.push(stockSymbol);
+        return order;
+    }
+
+    calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
+        let price = stockSymbolsOfOrder.reduce(
+            (total, stockSymbol) => {
+                return total + this.stockExchange.getStockPriceOf(stockSymbol)
+            }, 0
+        );
+        return price;
+    }
+
+    displayOrderStocks(order) {
+        // Show the stocks of the order in the DOM.
+        let shownOrder = "Order: ";
+        for (let stockSymbol of Array.from(new Set(order))) {
+            let quantity = Helper.count(stockSymbol, order);
+            shownOrder += `${stockSymbol} ${quantity} `;
+            document.querySelector('#current-order-stocks').textContent = shownOrder;
+        }
+
+    }
+
+    displayOrderPrice(price) {
+        // Show the price of the order in the DOM.
+        let shownPrice = `$ ${price}`;
+        document.querySelector('#current-order-price').textContent = shownPrice;
+    }
+
+    buyOnButtonPress(){
+        const buyButton = document.querySelector('#buy-stock');
+        buyButton.addEventListener('click', this.buyOrder);
+    }
+
+    buyOrder(stocks=this.orderStocks){
+        if (this.hasBoughtStocksThisTurn){
+            document.alert('You have already bought stocks');
+            return 'Invalid Order'
+        }
+        if (!this.stockExchange.areSelectedStocksAllAvailable(stocks)){
+            document.alert('Stocks unavailable');
             return 'Invalid Order'
         }
         else if (!this.canAfford(stocks)){
+            document.alert('Not enough money');
             return 'Invalid Order'
         }
         else{
@@ -263,9 +340,9 @@ class Player {
 
 
     receiveTransferFromStockExchange(purchasedStocks){
-        for (let stockSymbol of Object.keys(purchasedStocks)){
-            this.stockExchange.availableStocks[stockSymbol] -= purchasedStocks[stockSymbol];
-            this.stockPortfolio[stockSymbol] += purchasedStocks[stockSymbol];
+        for (let stockSymbol of purchasedStocks){
+            this.stockExchange.availableStocks[stockSymbol] -= 1;
+            this.stockPortfolio[stockSymbol] += 1;
         }
         return this.stockPortfolio;
     }
@@ -411,8 +488,8 @@ class StockExchange {
     }
 
     areSelectedStocksAllAvailable(stocks) {
-        for (let stockSymbol of Object.keys(stocks)) {
-            if (!this.isStockAvailable(stockSymbol)) {
+        for (let stock of stocks){
+            if (!this.isStockAvailable(stock)){
                 return false;
             }
         }
@@ -443,10 +520,10 @@ class StockExchange {
             return this[stockSymbol]['41AndOver'];
     }
 
-    getTotalPriceOf(stockSymbolsAndQuantity){
-        // @param: {corporate symbol : int}
+    getTotalPriceOf(stockSymbols){
+        // @param: []
         let totalPrice = 0;
-        for (let stockSymbol of Object.keys(stockSymbolsAndQuantity)) {
+        for (let stockSymbol of stockSymbols){
             let individualStockPrice = this.getStockPriceOf(
                 stockSymbol
             );
@@ -454,99 +531,6 @@ class StockExchange {
         }
         return totalPrice;
     }
-
-
-    handleBuyOrders(){
-        /*
-        Handles the user pressing the DOM stock buttons to order and to buy stocks.
-        */
-
-        const outerClass = this; // Outer class access point for the nested functions.
-        let orderPrice = 0;
-        let orderStocks = [];
-        const stockButtons = document.querySelectorAll(".stock-button-group");
-
-        stockButtons.forEach(
-            stockButton => {
-                stockButton.addEventListener('click', addStock);
-            }
-        );
-
-        function addStock(e){
-            /*
-            Add stock to order basket and stock price to order price.
-             */
-            const tickerSymbol = getStockSymbolFromStockButtonEvent(e);
-            orderStocks = addStockToOrder(tickerSymbol, orderStocks);
-            orderPrice = calculateOrderPrice(orderStocks);
-            displayOrderPrice(orderPrice);
-            displayOrderStocks(orderStocks);
-        }
-
-        function getStockSymbolFromStockButtonEvent(event){
-            // Get the stock symbol of the button pressed.
-            let stockSymbol = '';
-            if (event.target.className === 'priceShown') {
-                stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
-            }
-            else {
-                stockSymbol = event.target.className.charAt(0).toUpperCase();
-            }
-            return stockSymbol
-        }
-
-        function addStockToOrder(stockSymbol, order) {
-
-            // Remove first added stock if more than 3 stock in order.
-            if (orderStocks.length === 3){
-                let discarded = orderStocks.shift();
-            }
-
-            // Add stock to order
-            order.push(stockSymbol);
-            console.log(orderStocks);
-            return order;
-        }
-
-        function calculateOrderPrice(stockSymbolsOfOrder, orderPrice){
-            let price = stockSymbolsOfOrder.reduce(
-                (total, stockSymbol) => {
-                    return total + outerClass.getStockPriceOf(stockSymbol)
-                }, 0
-            );
-            return price;
-        }
-
-        function displayOrderStocks(order){
-            // Show the stocks of the order in the DOM.
-            let shownOrder = "Order: ";
-            for (let stockSymbol of Array.from(new Set(order))){
-                let quantity = Helper.count(stockSymbol, order);
-                shownOrder += `${stockSymbol} ${quantity} `;
-                document.querySelector('#current-order-stocks').textContent = shownOrder;
-                }
-
-            }
-
-        function displayOrderPrice(price){
-            // Show the price of the order in the DOM.
-            let shownPrice = `$ ${price}`;
-            document.querySelector('#current-order-price').textContent = shownPrice;
-        }
-
-        /* Todo: Add ability for the player to buy the order.
-        *
-        * - handleBuyOrders() will be called before.
-        *
-        * Buy must:
-        * -Access order in stockExchange.handleBuyOrders().
-        * Access this instance through the composition link in Player.
-        * -
-        *
-        * */
-    }
-
-
 
     showCurrentPricesOnStockButtons() {
         const stockButtons = document.querySelector('.stock-button-group').children;
@@ -597,16 +581,20 @@ function placeTile(tileId){
     tileSpace.style.backgroundColor= "#FF8D6F";
 }
 
-// Todo: Integrate amalgamate placeTile and placeTile.
 
 
-// module.exports =  {
-//     Board,
-//     StockExchange,
-//     Player,
-//     Helper
-//
-// };
+module.exports =  {
+    Board,
+    StockExchange,
+    Player,
+    Helper
+
+};
+
+
+
+
+// Todo: Perhaps add a display class that adds JS to the relevant DOM elements.
 
 
 
@@ -619,10 +607,7 @@ function placeTile(tileId){
 
 // GAME ///
 
-// Todo: complete addStock(). Integrate addStock() to the StockExchange class.
-//  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
 
-// Show stock colour as grayscale when unavailable.
 
 function loadGame(){
     const board = new Board();
@@ -632,11 +617,14 @@ function loadGame(){
     board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
-    stockExchange.handleBuyOrders();
+    player1.prepareOrder();
     player1.showInformation();
+    player1.buyOnButtonPress();
+
+
 
 
 
 }
 
-window.addEventListener('load', loadGame);
+// window.addEventListener('load', loadGame);
