@@ -240,7 +240,7 @@ class Player {
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
             stockButton => {
-                stockButton.addEventListener('click', this.addStock);
+                stockButton.addEventListener('click', this.addStock());
             }
         );
     }
@@ -249,12 +249,16 @@ class Player {
         /*
         Add stock to order basket and stock price to order price.
          */
-        const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
+        // Todo: Find out how I can access the outer class methods below.
+        console.log(e);
+        console.log(this);
+        const tickerSymbol = Player.getStockSymbolFromStockButtonEvent(e);
         this.orderStocks = this.addStockToOrder(tickerSymbol, this.orderStocks);
         this.orderPrice = this.calculateOrderPrice(this.orderPrice);
         this.displayOrderPrice(this.orderPrice);
         this.displayOrderStocks(this.orderStocks);
     }
+
 
     getStockSymbolFromStockButtonEvent(event) {
         // Get the stock symbol of the button pressed.
@@ -582,14 +586,14 @@ function placeTile(tileId){
 }
 
 
-
-module.exports =  {
-    Board,
-    StockExchange,
-    Player,
-    Helper
-
-};
+//
+// module.exports =  {
+//     Board,
+//     StockExchange,
+//     Player,
+//     Helper
+//
+// };
 
 
 
@@ -627,4 +631,4 @@ function loadGame(){
 
 }
 
-// window.addEventListener('load', loadGame);
+window.addEventListener('load', loadGame);
