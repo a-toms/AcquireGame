@@ -236,11 +236,12 @@ class Player {
     prepareOrder() {
         /*
         Handles the user pressing the DOM stock buttons to order and to buy stocks.
+
         */
         const stockButtons = document.querySelectorAll(".stock-button-group");
         stockButtons.forEach(
             stockButton => {
-                stockButton.addEventListener('click', this.addStock());
+                stockButton.addEventListener('click', this.addStock.bind(this));
             }
         );
     }
@@ -249,10 +250,7 @@ class Player {
         /*
         Add stock to order basket and stock price to order price.
          */
-        // Todo: Find out how I can access the outer class methods below.
-        console.log(e);
-        console.log(this);
-        const tickerSymbol = Player.getStockSymbolFromStockButtonEvent(e);
+        const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
         this.orderStocks = this.addStockToOrder(tickerSymbol, this.orderStocks);
         this.orderPrice = this.calculateOrderPrice(this.orderPrice);
         this.displayOrderPrice(this.orderPrice);
@@ -262,6 +260,7 @@ class Player {
 
     getStockSymbolFromStockButtonEvent(event) {
         // Get the stock symbol of the button pressed.
+        console.log(event);
         let stockSymbol = '';
         if (event.target.className === 'priceShown') {
             stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
@@ -284,16 +283,16 @@ class Player {
     }
 
     calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
-        let price = stockSymbolsOfOrder.reduce(
-            (total, stockSymbol) => {
-                return total + this.stockExchange.getStockPriceOf(stockSymbol)
-            }, 0
-        );
+        // Todo: write test for this function.
+        let price = 0;
+        for (let i = 0; i < stockSymbolsOfOrder.length; i++){
+            price += this.stockExchange.getStockPriceOf(stockSymbolsOfOrder[i]);
+        }
         return price;
     }
 
     displayOrderStocks(order) {
-        // Show the stocks of the order in the DOM.
+        // Shows the stocks of the order in the DOM.
         let shownOrder = "Order: ";
         for (let stockSymbol of Array.from(new Set(order))) {
             let quantity = Helper.count(stockSymbol, order);
@@ -304,7 +303,7 @@ class Player {
     }
 
     displayOrderPrice(price) {
-        // Show the price of the order in the DOM.
+        // Shows the price of the order in the DOM.
         let shownPrice = `$ ${price}`;
         document.querySelector('#current-order-price').textContent = shownPrice;
     }
@@ -524,6 +523,7 @@ class StockExchange {
             return this[stockSymbol]['41AndOver'];
     }
 
+
     getTotalPriceOf(stockSymbols){
         // @param: []
         let totalPrice = 0;
@@ -574,11 +574,6 @@ function drawBoard(){
     document.getElementById("boardPlace").appendChild(boardContainer);
 }
 
-function takeMoneyFrom(player){
-    player.money -= 100;
-    let mendevalInfo = document.getElementById('Mendeval');
-    mendevalInfo.innerHTML = `${players[0].name} has ${players[0].money} money`;
-}
 
 function placeTile(tileId){
     let tileSpace = document.getElementById(tileId);
