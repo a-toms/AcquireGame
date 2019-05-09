@@ -21,7 +21,48 @@ class Board {
         this.corporationSymbols = Object.freeze([
             'S', 'W', 'F', 'I', 'A', 'C', 'T'
         ]);
+        this.tiles = this.makeArrayOfAllTiles();
     };
+
+    makeArrayOfAllTiles(){  // Todo: Write short test for this.
+        let tiles = [];
+        const letters = Object.freeze(
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+        );
+        const rowLength = 12;
+        for(let rowNumber = 0; rowNumber < 9; rowNumber++) {
+            for (let columnNumber = 1; columnNumber < 13; columnNumber++) {
+                tiles.push(`${columnNumber}${letters[rowNumber]}`);
+            }
+        }
+        return tiles;
+    }
+
+    // Todo: TD later: refactor the below. It is too big currently.
+    drawBoard(){
+        const boardContainer = document.createElement("div");
+        boardContainer.className = "board-container";
+        const letters = Object.freeze(
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+        );
+        const rowLength = 12;
+        for(let rowNumber = 0; rowNumber < 9; rowNumber++){
+            let row = document.createElement("div");
+            row.className = "row";
+            for(let columnNumber = 1; columnNumber < 13; columnNumber++){
+                let tilespace = document.createElement("button");
+                tilespace.id = rowNumber * rowLength + columnNumber;
+                tilespace.className = "board-space";
+                tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
+                tilespace.onclick = function() {
+                    placeTile(tilespace.id);
+                };
+                row.appendChild(tilespace);
+            }
+            boardContainer.append(row);
+        }
+        document.getElementById("boardPlace").appendChild(boardContainer);
+    }
 
     countNumberOf(corporation) {
         let count = 0;
@@ -216,6 +257,13 @@ class Player {
         this.hasBoughtStocksThisTurn = false;
     };
 
+    // Todo: Write test and function takeXNumberOfTile
+
+    // Todo: Write test and func takeOneTile
+
+    // Todo: Write test and func takeStartingTiles
+
+
     placeTile(position) {
         if (this.board.getAdjacentCorporations(position).length > 1) {
             // Initiate acquisition
@@ -256,7 +304,6 @@ class Player {
         this.displayOrderPrice(this.orderPrice);
         this.displayOrderStocks(this.orderStocks);
     }
-
 
     getStockSymbolFromStockButtonEvent(event) {
         // Get the stock symbol of the button pressed.
@@ -324,7 +371,6 @@ class Player {
         const buyButton = document.querySelector(".action-button.buy-order");
         buyButton.addEventListener('click', this.buyOrder.bind(this));
     }
-
 
     buyOrder(){
         if (this.hasBoughtStocksThisTurn){
@@ -572,31 +618,6 @@ class StockExchange {
     }
 }
 
-// Todo: TD later: refactor the below. It is too big currently.
-function drawBoard(){
-    let boardContainer = document.createElement("div");
-    boardContainer.className = "board-container";
-    const letters = Object.freeze(
-        ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-    );
-    let rowLength = 12;
-    for(let rowNumber = 0; rowNumber < 9; rowNumber++){
-        let row = document.createElement("div");
-        row.className = "row";
-        for(let columnNumber = 1; columnNumber < 13; columnNumber++){
-            let tilespace = document.createElement("button");
-            tilespace.id = rowNumber * rowLength + columnNumber;
-            tilespace.className = "board-space";
-            tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
-            tilespace.onclick = function() {
-                placeTile(tilespace.id);
-            };
-            row.appendChild(tilespace);
-        }
-        boardContainer.append(row);
-    }
-    document.getElementById("boardPlace").appendChild(boardContainer);
-}
 
 
 
@@ -616,11 +637,12 @@ function loadGame() {
     board._insertTiles('S', 12);
     board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
-    drawBoard();
+    board.drawBoard();
     player1.prepareOrder();
     player1.showPlayerInformation();
     player1.buyOrderOnButtonPress();
-    player1.clearOrderOnButtonPress()
+    player1.clearOrderOnButtonPress();
+    console.log(board.tiles);
 }
 
 
