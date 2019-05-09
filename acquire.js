@@ -252,7 +252,7 @@ class Player {
          */
         const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
         this.orderStocks = this.addStockToOrder(tickerSymbol, this.orderStocks);
-        this.orderPrice = this.calculateOrderPrice(this.orderPrice);
+        this.orderPrice = this.calculateOrderPrice(this.orderStocks, this.orderPrice);
         this.displayOrderPrice(this.orderPrice);
         this.displayOrderStocks(this.orderStocks);
     }
@@ -272,6 +272,7 @@ class Player {
     }
 
     addStockToOrder(stockSymbol, order) {
+        // Todo: split this function into two functions.
         // Remove first added stock if more than 3 stock in order.
         if (this.orderStocks.length === 3) {
             this.orderStocks.shift();
@@ -284,10 +285,11 @@ class Player {
 
     calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
         // Todo: write test for this function.
-        let price = 0;
-        for (let i = 0; i < stockSymbolsOfOrder.length; i++){
-            price += this.stockExchange.getStockPriceOf(stockSymbolsOfOrder[i]);
-        }
+        let price = stockSymbolsOfOrder.reduce(
+            (total, stockSymbol) => {
+                return total + this.stockExchange.getStockPriceOf(stockSymbol)
+            }, 0
+        );
         return price;
     }
 
@@ -310,10 +312,11 @@ class Player {
 
     buyOnButtonPress(){
         const buyButton = document.querySelector('#buy-stock');
-        buyButton.addEventListener('click', this.buyOrder);
+        buyButton.addEventListener('click', this.buyOrder.bind(this));
     }
 
-    buyOrder(stocks=this.orderStocks){
+    buyOrder(){
+        const stocks = this.orderStocks;
         if (this.hasBoughtStocksThisTurn){
             document.alert('You have already bought stocks');
             return 'Invalid Order'
@@ -329,6 +332,8 @@ class Player {
         else{
             this.payFor(stocks);
             this.receiveTransferFromStockExchange(stocks);
+            this.showPlayerInformation();
+            // Todo: After buying stocks: a) Clear stocksOrder and stocksPrice, and b) change hasBought boolean flag.
         }
     }
 
@@ -341,7 +346,6 @@ class Player {
         this.money -= price;
     }
 
-
     receiveTransferFromStockExchange(purchasedStocks){
         for (let stockSymbol of purchasedStocks){
             this.stockExchange.availableStocks[stockSymbol] -= 1;
@@ -350,7 +354,7 @@ class Player {
         return this.stockPortfolio;
     }
 
-    showInformation(){
+    showPlayerInformation(){
         const display = document.querySelector(".player-information");
         display.querySelector('.name')
             .textContent = this.name;
@@ -491,6 +495,9 @@ class StockExchange {
     }
 
     areSelectedStocksAllAvailable(stocks) {
+        // typeof stocks === Array
+        console.log("stocks are:");
+        console.log(stocks);
         for (let stock of stocks){
             if (!this.isStockAvailable(stock)){
                 return false;
@@ -617,7 +624,7 @@ function loadGame(){
     stockExchange.showCurrentPricesOnStockButtons();
     drawBoard();
     player1.prepareOrder();
-    player1.showInformation();
+    player1.showPlayerInformation();
     player1.buyOnButtonPress();
 
 
