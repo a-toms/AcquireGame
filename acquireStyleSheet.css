@@ -142,18 +142,23 @@ button:focus {
     background-color: cornflowerblue;
 }
 
-#end-turn{
-    background-color: deeppink;
+
+.tiles{
+    margin: 3% 3%;
+    display: block;
+    text-align: center;
+}
+
+.action-button{
+    background-color: #a949a2;
+    color: whitesmoke;
+}
+
+. action-button end-turn{
     margin: 3% auto;
     display: block;
     padding: 1% 1%;
     height: 1%;
     width: 10%;
 
-}
-
-.tiles{
-    margin: 3% 3%;
-    display: block;
-    text-align: center;
 }

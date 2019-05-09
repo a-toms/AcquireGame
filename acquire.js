@@ -296,10 +296,15 @@ class Player {
     displayOrderStocks(order) {
         // Shows the stocks of the order in the DOM.
         let shownOrder = "Order: ";
-        for (let stockSymbol of Array.from(new Set(order))) {
-            let quantity = Helper.count(stockSymbol, order);
-            shownOrder += `${stockSymbol} ${quantity} `;
+        if (order.length === 0){
             document.querySelector('#current-order-stocks').textContent = shownOrder;
+        }
+        else {
+            for (let stockSymbol of Array.from(new Set(order))) {
+                let quantity = Helper.count(stockSymbol, order);
+                shownOrder += `${stockSymbol} ${quantity} `;
+                document.querySelector('#current-order-stocks').textContent = shownOrder;
+            }
         }
 
     }
@@ -310,10 +315,16 @@ class Player {
         document.querySelector('#current-order-price').textContent = shownPrice;
     }
 
-    buyOnButtonPress(){
-        const buyButton = document.querySelector('#buy-stock');
+    clearOrderOnButtonPress(){
+        const clearButton = document.querySelector(".action-button.clear-order");
+        clearButton.addEventListener('click', this.resetOrder.bind(this));
+    }
+
+    buyOrderOnButtonPress(){
+        const buyButton = document.querySelector(".action-button.buy-order");
         buyButton.addEventListener('click', this.buyOrder.bind(this));
     }
+
 
     buyOrder(){
         if (this.hasBoughtStocksThisTurn){
@@ -331,7 +342,6 @@ class Player {
         else{
             this.payFor(this.orderStocks);
             this.receiveTransferFromStockExchange(this.orderStocks);
-            this.showPlayerInformation();
             this.resetOrder();
             this.hasBoughtStocksThisTurn = true;
         }
@@ -340,6 +350,9 @@ class Player {
     resetOrder(){
         this.orderPrice = 0;
         this.orderStocks = [];
+        this.displayOrderPrice(0);
+        this.displayOrderStocks([]);
+        this.showPlayerInformation();
     }
 
     canAfford(stocks){
@@ -535,7 +548,6 @@ class StockExchange {
             return this[stockSymbol]['41AndOver'];
     }
 
-
     getTotalPriceOf(stockSymbols){
         // @param: []
         let totalPrice = 0;
@@ -587,31 +599,14 @@ function drawBoard(){
 }
 
 
+
+
 function placeTile(tileId){
     let tileSpace = document.getElementById(tileId);
     tileSpace.style.backgroundColor= "#FF8D6F";
 }
 
-
-
-
-
-
-
-
-// Todo: Perhaps add a display class that adds JS to the relevant DOM elements.
-
-
-
-
-
-
-
-
-
-
 // GAME ///
-
 
 
 function loadGame() {
@@ -624,8 +619,11 @@ function loadGame() {
     drawBoard();
     player1.prepareOrder();
     player1.showPlayerInformation();
-    player1.buyOnButtonPress();
+    player1.buyOrderOnButtonPress();
+    player1.clearOrderOnButtonPress()
 }
+
+
 
 
 
