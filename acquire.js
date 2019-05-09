@@ -316,25 +316,30 @@ class Player {
     }
 
     buyOrder(){
-        const stocks = this.orderStocks;
         if (this.hasBoughtStocksThisTurn){
-            document.alert('You have already bought stocks');
+            alert('You have already bought stocks');
             return 'Invalid Order'
         }
-        if (!this.stockExchange.areSelectedStocksAllAvailable(stocks)){
-            document.alert('Stocks unavailable');
+        if (!this.stockExchange.areSelectedStocksAllAvailable(this.orderStocks)){
+            alert('Stocks unavailable');
             return 'Invalid Order'
         }
-        else if (!this.canAfford(stocks)){
-            document.alert('Not enough money');
+        else if (!this.canAfford(this.orderStocks)){
+            alert('Not enough money');
             return 'Invalid Order'
         }
         else{
-            this.payFor(stocks);
-            this.receiveTransferFromStockExchange(stocks);
+            this.payFor(this.orderStocks);
+            this.receiveTransferFromStockExchange(this.orderStocks);
             this.showPlayerInformation();
-            // Todo: After buying stocks: a) Clear stocksOrder and stocksPrice, and b) change hasBought boolean flag.
+            this.resetOrder();
+            this.hasBoughtStocksThisTurn = true;
         }
+    }
+
+    resetOrder(){
+        this.orderPrice = 0;
+        this.orderStocks = [];
     }
 
     canAfford(stocks){
@@ -343,7 +348,7 @@ class Player {
 
     payFor(stocks){
         const price = this.stockExchange.getTotalPriceOf(stocks);
-        this.money -= price;
+        this.money -= price
     }
 
     receiveTransferFromStockExchange(purchasedStocks){
@@ -588,14 +593,8 @@ function placeTile(tileId){
 }
 
 
-//
-// module.exports =  {
-//     Board,
-//     StockExchange,
-//     Player,
-//     Helper
-//
-// };
+
+
 
 
 
@@ -615,7 +614,7 @@ function placeTile(tileId){
 
 
 
-function loadGame(){
+function loadGame() {
     const board = new Board();
     const stockExchange = new StockExchange(board);
     const player1 = new Player(board, 'Verban', 2000, stockExchange);
@@ -626,11 +625,16 @@ function loadGame(){
     player1.prepareOrder();
     player1.showPlayerInformation();
     player1.buyOnButtonPress();
-
-
-
-
-
 }
 
+
+
+
+// module.exports =  {
+//     Board,
+//     StockExchange,
+//     Player,
+//     Helper
+//
+// };
 window.addEventListener('load', loadGame);

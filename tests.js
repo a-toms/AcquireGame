@@ -585,7 +585,6 @@ tape('\nHelper actions', function (TC) {
     });
 
 
-
     TC.test('\nTest getDifferenceBetween', function (assert){
         let alpha = ['A', 'B', 'C', 'D'];
         let beta = ['B', 'E', 'F'];
