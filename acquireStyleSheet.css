@@ -1,7 +1,10 @@
-h2 {
+h1 {
     text-align: center;
 }
 
+.color-scheme-toggle{
+    text-align: right;
+}
 
 .board-container {
     background-color: #371b6a;
@@ -46,7 +49,7 @@ h2 {
 }
 
 .row button:hover{
-    background-color: #6fa7f9;
+    background-color: #cacacb;
     transform: scale(1.05);
     transition: transform 0.2s;
 }
@@ -154,11 +157,9 @@ button:focus {
     color: whitesmoke;
 }
 
-. action-button end-turn{
+.action-button.end-turn{
     margin: 3% auto;
     display: block;
     padding: 1% 1%;
-    height: 1%;
-    width: 10%;
 
 }
