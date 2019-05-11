@@ -21,18 +21,18 @@ class Board {
         this.corporationSymbols = Object.freeze([
             'S', 'W', 'F', 'I', 'A', 'C', 'T'
         ]);
+        this.letters = Object.freeze(
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+        );
         this.tiles = this.makeArrayOfAllTiles();
     };
 
     makeArrayOfAllTiles(){
         let tiles = [];
-        const letters = Object.freeze(
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-        );
         const rowLength = 12;
         for(let rowNumber = 0; rowNumber < 9; rowNumber++) {
             for (let columnNumber = 1; columnNumber < 13; columnNumber++) {
-                tiles.push(`${columnNumber}${letters[rowNumber]}`);
+                tiles.push(`${columnNumber}${this.letters[rowNumber]}`);
             }
         }
         return tiles;
@@ -41,22 +41,13 @@ class Board {
     // Todo: TD later: refactor the below. It is too big currently.
     drawBoard(){
         const boardContainer = document.createElement("div");
-        boardContainer.className = "board-container";
-        const letters = Object.freeze(
-            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-        );
         const rowLength = 12;
         for(let rowNumber = 0; rowNumber < 9; rowNumber++){
             let row = document.createElement("div");
-            row.className = "row";
+            row.className = "tile-spaces";
             for(let columnNumber = 1; columnNumber < 13; columnNumber++){
                 let tilespace = document.createElement("button");
-                tilespace.id = rowNumber * rowLength + columnNumber;
-                tilespace.className = "board-space";
-                tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
-                tilespace.onclick = function() {
-                    placeTile(tilespace.id);
-                };
+                tilespace.innerText = `${columnNumber}${this.letters[rowNumber]}`;
                 row.appendChild(tilespace);
             }
             boardContainer.append(row);
@@ -619,7 +610,6 @@ class StockExchange {
 
 function placeTile(tileId){
     let tileSpace = document.getElementById(tileId);
-    tileSpace.style.backgroundColor= "#FF8D6F";
 }
 
 // GAME ///

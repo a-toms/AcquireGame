@@ -6,11 +6,6 @@ h1 {
     text-align: right;
 }
 
-.board-container {
-    background-color: #371b6a;
-    margin: 2%;
-}
-
 
 .columns-container {
     padding-left: 10%;
@@ -31,12 +26,12 @@ h1 {
     background-color: #f9edff;
 }
 
-.row {
+.tile-spaces {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 }
 
-.row button {
+.tile-spaces button {
     background-color: #78787a;
     border: 1px solid #c1c0c4;
     color: #f9f9f9;
@@ -48,24 +43,24 @@ h1 {
     transition: transform 0.2s;
 }
 
-.row button:hover{
+.tile-spaces button:hover{
     background-color: #cacacb;
     transform: scale(1.05);
     transition: transform 0.2s;
 }
 
-.row button:not(:last-child) {
+.tile-spaces button:not(:last-child) {
     border-right: none; /* Prevent double borders */
 }
 
-.row:after {
+.tile-spaces:after {
     /* Clear floats (clearfix hack) */
     content: "";
     clear: both;
     display: table;
 }
 
-.row button:active{
+.tile-spaces button:active{
     opacity:0.5;
     transition:opacity 0s;
     /* Ripple effect */
@@ -146,11 +141,18 @@ button:focus {
 }
 
 
-.tiles{
+.tile{
     margin: 3% 3%;
     display: block;
     text-align: center;
 }
+
+.tile-clicked {
+    background-color: "#FF8D6F";
+
+}
+
+
 
 .action-button{
     background-color: #a949a2;
