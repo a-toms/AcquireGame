@@ -24,7 +24,7 @@ class Board {
         this.tiles = this.makeArrayOfAllTiles();
     };
 
-    makeArrayOfAllTiles(){  // Todo: Write short test for this.
+    makeArrayOfAllTiles(){
         let tiles = [];
         const letters = Object.freeze(
             ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
@@ -307,7 +307,6 @@ class Player {
 
     getStockSymbolFromStockButtonEvent(event) {
         // Get the stock symbol of the button pressed.
-        console.log(event);
         let stockSymbol = '';
         if (event.target.className === 'priceShown') {
             stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
@@ -433,11 +432,9 @@ class Player {
 class Helper {
     static isEmpty(array) {
         if (Array.isArray(array) && array.length === 0){
-            console.log("empty = " + array);
             return true;
         }
         else if (Array.isArray(array) && array.length > 0){
-            console.log("not empty = " + array);
             return false;
         }
     }
@@ -560,8 +557,6 @@ class StockExchange {
 
     areSelectedStocksAllAvailable(stocks) {
         // typeof stocks === Array
-        console.log("stocks are:");
-        console.log(stocks);
         for (let stock of stocks){
             if (!this.isStockAvailable(stock)){
                 return false;
@@ -642,7 +637,6 @@ function loadGame() {
     player1.showPlayerInformation();
     player1.buyOrderOnButtonPress();
     player1.clearOrderOnButtonPress();
-    console.log(board.tiles);
 }
 
 

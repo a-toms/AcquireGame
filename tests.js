@@ -4,16 +4,25 @@ let tape = require('tape');
 let game = require('./acquire.js');
 
 tape('\nBoard creation.', function (TC) {
-    let emptyBoard = new game.Board();
+    let board = new game.Board();
 
     TC.test('Test that one can access the board.', function (assert) {
         assert.equal(
-            emptyBoard.tileSpaces[0][0],
+            board.tileSpaces[0][0],
             'E',
             'Tile space \'A1\' in new board === \'empty\''
         );
         assert.end();
     });
+
+    TC.test('Test that board starts with 108 tiles', function (assert) {
+        assert.equal(
+            108,
+            board.tiles.length
+        );
+        assert.end();
+    });
+
 });
 
 
