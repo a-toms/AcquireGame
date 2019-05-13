@@ -38,21 +38,65 @@ class Board {
         return tiles;
     }
 
-    // Todo: TD later: refactor the below. It is too big currently.
     drawBoard(){
         const boardContainer = document.createElement("div");
-        const rowLength = 12;
         for(let rowNumber = 0; rowNumber < 9; rowNumber++){
             let row = document.createElement("div");
             row.className = "tile-spaces";
             for(let columnNumber = 1; columnNumber < 13; columnNumber++){
-                let tilespace = document.createElement("button");
-                tilespace.innerText = `${columnNumber}${this.letters[rowNumber]}`;
-                row.appendChild(tilespace);
+                row.appendChild(
+                    this.returnTilespaceButton(columnNumber, rowNumber)
+                );
             }
             boardContainer.append(row);
         }
         document.getElementById("boardPlace").appendChild(boardContainer);
+    }
+
+
+    returnTilespaceButton(column, row){
+        const tilespace = document.createElement("button");
+        tilespace.innerText = `${column}${this.letters[row]}`;
+        tilespace.id = `${row * 12 + column - 1}`;
+        return tilespace;
+    }
+
+    addClickEventListenersToTilespaces(){
+        const tilespaces = document.querySelectorAll(".tile-spaces button");
+        for (let tilespace of tilespaces){
+            tilespace.addEventListener('click', this.placeTile.bind(this));
+        }
+    }
+
+    placeTile(event) {
+        console.log(event);
+        let position = event.target.id;
+        console.log(position);
+
+        // Initiate acquisition.
+        if (this.getAdjacentCorporations(position).length > 1) {
+        }
+
+        // Add to existing corporation.
+        else if (this.hasOnlyOneCorporationAdjacentTo(position)) {
+            return this.incorporateAdjacentGenericTiles(position);
+        }
+
+        // Found corporation
+        else if (
+            this.hasGenericTilesAdjacentTo(position) &&
+            this.hasNonActiveCorporations()) {
+            let symbol = '*';
+            return this.foundCorporation(position, symbol);
+        }
+
+        // Place tile only
+        else {
+            console.log(event.id);
+            const tilespaceElement = document.getElementById(`${position}`);
+            tilespaceElement.textContent = '**';
+        }
+
     }
 
     countNumberOf(corporation) {
@@ -91,9 +135,7 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition) {
-        let centralCoordinate = Helper.getCoordinateOf(
-            tilePosition
-        );
+        let centralCoordinate = tilePosition;
         let surroundingCoordinates = Helper.getCoordinatesAdjacentTo(
             centralCoordinate
         );
@@ -113,9 +155,7 @@ class Board {
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition) {
-        let centralCoordinate = Helper.getCoordinateOf(
-            tilePosition
-        );
+        let centralCoordinate = tilePosition;
         let adjacentCoordinates = Helper.getCoordinatesAdjacentTo(
             centralCoordinate
         );
@@ -213,7 +253,7 @@ class Board {
     }
 
     foundCorporation(tilePosition, corpSymbol) {
-        let central = Helper.getCoordinateOf(tilePosition);
+        let central = tilePosition;
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
             tilePosition
         );
@@ -248,29 +288,24 @@ class Player {
         this.hasBoughtStocksThisTurn = false;
     };
 
-    // Todo: Write test and function takeXNumberOfTile
+    takeNumberOfTiles(number){
+        let newTilesForPlayer = [];
+        for (let i = 0; i < number; i++){
+           newTilesForPlayer.push(this.board.tiles.pop())
+        }
+        return newTilesForPlayer;
+    }
+
+    addTilesToPlayer(tiles){
+        this.tiles.push(tiles);
+    }
 
     // Todo: Write test and func takeOneTile
 
     // Todo: Write test and func takeStartingTiles
 
 
-    placeTile(position) {
-        if (this.board.getAdjacentCorporations(position).length > 1) {
-            // Initiate acquisition
-        } else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
-            return this.board.incorporateAdjacentGenericTiles(position);
-        } else if (
-            this.board.hasGenericTilesAdjacentTo(position) &&
-            this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
 
-            // Todo: get user input of corporation that user wants to found from the DOM.
-            let symbol = '*'; // todo: Replace with user input.
-            return this.board.foundCorporation(position, symbol);
-        }
-        let existing = this.board.findActiveCorporations();
-        return this.board;
-    }
 
     prepareOrder() {
         /*
@@ -321,7 +356,6 @@ class Player {
     }
 
     calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
-        // Todo: write test for this function.
         let price = stockSymbolsOfOrder.reduce(
             (total, stockSymbol) => {
                 return total + this.stockExchange.getStockPriceOf(stockSymbol)
@@ -619,21 +653,17 @@ function loadGame() {
     const board = new Board();
     const stockExchange = new StockExchange(board);
     const player1 = new Player(board, 'Verban', 2000, stockExchange);
-    board._insertTiles('S', 12);
-    board._insertTiles('T', 3);
     stockExchange.showCurrentPricesOnStockButtons();
     board.drawBoard();
+    board.addClickEventListenersToTilespaces();
     player1.prepareOrder();
     player1.showPlayerInformation();
     player1.buyOrderOnButtonPress();
     player1.clearOrderOnButtonPress();
+
 }
 
-
-
-
-
-
+//
 // module.exports =  {
 //     Board,
 //     StockExchange,
