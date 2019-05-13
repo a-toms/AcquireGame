@@ -91,6 +91,9 @@ class Board {
         }
 
         // Place tile only
+            // Todo: Cont here.
+        //      1. Change the board space background color to the corporation tile color after adding tile.
+        //      2. Update this.tileSpaces.
         else {
             console.log(event.id);
             const tilespaceElement = document.getElementById(`${position}`);
@@ -299,13 +302,6 @@ class Player {
     addTilesToPlayer(tiles){
         this.tiles.push(tiles);
     }
-
-    // Todo: Write test and func takeOneTile
-
-    // Todo: Write test and func takeStartingTiles
-
-
-
 
     prepareOrder() {
         /*
