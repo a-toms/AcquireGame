@@ -29,7 +29,6 @@ class Board {
 
     makeArrayOfAllTiles(){
         let tiles = [];
-        const rowLength = 12;
         for(let rowNumber = 0; rowNumber < 9; rowNumber++) {
             for (let columnNumber = 1; columnNumber < 13; columnNumber++) {
                 tiles.push(`${columnNumber}${this.letters[rowNumber]}`);
@@ -52,7 +51,6 @@ class Board {
         }
         document.getElementById("boardPlace").appendChild(boardContainer);
     }
-
 
     returnTilespaceButton(column, row){
         const tilespace = document.createElement("button");
@@ -91,15 +89,16 @@ class Board {
         }
 
         // Place tile only
-            // Todo: Cont here.
+            // Todo:
         //      1. Change the board space background color to the corporation tile color after adding tile.
         //      2. Update this.tileSpaces.
         else {
             console.log(event.id);
             const tilespaceElement = document.getElementById(`${position}`);
             tilespaceElement.textContent = '**';
+            tilespaceElement.className = "tile-spaces-clicked";
+            console.log(tilespaceElement.className);
         }
-
     }
 
     countNumberOf(corporation) {
@@ -303,6 +302,25 @@ class Player {
         this.tiles.push(tiles);
     }
 
+    showTilesInHand(){
+        const tilesPosition = document.querySelector(".player-tiles");
+        const tilesRecord = this.tiles;
+        for (let i = 0; i < this.tiles.length; i++){
+            let button = document.createElement("button");
+            button.textContent = tilesRecord[i];
+            button.id = `player-tile-${i}`;
+            tilesPosition.append(button);
+        }
+    }
+
+    // Todo: Find out how to drag a button onto the board and then modify the board.
+    //  I think that the key is to detect that a button is being dragged and
+    //  that it is dragged and released over the board.
+    //  Find out how to show the button being dragged.
+
+
+
+
     prepareOrder() {
         /*
         Handles the user pressing the DOM stock buttons to order and to buy stocks.
@@ -321,7 +339,7 @@ class Player {
         Add stock to order basket and stock price to order price.
          */
         const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
-        this.orderStocks = this.addStockToOrder(tickerSymbol, this.orderStocks);
+        this.orderStocks = this.addStockToAnOrderWithThreeItems(tickerSymbol, this.orderStocks);
         this.orderPrice = this.calculateOrderPrice(this.orderStocks, this.orderPrice);
         this.displayOrderPrice(this.orderPrice);
         this.displayOrderStocks(this.orderStocks);
@@ -339,25 +357,31 @@ class Player {
         return stockSymbol
     }
 
-    addStockToOrder(stockSymbol, order) {
-        // Todo: split this function into two functions.
-        // Remove first added stock if more than 3 stock in order.
-        if (this.orderStocks.length === 3) {
-            this.orderStocks.shift();
-        }
+    addStockToAnOrderWithThreeItems(stockSymbol, order) {
+        this.keepMaximumOfThreeStocks();
+        return this.addToOrder(stockSymbol, order);
+    }
 
+    addToOrder(stockSymbol, order){
         // Add stock to order
         order.push(stockSymbol);
         return order;
     }
 
+
+    keepMaximumOfThreeStocks(){
+        // Remove first added stock if more than 3 stock in order.
+        if (this.orderStocks.length === 3) {
+            this.orderStocks.shift();
+        }
+    }
+
     calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
-        let price = stockSymbolsOfOrder.reduce(
+        return stockSymbolsOfOrder.reduce(
             (total, stockSymbol) => {
                 return total + this.stockExchange.getStockPriceOf(stockSymbol)
             }, 0
         );
-        return price;
     }
 
     displayOrderStocks(order) {
@@ -656,6 +680,8 @@ function loadGame() {
     player1.showPlayerInformation();
     player1.buyOrderOnButtonPress();
     player1.clearOrderOnButtonPress();
+    player1.tiles = ["A1", "B2", "C3", "D4", "E5", "F6"];
+    player1.showTilesInHand();
 
 }
 

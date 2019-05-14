@@ -31,8 +31,10 @@ h1 {
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 }
 
+
+
 .tile-spaces button {
-    background-color: #78787a;
+    background-color: #666663;
     border: 1px solid #c1c0c4;
     color: #f9f9f9;
     cursor: pointer;
@@ -42,9 +44,13 @@ h1 {
     padding: 10px;
     transition: transform 0.2s;
 }
+/* This is not working. I also imagine that there is a better way than the below to chan. Perhaps a subclass*/
+.tile-spaces-clicked button{
+    background-color: #f0100a;
+}
 
 .tile-spaces button:hover{
-    background-color: #cacacb;
+    background-color: #c2c2c3;
     transform: scale(1.05);
     transition: transform 0.2s;
 }
@@ -82,7 +88,7 @@ button:focus {
     justify-content: center;
     color: white;
     padding: 1% 1%;
-    cursor: pointer;
+    cursor: copy;
     transition: transform 0.3s;
 }
 
@@ -134,18 +140,34 @@ button:focus {
     background-color: cornflowerblue;
 }
 
-.tile-clicked {
-    background-color: "#FF8D6F";
-}
-
 .player-tiles {
     text-align: center;
+}
+
+.player-tiles button{
+    cursor: grab;
+    margin: 2% auto;
+    width: 15%;
+    padding: 1% 1%;
+
+}
+
+.player-tiles button:active {
+    cursor: grabbing;
+    margin: 2% auto
+
+}
+
+.player-tiles button:after{
+    color: chocolate;
+
 }
 
 .action-button{
     background-color: #a949a2;
     color: whitesmoke;
 }
+
 
 .action-button.end-turn{
     margin: 3% auto;
