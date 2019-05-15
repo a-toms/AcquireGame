@@ -311,6 +311,7 @@ class Player {
             button.id = `player-tile-${i}`;
             tilesPosition.append(button);
         }
+
     }
 
     // Todo: Find out how to drag a button onto the board and then modify the board.
@@ -662,6 +663,7 @@ class StockExchange {
 
 
 
+
 function placeTile(tileId){
     let tileSpace = document.getElementById(tileId);
 }
@@ -682,6 +684,7 @@ function loadGame() {
     player1.clearOrderOnButtonPress();
     player1.tiles = ["A1", "B2", "C3", "D4", "E5", "F6"];
     player1.showTilesInHand();
+
 
 }
 
