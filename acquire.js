@@ -1,4 +1,12 @@
 
+/*
+Plan for adding tiles
+1. Show tiles in the players hand
+2. Show copy cursor and change color if player hovers over
+the tilespace for which he has the corresponding tile.
+ */
+
+
 class Board {
     constructor() {
         /*
@@ -313,13 +321,6 @@ class Player {
         }
 
     }
-
-    // Todo: Find out how to drag a button onto the board and then modify the board.
-    //  I think that the key is to detect that a button is being dragged and
-    //  that it is dragged and released over the board.
-    //  Find out how to show the button being dragged.
-
-
 
 
     prepareOrder() {
@@ -684,6 +685,10 @@ function loadGame() {
     player1.clearOrderOnButtonPress();
     player1.tiles = ["A1", "B2", "C3", "D4", "E5", "F6"];
     player1.showTilesInHand();
+
+
+
+
 
 
 }
