@@ -94,7 +94,6 @@ button:focus {
     color: #fff;
     border-radius: 7px;
     box-shadow: 0px 9px 1px #0082b5;
-
 }
 
 /* Animation for buttons */
@@ -150,26 +149,108 @@ button:focus {
 
 .continental {
     background-color: red;
+    box-shadow: 0px 7px 1px darkred;
+}
+
+.continental:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px darkred;
+}
+
+.continental:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px darkred;
+
 }
 
 .worldwide{
-    background-color: rebeccapurple;
+    background-color: mediumpurple;
+    box-shadow: 0px 7px 1px rebeccapurple;
+}
+
+.worldwide:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px rebeccapurple;
+}
+
+.worldwide:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px rebeccapurple;
+
 }
 
 .imperial{
     background: goldenrod;
+    box-shadow: 0px 7px 1px #a5760b;
+}
+
+.imperial:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px #a5760b;
+}
+
+.imperial:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px darkgoldenrod;
+
 }
 
 .festival{
     background-color: forestgreen;
+    box-shadow: 0px 7px 1px darkgreen;
+}
+
+.festival:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px darkgreen;
+}
+
+.festival:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px darkgreen;
 }
 
 .sackson{
-    background-color: darkorange;
+    background-color: orange;
+    box-shadow: 0px 7px 1px #c36300;
+}
+
+.sackson:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px #c36300;
+}
+
+.sackson:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px #c36300;
 }
 
 .american{
     background-color: cornflowerblue;
+    box-shadow: 0px 7px 1px darkblue;
+}
+
+.american:hover {
+    transform: translateY(2px);
+    -webkit-transform: translateY(2px);
+    box-shadow: 0px 5px 1px darkblue;
+}
+
+.american:active {
+    transform: translateY(4px);
+    -webkit-transform: translateY(4px);
+    box-shadow: 0px 3px 1px darkblue;
+
 }
 
 .player-tiles {
