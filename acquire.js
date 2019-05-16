@@ -49,7 +49,7 @@ class Board {
         const boardContainer = document.createElement("div");
         for(let rowNumber = 0; rowNumber < 9; rowNumber++){
             let row = document.createElement("div");
-            row.className = "tile-spaces";
+            row.className = "tile-space-row";
             for(let columnNumber = 1; columnNumber < 13; columnNumber++){
                 row.appendChild(
                     this.returnTilespaceButton(columnNumber, rowNumber)
@@ -64,11 +64,12 @@ class Board {
         const tilespace = document.createElement("button");
         tilespace.innerText = `${column}${this.letters[row]}`;
         tilespace.id = `${row * 12 + column - 1}`;
+        tilespace.className = "tile-space";
         return tilespace;
     }
 
     addClickEventListenersToTilespaces(){
-        const tilespaces = document.querySelectorAll(".tile-spaces button");
+        const tilespaces = document.querySelectorAll(".tile-space");
         for (let tilespace of tilespaces){
             tilespace.addEventListener('click', this.placeTile.bind(this));
         }
@@ -92,7 +93,7 @@ class Board {
         else if (
             this.hasGenericTilesAdjacentTo(position) &&
             this.hasNonActiveCorporations()) {
-            let symbol = '*';
+            let symbol = 'A2';
             return this.foundCorporation(position, symbol);
         }
 
@@ -103,8 +104,8 @@ class Board {
         else {
             console.log(event.id);
             const tilespaceElement = document.getElementById(`${position}`);
-            tilespaceElement.textContent = '**';
-            tilespaceElement.className = "tile-spaces-clicked";
+            tilespaceElement.textContent = '1A';
+            tilespaceElement.className += " clicked";
             console.log(tilespaceElement.className);
         }
     }
@@ -316,6 +317,7 @@ class Player {
         for (let i = 0; i < this.tiles.length; i++){
             let button = document.createElement("button");
             button.textContent = tilesRecord[i];
+            button.className = "player-tile";
             button.id = `player-tile-${i}`;
             tilesPosition.append(button);
         }

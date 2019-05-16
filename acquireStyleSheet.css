@@ -2,6 +2,10 @@ h1 {
     text-align: center;
 }
 
+button:focus {
+    outline: none;
+}
+
 .color-scheme-toggle{
     text-align: right;
 }
@@ -26,56 +30,81 @@ h1 {
     background-color: #f9edff;
 }
 
-.tile-spaces {
+.tile-space-row {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
 }
 
 
 
-.tile-spaces button {
-    background-color: #666663;
-    border: 1px solid #c1c0c4;
+.tile-space {
     color: #f9f9f9;
     cursor: pointer;
     float: snap;
-    font-size: large;
-    font-family: "Arial";
-    padding: 10px;
-    transition: transform 0.2s;
-}
-/* This is not working. I also imagine that there is a better way than the below to chan. Perhaps a subclass*/
-.tile-spaces-clicked button{
-    background-color: #f0100a;
-}
-
-.tile-spaces button:hover{
-    background-color: #c2c2c3;
-    transform: scale(1.05);
-    transition: transform 0.2s;
-}
-
-.tile-spaces button:not(:last-child) {
-    border-right: none; /* Prevent double borders */
-}
-
-.tile-spaces:after {
-    /* Clear floats (clearfix hack) */
-    content: "";
-    clear: both;
-    display: table;
+    font-size: 20px;
+    border: 1px solid #616261;
+    -webkit-box-shadow: #b4b5b5 3px 3px 3px;
+    -moz-box-shadow: #b4b5b5 3px 3px 3px;
+    box-shadow: #b4b5b5 3px 3px 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    font-family: arial, helvetica, sans-serif;
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+    display: inline-block;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    background-color: #7d7e7d;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
+    background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -moz-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -ms-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: -o-linear-gradient(top, #7d7e7d, #0e0e0e);
+    background-image: linear-gradient(to bottom, #7d7e7d, #0e0e0e);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#7d7e7d, endColorstr=#0e0e0e);
 }
 
-.tile-spaces button:active{
-    opacity:0.5;
-    transition:opacity 0s;
-    /* Ripple effect */
-    /* could show color/s of potential acquisition when hovering over button */
+.tile-space:hover {
+    border-color: #4a4b4a;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    background-color: #646464;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#646464), to(#282828));
+    background-image: -webkit-linear-gradient(top, #646464, #282828);
+    background-image: -moz-linear-gradient(top, #646464, #282828);
+    background-image: -ms-linear-gradient(top, #646464, #282828);
+    background-image: -o-linear-gradient(top, #646464, #282828);
+    background-image: linear-gradient(to bottom, #646464, #282828);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#646464, endColorstr=#282828);
 }
 
-button:focus {
-    /* Remove blue button outline after clicking in chrome */
-    outline:0;
+.clicked {
+    font-family: arial, helvetica, sans-serif;
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+    display: inline-block;
+    color: #5E5E5E;
+    text-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+    background-color: #FFFFFF;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#EDEDED));
+    background-image: -webkit-linear-gradient(top, #FFFFFF, #EDEDED);
+    background-image: -moz-linear-gradient(top, #FFFFFF, #EDEDED);
+    background-image: -ms-linear-gradient(top, #FFFFFF, #EDEDED);
+    background-image: -o-linear-gradient(top, #FFFFFF, #EDEDED);
+    background-image: linear-gradient(to bottom, #FFFFFF, #EDEDED);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#FFFFFF, endColorstr=#EDEDED);
+}
+
+.clicked:hover {
+    border: 1px solid #cccccc;
+    background-color: #e6e6e6;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6), to(#d4d4d4));
+    background-image: -webkit-linear-gradient(top, #e6e6e6, #d4d4d4);
+    background-image: -moz-linear-gradient(top, #e6e6e6, #d4d4d4);
+    background-image: -ms-linear-gradient(top, #e6e6e6, #d4d4d4);
+    background-image: -o-linear-gradient(top, #e6e6e6, #d4d4d4);
+    background-image: linear-gradient(to bottom, #e6e6e6, #d4d4d4);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e6e6e6, endColorstr=#d4d4d4);
 }
 
 .stock-button-group {
@@ -257,17 +286,22 @@ button:focus {
     text-align: center;
 }
 
-.player-tiles button{
+.player-tile {
     cursor: grab;
-    margin: 2% auto;
-    width: 15%;
-    padding: 1% 1%;
-
+    position: relative;
+    padding: 7px 7px;
+    margin: 1% 1%;
+    font-size: 12px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 7px;
+    box-shadow: 0px 2px 1px #0082b5;
 }
 
-.player-tiles button:active {
+
+.player-tile:active {
     cursor: grabbing;
-    margin: 2% auto
+    box-shadow: 0px 0px 0px #0082b5;
 
 }
 
@@ -318,3 +352,5 @@ button:focus {
     -webkit-transform: translateY(8px);
     box-shadow: 0px 1px 1px #0082b5;
 }
+
+
