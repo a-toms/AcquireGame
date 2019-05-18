@@ -4,9 +4,12 @@ Plan for adding tiles
 1. Show tiles in the players hand YES
 2a. Move tiles up. YES
 2. Show copy cursor and change color if player hovers over
-the tilespace for which he has the corresponding tile.
+the tilespace for which he has the corresponding tile. LATER
 3. Add player tile to board when clicked
 4. Allow player to end turn.
+
+5. Add Cypress to test the front end. The code feels somewhat unwieldly becuase
+of the lack of tests for the front-end.
  */
 
 
@@ -39,11 +42,10 @@ class Board {
     };
 
     makeArrayOfAllTiles(){
+        const numberOfTilespaces = 108;
         let tiles = [];
-        for(let rowNumber = 0; rowNumber < 9; rowNumber++) {
-            for (let columnNumber = 1; columnNumber < 13; columnNumber++) {
-                tiles.push(`${columnNumber}${this.letters[rowNumber]}`);
-            }
+        for(let i = 0; i < numberOfTilespaces; i++) {
+            tiles.push(i)
         }
         return tiles;
     }
@@ -69,50 +71,6 @@ class Board {
         tilespace.id = `${row * 12 + column - 1}`;
         tilespace.className = "tile-space";
         return tilespace;
-    }
-
-    addClickEventListenersToTilespaces(){
-        for (let tilespace of document.querySelectorAll(".tile-space")){
-            tilespace.addEventListener('click', this.placeTile.bind(this));
-        }
-    }
-
-
-    // Todo: Refactor this.
-    placeTile(event) {
-        console.log(event);
-        let coordinate = event.target.id;
-        console.log(coordinate);
-
-
-        // Initiate acquisition.
-        if (this.getAdjacentCorporations(coordinate).length > 1) {
-        }
-
-        // Add to existing corporation.
-        else if (this.hasOnlyOneCorporationAdjacentTo(coordinate)) {
-            return this.incorporateAdjacentGenericTiles(coordinate);
-        }
-
-        // Found corporation
-        else if (
-            this.hasGenericTilesAdjacentTo(coordinate) &&
-            this.hasNonActiveCorporations()) {
-            let symbol = 'A2';
-            return this.foundCorporation(coordinate, symbol);
-        }
-
-        // Place tile only
-            // Todo:
-        //      1. Change the board space background color to the corporation tile color after adding tile.
-        //      2. Update this.tileSpaces.
-        else {
-            console.log(coordinate);
-            const tilespaceElement = document.getElementById(`${coordinate}`);
-            tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
-            tilespaceElement.className += " clicked";
-            console.log(tilespaceElement.className);
-        }
     }
 
     countNumberOf(corporation) {
@@ -317,16 +275,61 @@ class Player {
     }
 
     showTilesInHand(){
-        const tilesPosition = document.querySelector(".player-tiles");
-        const tilesRecord = this.tiles;
+        const playerTiles = document.querySelector(".player-tiles");
         for (let i = 0; i < this.tiles.length; i++){
             let button = document.createElement("button");
-            button.textContent = tilesRecord[i];
+            button.textContent = Helper.convertCoordinateToLetterPosition(
+                this.tiles[i]
+            );
             button.className = "player-tile";
             button.id = `player-tile-${i}`;
-            tilesPosition.append(button);
+            playerTiles.append(button);
         }
 
+    }
+
+    addClickEventListenersToTilespaces(){
+        for (let tilespace of document.querySelectorAll(".tile-space")){
+            tilespace.addEventListener('click', this.placeTile.bind(this));
+        }
+    }
+
+    // Todo: Refactor this.
+    placeTile(event) {
+        console.log(event);
+        let coordinate = Number(event.target.id);
+        console.log(coordinate);
+
+
+        // Initiate acquisition.
+        if (this.board.getAdjacentCorporations(coordinate).length > 1) {
+        }
+
+        // Add to existing corporation.
+        else if (this.board.hasOnlyOneCorporationAdjacentTo(coordinate)) {
+            return this.board.incorporateAdjacentGenericTiles(coordinate);
+        }
+
+        // Todo: Connect the DOM to the below :D
+        // Found corporation
+        else if (
+            this.board.hasGenericTilesAdjacentTo(coordinate) &&
+            this.board.hasNonActiveCorporations()) {
+            let symbol = 'A2';
+            return this.foundCorporation(coordinate, symbol);
+        }
+
+        // Place generic tile.
+        else {
+            if (this.tiles.includes(coordinate)){
+                let tilespaceElement = document.getElementById(`${coordinate}`);
+                tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
+                tilespaceElement.className += " clicked";
+                this.board.tileSpaces[coordinate] = 'G';
+                console.log(this.board.tileSpaces);
+            }
+
+        }
     }
 
 
@@ -691,12 +694,12 @@ function loadGame() {
     const player1 = new Player(board, 'Verban', 2000, stockExchange);
     stockExchange.showCurrentPricesOnStockButtons();
     board.drawBoard();
-    board.addClickEventListenersToTilespaces();
+    player1.addClickEventListenersToTilespaces();
     player1.prepareOrder();
     player1.showPlayerInformation();
     player1.buyOrderOnButtonPress();
     player1.clearOrderOnButtonPress();
-    player1.tiles = ["A1", "B2", "C3", "D4", "E5", "F6"];
+    player1.tiles = [0, 1, 2, 12, 105, 12];
     player1.showTilesInHand();
 
 
