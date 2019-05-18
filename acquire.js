@@ -1,9 +1,12 @@
 
-/*
+/* Todo
 Plan for adding tiles
-1. Show tiles in the players hand
+1. Show tiles in the players hand YES
+2a. Move tiles up. YES
 2. Show copy cursor and change color if player hovers over
 the tilespace for which he has the corresponding tile.
+3. Add player tile to board when clicked
+4. Allow player to end turn.
  */
 
 
@@ -69,32 +72,33 @@ class Board {
     }
 
     addClickEventListenersToTilespaces(){
-        const tilespaces = document.querySelectorAll(".tile-space");
-        for (let tilespace of tilespaces){
+        for (let tilespace of document.querySelectorAll(".tile-space")){
             tilespace.addEventListener('click', this.placeTile.bind(this));
         }
     }
 
+
+    // Todo: Refactor this.
     placeTile(event) {
         console.log(event);
-        let position = event.target.id;
-        console.log(position);
+        let boardPosition = event.target.id;
+        console.log(boardPosition);
 
         // Initiate acquisition.
-        if (this.getAdjacentCorporations(position).length > 1) {
+        if (this.getAdjacentCorporations(boardPosition).length > 1) {
         }
 
         // Add to existing corporation.
-        else if (this.hasOnlyOneCorporationAdjacentTo(position)) {
-            return this.incorporateAdjacentGenericTiles(position);
+        else if (this.hasOnlyOneCorporationAdjacentTo(boardPosition)) {
+            return this.incorporateAdjacentGenericTiles(boardPosition);
         }
 
         // Found corporation
         else if (
-            this.hasGenericTilesAdjacentTo(position) &&
+            this.hasGenericTilesAdjacentTo(boardPosition) &&
             this.hasNonActiveCorporations()) {
             let symbol = 'A2';
-            return this.foundCorporation(position, symbol);
+            return this.foundCorporation(boardPosition, symbol);
         }
 
         // Place tile only
@@ -102,8 +106,8 @@ class Board {
         //      1. Change the board space background color to the corporation tile color after adding tile.
         //      2. Update this.tileSpaces.
         else {
-            console.log(event.id);
-            const tilespaceElement = document.getElementById(`${position}`);
+            console.log(boardPosition);
+            const tilespaceElement = document.getElementById(`${boardPosition}`);
             tilespaceElement.textContent = '1A';
             tilespaceElement.className += " clicked";
             console.log(tilespaceElement.className);
@@ -406,8 +410,11 @@ class Player {
 
     displayOrderPrice(price) {
         // Shows the price of the order in the DOM.
-        let shownPrice = `$ ${price}`;
-        document.querySelector('#current-order-price').textContent = shownPrice;
+        const priceToShow = ` ${price}`;
+        const priceElement = document.querySelector('#current-order-price');
+        priceElement.textContent = priceToShow;
+        priceElement.className = "money-added";
+
     }
 
     clearOrderOnButtonPress(){
@@ -542,6 +549,17 @@ class Helper {
             coordinates.push(boardPosition + 12)
         }
         return coordinates;
+    }
+
+    static convertCoordinateToLetterPosition(coordinate){
+        let letterToRow = [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
+        ];
+        const row = Math.floor(coordinate / 12);
+        console.log(row);
+        const column = coordinate % 12;
+        console.log(column);
+        return `${column + 1}${letterToRow[row]}`
     }
 }
 
@@ -687,6 +705,7 @@ function loadGame() {
     player1.clearOrderOnButtonPress();
     player1.tiles = ["A1", "B2", "C3", "D4", "E5", "F6"];
     player1.showTilesInHand();
+
 
 
 
