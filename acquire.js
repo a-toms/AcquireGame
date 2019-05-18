@@ -81,24 +81,25 @@ class Board {
     // Todo: Refactor this.
     placeTile(event) {
         console.log(event);
-        let boardPosition = event.target.id;
-        console.log(boardPosition);
+        let coordinate = event.target.id;
+        console.log(coordinate);
+
 
         // Initiate acquisition.
-        if (this.getAdjacentCorporations(boardPosition).length > 1) {
+        if (this.getAdjacentCorporations(coordinate).length > 1) {
         }
 
         // Add to existing corporation.
-        else if (this.hasOnlyOneCorporationAdjacentTo(boardPosition)) {
-            return this.incorporateAdjacentGenericTiles(boardPosition);
+        else if (this.hasOnlyOneCorporationAdjacentTo(coordinate)) {
+            return this.incorporateAdjacentGenericTiles(coordinate);
         }
 
         // Found corporation
         else if (
-            this.hasGenericTilesAdjacentTo(boardPosition) &&
+            this.hasGenericTilesAdjacentTo(coordinate) &&
             this.hasNonActiveCorporations()) {
             let symbol = 'A2';
-            return this.foundCorporation(boardPosition, symbol);
+            return this.foundCorporation(coordinate, symbol);
         }
 
         // Place tile only
@@ -106,9 +107,9 @@ class Board {
         //      1. Change the board space background color to the corporation tile color after adding tile.
         //      2. Update this.tileSpaces.
         else {
-            console.log(boardPosition);
-            const tilespaceElement = document.getElementById(`${boardPosition}`);
-            tilespaceElement.textContent = '1A';
+            console.log(coordinate);
+            const tilespaceElement = document.getElementById(`${coordinate}`);
+            tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
             tilespaceElement.className += " clicked";
             console.log(tilespaceElement.className);
         }
@@ -680,14 +681,6 @@ class StockExchange {
     }
 }
 
-
-
-
-
-
-function placeTile(tileId){
-    let tileSpace = document.getElementById(tileId);
-}
 
 // GAME ///
 

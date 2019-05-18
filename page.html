@@ -7,9 +7,6 @@
 </head>
 <body>
 <h1>Acquire</h1>
-<div class="color-scheme-toggle">Light / Dark</div>
-
-<div id="boardPlace"></div>
 
 <div class="stock-button-group">
     <button class="tower stock-button animation">
@@ -49,22 +46,20 @@
     </button>
 </div>
 
-<div class="player-tiles"></div>
+<div class="stock-inventory">
+    <div id="current-order-stocks">Order</div>
+    <div>$<span id="current-order-price"></span></div>
+    <button class="action-button buy-order animation">Buy</button>
+    <button class="action-button clear-order animation">Clear</button>
+</div>
 
-<div class="columns-container">
-    <div class="column-right">
-        <div id="current-order-stocks">Order</div>
-        <div>$<span id="current-order-price"></span></div>
-        <button class="action-button buy-order animation">Buy</button>
-        <button class="action-button clear-order animation">Clear</button>
-    </div>
-    <div class="column-left">
-        <div class="player-information">
-            <span class="name">Name</span><br>
-            <span class="money">Money</span><br>
-            <span class="stock-portfolio">Stocks</span><br>
-        </div>
-    </div>
+<div id="boardPlace"></div>
+
+<div class="player-tiles"></div>
+<div class="player-information">
+    <span class="name">Name</span><br>
+    <span class="money">Money</span><br>
+    <span class="stock-portfolio">Stocks</span><br>
 </div>
 
 
