@@ -276,6 +276,7 @@ class Player {
 
     showTilesInHand(){
         const playerTiles = document.querySelector(".player-tiles");
+        // Todo: Clear all of the existing buttons before adding new buttons below.
         for (let i = 0; i < this.tiles.length; i++){
             let button = document.createElement("button");
             button.textContent = Helper.convertCoordinateToLetterPosition(
@@ -294,7 +295,7 @@ class Player {
         }
     }
 
-    // Todo: Refactor this.
+    // Tdo: Refactor this.
     placeTile(event) {
         console.log(event);
         let coordinate = Number(event.target.id);
@@ -321,12 +322,26 @@ class Player {
 
         // Place generic tile.
         else {
+            // If player has tile
             if (this.tiles.includes(coordinate)){
+
+                // Add tile to board
                 let tilespaceElement = document.getElementById(`${coordinate}`);
                 tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
                 tilespaceElement.className += " clicked";
                 this.board.tileSpaces[coordinate] = 'G';
                 console.log(this.board.tileSpaces);
+
+                // Remove placed tile from player's hand
+                for (let j = this.tiles.length - 1; j > -1; j--){
+                    if (this.tiles[j] === coordinate){
+                        this.tiles.splice(j, 1);
+                        console.log(this.tiles)
+                    }
+                }
+
+                // Re-render player's hand of tiles
+                this.showTilesInHand()
             }
 
         }
