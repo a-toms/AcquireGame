@@ -1,16 +1,9 @@
 
-/* Todo
-Plan for adding tiles
-1. Show tiles in the players hand YES
-2a. Move tiles up. YES
-2. Show copy cursor and change color if player hovers over
-the tilespace for which he has the corresponding tile. LATER
-3. Add player tile to board when clicked
-4. Allow player to end turn.
 
-5. Add Cypress to test the front end. The code feels somewhat unwieldly becuase
-of the lack of tests for the front-end.
- */
+// Todo: Convert into a node app with tests. Refactor. Separate into different parts.
+// The app is too unwieldy currently. I must restructure it to manage it.
+
+
 
 
 class Board {
@@ -242,7 +235,7 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money, stockExchange) {  // Todo: Move stockPortfolio to second position.
+    constructor(board, name, money, stockExchange) {
         this.board = board;
         this.stockExchange = stockExchange;
         this.name = name;
@@ -275,15 +268,27 @@ class Player {
     }
 
     showTilesInHand(){
-        const playerTiles = document.querySelector(".player-tiles");
         // Todo: Clear all of the existing buttons before adding new buttons below.
+        const playerTiles = document.querySelector(".player-tiles");
+        if (playerTiles.childNodes.length > 0){
+            for (let i = 0; i < this.tiles.length; i++) {
+                let existingButton = document.getElementById(`tile-${this.tiles[i]}`);
+                existingButton.parentNode.removeChild(existingButton);
+
+                // Remove tile from player's tiles
+                Helper.remove(this.tiles[i], this.tiles);
+           }
+        }
+
+        const playerHand = document.querySelector(".player-hand");
         for (let i = 0; i < this.tiles.length; i++){
             let button = document.createElement("button");
+            button.id = `tile-${this.tiles[i]}`;
             button.textContent = Helper.convertCoordinateToLetterPosition(
                 this.tiles[i]
             );
             button.className = "player-tile";
-            button.id = `player-tile-${i}`;
+
             playerTiles.append(button);
         }
 
@@ -297,10 +302,7 @@ class Player {
 
     // Tdo: Refactor this.
     placeTile(event) {
-        console.log(event);
         let coordinate = Number(event.target.id);
-        console.log(coordinate);
-
 
         // Initiate acquisition.
         if (this.board.getAdjacentCorporations(coordinate).length > 1) {
@@ -311,7 +313,7 @@ class Player {
             return this.board.incorporateAdjacentGenericTiles(coordinate);
         }
 
-        // Todo: Connect the DOM to the below :D
+        // Tdo: Connect the DOM to the below :D
         // Found corporation
         else if (
             this.board.hasGenericTilesAdjacentTo(coordinate) &&
@@ -330,13 +332,11 @@ class Player {
                 tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
                 tilespaceElement.className += " clicked";
                 this.board.tileSpaces[coordinate] = 'G';
-                console.log(this.board.tileSpaces);
 
                 // Remove placed tile from player's hand
                 for (let j = this.tiles.length - 1; j > -1; j--){
                     if (this.tiles[j] === coordinate){
                         this.tiles.splice(j, 1);
-                        console.log(this.tiles)
                     }
                 }
 
@@ -514,6 +514,15 @@ class Helper {
         }
     }
 
+    static remove(element, array) {
+        for (let i = array.length - 1; i > -1; i--) {
+            if (array[i] === element) {
+                array.splice(i, 1);
+            }
+        }
+        return array;
+    }
+
     static count(element, array){
         let quantity = 0;
         for (let i = 0; i < array.length; i++){
@@ -575,9 +584,7 @@ class Helper {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
         ];
         const row = Math.floor(coordinate / 12);
-        console.log(row);
         const column = coordinate % 12;
-        console.log(column);
         return `${column + 1}${letterToRow[row]}`
     }
 }
