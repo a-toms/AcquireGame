@@ -5,71 +5,68 @@
     <title>Acquire</title>
     <link rel="stylesheet" href="acquireStyleSheet.css">
 </head>
-Acquire Game
 <body>
-
-<h2 >Board</h2>
-<div id="boardPlace"></div>
+<h1>Acquire</h1>
 
 <div class="stock-button-group">
-    <button class="tower">
+    <button class="tower stock-button animation">
         Tower
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="continental">
+    <button class="continental stock-button animation">
         Continental
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="worldwide">
+    <button class="worldwide stock-button animation">
         Worldwide
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="imperial">
+    <button class="imperial stock-button animation">
         Imperial
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="festival">
+    <button class="festival stock-button animation">
         Festival
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="sackson">
+    <button class="sackson stock-button animation">
         Sackson
         <br>
         <span class="priceShown"></span>
     </button>
-    <button class="american">
+    <button class="american stock-button animation">
         American
         <br>
         <span class="priceShown"></span>
     </button>
 </div>
 
-<div class="columns-container">
-    <div class="column-left">
-        <div id="shopping-basket">Current order:</div>
-        <div>$900 (2 Tower, 1 Festival)</div>
-        <button id='buy-stock' onclick="" style="background-color: cornflowerblue">Buy</button>
-    </div>
-    <div class="column-right">
-            NAME
-            PLAYER STOCKS
-        </div>
-    </div>
+<div class="stock-inventory">
+    <div id="current-order-stocks">Order</div>
+    <div>$<span id="current-order-price"></span></div>
+    <button class="action-button buy-order animation">Buy</button>
+    <button class="action-button clear-order animation">Clear</button>
+</div>
+
+<div id="boardPlace"></div>
+
+<div class="player-hand">
+    <div class="player-tiles"></div>
+</div>
+
+<div class="player-information">
+    <span class="name">Name</span><br>
+    <span class="money">Money</span><br>
+    <span class="stock-portfolio">Stocks</span><br>
 </div>
 
 
-
-
-<button id='end-turn' onclick="addStock(id)" style="background-color: cornflowerblue">End turn</button>
-<h2>Player</h2>
-<div id='player-information'></div>
-
-
+<button class="action-button end-turn animation">End turn</button>
 <script src="acquire.js"></script>
 </body>
 </html>

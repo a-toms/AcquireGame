@@ -1,4 +1,11 @@
 
+
+// Todo: Convert into a node app with tests. Refactor. Separate into different parts.
+// The app is too unwieldy currently. I must restructure it to manage it.
+
+
+
+
 class Board {
     constructor() {
         /*
@@ -21,7 +28,43 @@ class Board {
         this.corporationSymbols = Object.freeze([
             'S', 'W', 'F', 'I', 'A', 'C', 'T'
         ]);
+        this.letters = Object.freeze(
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+        );
+        this.tiles = this.makeArrayOfAllTiles();
     };
+
+    makeArrayOfAllTiles(){
+        const numberOfTilespaces = 108;
+        let tiles = [];
+        for(let i = 0; i < numberOfTilespaces; i++) {
+            tiles.push(i)
+        }
+        return tiles;
+    }
+
+    drawBoard(){
+        const boardContainer = document.createElement("div");
+        for(let rowNumber = 0; rowNumber < 9; rowNumber++){
+            let row = document.createElement("div");
+            row.className = "tile-space-row";
+            for(let columnNumber = 1; columnNumber < 13; columnNumber++){
+                row.appendChild(
+                    this.returnTilespaceButton(columnNumber, rowNumber)
+                );
+            }
+            boardContainer.append(row);
+        }
+        document.getElementById("boardPlace").appendChild(boardContainer);
+    }
+
+    returnTilespaceButton(column, row){
+        const tilespace = document.createElement("button");
+        tilespace.innerText = `${column}${this.letters[row]}`;
+        tilespace.id = `${row * 12 + column - 1}`;
+        tilespace.className = "tile-space";
+        return tilespace;
+    }
 
     countNumberOf(corporation) {
         let count = 0;
@@ -59,9 +102,7 @@ class Board {
     }
 
     getAdjacentCorporations(tilePosition) {
-        let centralCoordinate = Helper.getCoordinateOf(
-            tilePosition
-        );
+        let centralCoordinate = tilePosition;
         let surroundingCoordinates = Helper.getCoordinatesAdjacentTo(
             centralCoordinate
         );
@@ -81,9 +122,7 @@ class Board {
     }
 
     getCoordinatesOfGenericTilesAdjacentTo(tilePosition) {
-        let centralCoordinate = Helper.getCoordinateOf(
-            tilePosition
-        );
+        let centralCoordinate = tilePosition;
         let adjacentCoordinates = Helper.getCoordinatesAdjacentTo(
             centralCoordinate
         );
@@ -181,7 +220,7 @@ class Board {
     }
 
     foundCorporation(tilePosition, corpSymbol) {
-        let central = Helper.getCoordinateOf(tilePosition);
+        let central = tilePosition;
         let adjacentGenerics = this.getCoordinatesOfGenericTilesAdjacentTo(
             tilePosition
         );
@@ -196,7 +235,7 @@ class Board {
 }
 
 class Player {
-    constructor(board, name, money, stockExchange) {  // Todo: Move stockPortfolio to second position.
+    constructor(board, name, money, stockExchange) {
         this.board = board;
         this.stockExchange = stockExchange;
         this.name = name;
@@ -211,54 +250,229 @@ class Player {
             'T': 0,
         };
         this.tiles = [];
+        this.orderStocks = [];
+        this.orderPrice = 0;
+        this.hasBoughtStocksThisTurn = false;
     };
 
-    placeTile(position) {
-        if (this.board.getAdjacentCorporations(position).length > 1) {
-            // Initiate acquisition
-        } else if (this.board.hasOnlyOneCorporationAdjacentTo(position)) {
-            return this.board.incorporateAdjacentGenericTiles(position);
-        } else if (
-            this.board.hasGenericTilesAdjacentTo(position) &&
-            this.board.hasNonActiveCorporations()) { // Todo: Refactor above to a single combined function.
-
-            // Todo: get user input of corporation that user wants to found from the DOM.
-            let symbol = '*'; // todo: Replace with user input.
-            return this.board.foundCorporation(position, symbol);
+    takeNumberOfTiles(number){
+        let newTilesForPlayer = [];
+        for (let i = 0; i < number; i++){
+           newTilesForPlayer.push(this.board.tiles.pop())
         }
-        let existing = this.board.findActiveCorporations();
-        // Todo: complete
-        return this.board;
+        return newTilesForPlayer;
     }
 
-    buy(stocks){
-        // @param: {str:int}
+    addTilesToPlayer(tiles){
+        this.tiles.push(tiles);
+    }
+
+    showTilesInHand(){
+        // Todo: Clear all of the existing buttons before adding new buttons below.
+        const playerTiles = document.querySelector(".player-tiles");
+        if (playerTiles.childNodes.length > 0){
+            for (let i = 0; i < this.tiles.length; i++) {
+                let existingButton = document.getElementById(`tile-${this.tiles[i]}`);
+                existingButton.parentNode.removeChild(existingButton);
+
+                // Remove tile from player's tiles
+                Helper.remove(this.tiles[i], this.tiles);
+           }
+        }
+
+        const playerHand = document.querySelector(".player-hand");
+        for (let i = 0; i < this.tiles.length; i++){
+            let button = document.createElement("button");
+            button.id = `tile-${this.tiles[i]}`;
+            button.textContent = Helper.convertCoordinateToLetterPosition(
+                this.tiles[i]
+            );
+            button.className = "player-tile";
+
+            playerTiles.append(button);
+        }
+
+    }
+
+    addClickEventListenersToTilespaces(){
+        for (let tilespace of document.querySelectorAll(".tile-space")){
+            tilespace.addEventListener('click', this.placeTile.bind(this));
+        }
+    }
+
+    // Tdo: Refactor this.
+    placeTile(event) {
+        let coordinate = Number(event.target.id);
+
+        // Initiate acquisition.
+        if (this.board.getAdjacentCorporations(coordinate).length > 1) {
+        }
+
+        // Add to existing corporation.
+        else if (this.board.hasOnlyOneCorporationAdjacentTo(coordinate)) {
+            return this.board.incorporateAdjacentGenericTiles(coordinate);
+        }
+
+        // Tdo: Connect the DOM to the below :D
+        // Found corporation
+        else if (
+            this.board.hasGenericTilesAdjacentTo(coordinate) &&
+            this.board.hasNonActiveCorporations()) {
+            let symbol = 'A2';
+            return this.foundCorporation(coordinate, symbol);
+        }
+
+        // Place generic tile.
+        else {
+            // If player has tile
+            if (this.tiles.includes(coordinate)){
+
+                // Add tile to board
+                let tilespaceElement = document.getElementById(`${coordinate}`);
+                tilespaceElement.textContent = Helper.convertCoordinateToLetterPosition(coordinate);
+                tilespaceElement.className += " clicked";
+                this.board.tileSpaces[coordinate] = 'G';
+
+                // Remove placed tile from player's hand
+                for (let j = this.tiles.length - 1; j > -1; j--){
+                    if (this.tiles[j] === coordinate){
+                        this.tiles.splice(j, 1);
+                    }
+                }
+
+                // Re-render player's hand of tiles
+                this.showTilesInHand()
+            }
+
+        }
+    }
+
+
+    prepareOrder() {
         /*
-         After pressing 'buy', check that all selected stocks are available and
-         that player has enough money. If the player does have enough money:
-         lower his money by $X;
-         move the stocks to him; and
-         remove the stocks from the available stocks.
+        Handles the user pressing the DOM stock buttons to order and to buy stocks.
+
+        */
+        const stockButtons = document.querySelectorAll(".stock-button-group");
+        stockButtons.forEach(
+            stockButton => {
+                stockButton.addEventListener('click', this.addStock.bind(this));
+            }
+        );
+    }
+
+    addStock(e) {
+        /*
+        Add stock to order basket and stock price to order price.
          */
-        if (!this.areSelectedStocksAllAvailable(stocks)){
+        const tickerSymbol = this.getStockSymbolFromStockButtonEvent(e);
+        this.orderStocks = this.addStockToAnOrderWithThreeItems(tickerSymbol, this.orderStocks);
+        this.orderPrice = this.calculateOrderPrice(this.orderStocks, this.orderPrice);
+        this.displayOrderPrice(this.orderPrice);
+        this.displayOrderStocks(this.orderStocks);
+    }
+
+    getStockSymbolFromStockButtonEvent(event) {
+        // Get the stock symbol of the button pressed.
+        let stockSymbol = '';
+        if (event.target.className === 'priceShown') {
+            stockSymbol = event.target.parentNode.className.charAt(0).toUpperCase();
+        }
+        else {
+            stockSymbol = event.target.className.charAt(0).toUpperCase();
+        }
+        return stockSymbol
+    }
+
+    addStockToAnOrderWithThreeItems(stockSymbol, order) {
+        this.keepMaximumOfThreeStocks();
+        return this.addToOrder(stockSymbol, order);
+    }
+
+    addToOrder(stockSymbol, order){
+        // Add stock to order
+        order.push(stockSymbol);
+        return order;
+    }
+
+
+    keepMaximumOfThreeStocks(){
+        // Remove first added stock if more than 3 stock in order.
+        if (this.orderStocks.length === 3) {
+            this.orderStocks.shift();
+        }
+    }
+
+    calculateOrderPrice(stockSymbolsOfOrder, orderPrice) {
+        return stockSymbolsOfOrder.reduce(
+            (total, stockSymbol) => {
+                return total + this.stockExchange.getStockPriceOf(stockSymbol)
+            }, 0
+        );
+    }
+
+    displayOrderStocks(order) {
+        // Shows the stocks of the order in the DOM.
+        let shownOrder = "Order: ";
+        if (order.length === 0){
+            document.querySelector('#current-order-stocks').textContent = shownOrder;
+        }
+        else {
+            for (let stockSymbol of Array.from(new Set(order))) {
+                let quantity = Helper.count(stockSymbol, order);
+                shownOrder += `${stockSymbol} ${quantity} `;
+                document.querySelector('#current-order-stocks').textContent = shownOrder;
+            }
+        }
+
+    }
+
+    displayOrderPrice(price) {
+        // Shows the price of the order in the DOM.
+        const priceToShow = ` ${price}`;
+        const priceElement = document.querySelector('#current-order-price');
+        priceElement.textContent = priceToShow;
+        priceElement.className = "money-added";
+
+    }
+
+    clearOrderOnButtonPress(){
+        const clearButton = document.querySelector(".action-button.clear-order");
+        clearButton.addEventListener('click', this.resetOrder.bind(this));
+    }
+
+    buyOrderOnButtonPress(){
+        const buyButton = document.querySelector(".action-button.buy-order");
+        buyButton.addEventListener('click', this.buyOrder.bind(this));
+    }
+
+    buyOrder(){
+        if (this.hasBoughtStocksThisTurn){
+            alert('You have already bought stocks');
             return 'Invalid Order'
         }
-        else if (!this.canAfford(stocks)){
+        if (!this.stockExchange.areSelectedStocksAllAvailable(this.orderStocks)){
+            alert('Stocks unavailable');
+            return 'Invalid Order'
+        }
+        else if (!this.canAfford(this.orderStocks)){
+            alert('Not enough money');
             return 'Invalid Order'
         }
         else{
-            this.payFor(stocks);
-            this.receiveFromStockExchange(stocks);
+            this.payFor(this.orderStocks);
+            this.receiveTransferFromStockExchange(this.orderStocks);
+            this.resetOrder();
+            this.hasBoughtStocksThisTurn = true;
         }
     }
 
-    areSelectedStocksAllAvailable(stocks){
-        for (let stockSymbol of Object.keys(stocks)) {
-            if (!this.isStockAvailable(stockSymbol)){
-                return false;
-            }
-        }
-        return true;
+    resetOrder(){
+        this.orderPrice = 0;
+        this.orderStocks = [];
+        this.displayOrderPrice(0);
+        this.displayOrderStocks([]);
+        this.showPlayerInformation();
     }
 
     canAfford(stocks){
@@ -267,32 +481,56 @@ class Player {
 
     payFor(stocks){
         const price = this.stockExchange.getTotalPriceOf(stocks);
-        this.money -= price;
+        this.money -= price
     }
 
-    isStockAvailable(stockSymbol){
-        return this.stockExchange.availableStocks[stockSymbol] > 0;
-    }
-
-    receiveFromStockExchange(purchasedStocks){
-        for (let stockSymbol of Object.keys(purchasedStocks)){
-            this.stockExchange.availableStocks[stockSymbol] -= purchasedStocks[stockSymbol];
-            this.stockPortfolio[stockSymbol] += purchasedStocks[stockSymbol];
+    receiveTransferFromStockExchange(purchasedStocks){
+        for (let stockSymbol of purchasedStocks){
+            this.stockExchange.availableStocks[stockSymbol] -= 1;
+            this.stockPortfolio[stockSymbol] += 1;
         }
         return this.stockPortfolio;
     }
+
+    showPlayerInformation(){
+        const display = document.querySelector(".player-information");
+        display.querySelector('.name')
+            .textContent = this.name;
+        display.querySelector('.money')
+            .textContent = `$ ${this.money}`;
+        display.querySelector('.stock-portfolio')
+            .textContent = `${Object.entries(this.stockPortfolio)}`;
+    }
 }
+
 
 class Helper {
     static isEmpty(array) {
         if (Array.isArray(array) && array.length === 0){
-            console.log("empty = " + array);
             return true;
         }
         else if (Array.isArray(array) && array.length > 0){
-            console.log("not empty = " + array);
             return false;
         }
+    }
+
+    static remove(element, array) {
+        for (let i = array.length - 1; i > -1; i--) {
+            if (array[i] === element) {
+                array.splice(i, 1);
+            }
+        }
+        return array;
+    }
+
+    static count(element, array){
+        let quantity = 0;
+        for (let i = 0; i < array.length; i++){
+            if (array[i] === element){
+                quantity += 1;
+            }
+        }
+        return quantity;
     }
 
     static getDifferenceBetween(first_arr, second_arr=[]){
@@ -339,6 +577,15 @@ class Helper {
             coordinates.push(boardPosition + 12)
         }
         return coordinates;
+    }
+
+    static convertCoordinateToLetterPosition(coordinate){
+        let letterToRow = [
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
+        ];
+        const row = Math.floor(coordinate / 12);
+        const column = coordinate % 12;
+        return `${column + 1}${letterToRow[row]}`
     }
 }
 
@@ -397,6 +644,20 @@ class StockExchange {
         }
     }
 
+    isStockAvailable(stockSymbol){
+        return this.availableStocks[stockSymbol] > 0;
+    }
+
+    areSelectedStocksAllAvailable(stocks) {
+        // typeof stocks === Array
+        for (let stock of stocks){
+            if (!this.isStockAvailable(stock)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     getShareholderBonus(corporation) {
         // Todo: write function. Shareholder bonus is directly linked to the stock price.
     }
@@ -421,10 +682,10 @@ class StockExchange {
             return this[stockSymbol]['41AndOver'];
     }
 
-    getTotalPriceOf(stockSymbolsAndQuantity){
-        // @param: {corporate symbol : int}
+    getTotalPriceOf(stockSymbols){
+        // @param: []
         let totalPrice = 0;
-        for (let stockSymbol of Object.keys(stockSymbolsAndQuantity)) {
+        for (let stockSymbol of stockSymbols){
             let individualStockPrice = this.getStockPriceOf(
                 stockSymbol
             );
@@ -433,20 +694,7 @@ class StockExchange {
         return totalPrice;
     }
 
-    addStock(e) {
-        const stockSymbol = document.activeElement;
-        console.log(stockSymbol);
-    }
-
-    handleBuyStock(){
-
-        const stockButtons = document.querySelectorAll(".stock-button-group");
-        stockButtons.forEach(
-            stockButton => stockButton.addEventListener('click', this.addStock)
-        );
-    }
-
-    showCurrentPrices(){
+    showCurrentPricesOnStockButtons() {
         const stockButtons = document.querySelector('.stock-button-group').children;
         Array.from(stockButtons).forEach(
             stockButton => {
@@ -455,82 +703,36 @@ class StockExchange {
                 display.innerText = this.getStockPriceOf(symbol);
             }
         );
-
-
-        // stockButtons.forEach(
-        //     stockButton => {
-                // console.log(symbol);
-                // let price = this.getStockPriceOf(symbol);
-        //         // stockButton.querySelector('.priceShown').textContent = price;
-        //     }
-        // )
     }
 }
 
 
+// GAME ///
 
 
-// Game page testing
+function loadGame() {
+    const board = new Board();
+    const stockExchange = new StockExchange(board);
+    const player1 = new Player(board, 'Verban', 2000, stockExchange);
+    stockExchange.showCurrentPricesOnStockButtons();
+    board.drawBoard();
+    player1.addClickEventListenersToTilespaces();
+    player1.prepareOrder();
+    player1.showPlayerInformation();
+    player1.buyOrderOnButtonPress();
+    player1.clearOrderOnButtonPress();
+    player1.tiles = [0, 1, 2, 12, 105, 12];
+    player1.showTilesInHand();
 
-let board = new Board();
-let players = [
-    new Player(board, 'Mendeval', 4000),
-    new Player(board, 'Alphi', 4000),
-    new Player(board, 'Paulson', 4000),
-    new Player(board, 'Tuyti', 4000)
-];
 
 
-function drawPlayers(players){
-    let namesPlace = document.getElementById('player-information');
-    for (let i = 0; i < players.length; i++){
-        let playerInfo = document.createElement("P");
-        playerInfo.id = `${players[i].name}`;
-        playerInfo.innerHTML = `${players[i].name} has ${players[i].money} money`;
-        namesPlace.appendChild(playerInfo)
-    }
+
+
+
+
 }
 
-// Todo: TD later: refactor the below. It is too big currently.
-function drawBoard(){
-    let boardContainer = document.createElement("div");
-    boardContainer.className = "board-container";
-    const letters = Object.freeze(
-        ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-    );
-    let rowLength = 12;
-    for(let rowNumber = 0; rowNumber < 9; rowNumber++){
-        let row = document.createElement("div");
-        row.className = "row";
-        for(let columnNumber = 1; columnNumber < 13; columnNumber++){
-            let tilespace = document.createElement("button");
-            tilespace.id = rowNumber * rowLength + columnNumber;
-            tilespace.className = "board-space";
-            tilespace.innerText = `${columnNumber}${letters[rowNumber]}`;
-            tilespace.onclick = function() {
-                placeTile(tilespace.id);
-            };
-            row.appendChild(tilespace);
-        }
-        boardContainer.append(row);
-    }
-    document.getElementById("boardPlace").appendChild(boardContainer);
-}
-
-function takeMoneyFrom(player){
-    player.money -= 100;
-    let mendevalInfo = document.getElementById('Mendeval');
-    mendevalInfo.innerHTML = `${players[0].name} has ${players[0].money} money`;
-}
-
-function placeTile(tileId){
-    let tileSpace = document.getElementById(tileId);
-    tileSpace.style.backgroundColor= "#FF8D6F";
-}
-
-// Todo: Integrate amalgamate placeTile and placeTile.
-
-
+//
 // module.exports =  {
 //     Board,
 //     StockExchange,
@@ -538,34 +740,4 @@ function placeTile(tileId){
 //     Helper
 //
 // };
-
-
-
-
-
-
-
-
-
-
-// GAME ///
-
-// Todo: complete addStock(). Integrate addStock() to the StockExchange class.
-//  1. Check if stock available. 2. Add stock to basket 3. Press buy button and pay.
-
-// Show stock colour as grayscale when unavailable.
-
-function loadGame(){
-    const board = new Board();
-    const stockExchange = new StockExchange(board);
-    board._insertTiles('S', 12);
-    board._insertTiles('T', 3);
-    stockExchange.showCurrentPrices();
-    drawBoard();
-    drawPlayers(players);
-    stockExchange.handleBuyStock();
-
-
-}
-
 window.addEventListener('load', loadGame);

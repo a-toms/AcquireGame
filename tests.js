@@ -4,16 +4,25 @@ let tape = require('tape');
 let game = require('./acquire.js');
 
 tape('\nBoard creation.', function (TC) {
-    let emptyBoard = new game.Board();
+    let board = new game.Board();
 
     TC.test('Test that one can access the board.', function (assert) {
         assert.equal(
-            emptyBoard.tileSpaces[0][0],
+            board.tileSpaces[0][0],
             'E',
             'Tile space \'A1\' in new board === \'empty\''
         );
         assert.end();
     });
+
+    TC.test('Test that board starts with 108 tiles', function (assert) {
+        assert.equal(
+            108,
+            board.tiles.length
+        );
+        assert.end();
+    });
+
 });
 
 
@@ -567,6 +576,24 @@ tape('\nHelper actions', function (TC) {
         assert.end();
     });
 
+    TC.test('\nTest count()', function (assert) {
+        let filled_array = ['A', 'B', 'A'];
+        assert.equals(
+            game.Helper.count('A', filled_array),
+            2,
+        );
+        assert.equals(
+            game.Helper.count('B', filled_array),
+            1,
+        );
+        assert.equals(
+            game.Helper.count('C', filled_array),
+            0,
+        );
+        assert.end();
+    });
+
+
     TC.test('\nTest getDifferenceBetween', function (assert){
         let alpha = ['A', 'B', 'C', 'D'];
         let beta = ['B', 'E', 'F'];
@@ -630,7 +657,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 1,
             'T': 1,
         };
-        const stockPurchaseOrder = {'W': 1, 'S': 2};
+        const stockPurchaseOrder = ['W', 'S', 'S'];
 
         // The test.
         assert.deepEquals(
@@ -638,7 +665,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             {'W': 0, 'S': 0, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
             'The player has no stockPortfolio before buying.'
         );
-        player.buy(stockPurchaseOrder);
+        player.buyOrder(stockPurchaseOrder);
         assert.deepEquals(
             player.stockPortfolio,
             {'W': 1, 'S': 2, 'F': 0, 'I': 0, 'A': 0, 'C': 0, 'T': 0},
@@ -661,11 +688,11 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         // Tests.
         assert.equals(
-            player.areSelectedStocksAllAvailable(basket),
+            stockExchange.areSelectedStocksAllAvailable(basket),
             false,
             'areSelectedStocksAllAvailable returns false when there are not ' +
             'at least the number of availableStocks in the StockExchange ' +
@@ -681,7 +708,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'T': 0,
         };
         assert.equals(
-            player.areSelectedStocksAllAvailable(basket),
+            stockExchange.areSelectedStocksAllAvailable(basket),
             true,
             'areSelectedStocksAllAvailable returns true when there are ' +
             'at least the number of availableStocks in the StockExchange ' +
@@ -711,7 +738,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         // Tests.
         assert.equals(
@@ -729,7 +756,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     });
 
-    TC.test('\nTest receiveFromStockExchange()', function (assert) {
+    TC.test('\nTest receiveTransferFromStockExchange()', function (assert) {
 
         // Setup.
         let board = new game.Board();
@@ -744,7 +771,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             'C': 0,
             'T': 0,
         };
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         assert.deepEquals(
             receivingPlayer.stockPortfolio,
@@ -759,7 +786,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
             },
             'receivingPlayer has no stocks before the transfer.'
         );
-        receivingPlayer.receiveFromStockExchange(basket);
+        receivingPlayer.receiveTransferFromStockExchange(basket);
         assert.deepEquals(
             receivingPlayer.stockPortfolio,
             {
@@ -771,7 +798,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
                 'C': 0,
                 'T': 0,
             },
-            'receivingPlayer has stocks after receiveFromStockExchange().'
+            'receivingPlayer has stocks after receiveTransferFromStockExchange().'
         );
         assert.deepEquals(
             stockExchange.availableStocks,
@@ -801,7 +828,7 @@ tape('\Buy stock after clicking button on page', function (TC) {
         board.tileSpaces[7] = 'S';
         const stockExchange = new game.StockExchange(board);
         const payingPlayer = new game.Player(board, 'Kiaq', 2500, stockExchange);
-        const basket = {'W': 1, 'S': 1, 'I': 1};
+        const basket = ['W', 'S', 'I'];
 
         assert.equals(
             payingPlayer.money,
@@ -815,6 +842,6 @@ tape('\Buy stock after clicking button on page', function (TC) {
         assert.end();
     })
 
-    // Todo: Write tests for Player.buy()
+    // Todo: Write tests for Player.buyOrder()
 
 });
